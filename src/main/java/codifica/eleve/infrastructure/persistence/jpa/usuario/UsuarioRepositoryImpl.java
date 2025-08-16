@@ -1,0 +1,76 @@
+package codifica.eleve.infrastructure.persistence.jpa.usuario;
+
+import codifica.eleve.domain.usuario.Usuario;
+import codifica.eleve.domain.usuario.UsuarioRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+@Repository
+public class UsuarioRepositoryImpl implements UsuarioRepository {
+
+    private final UsuarioJpaRepository usuarioJpaRepository;
+
+    public UsuarioRepositoryImpl(UsuarioJpaRepository usuarioJpaRepository) {
+        this.usuarioJpaRepository = usuarioJpaRepository;
+    }
+
+    @Override
+    public Usuario save(Usuario usuario) {
+        UsuarioJpaEntity entity = toEntity(usuario);
+        UsuarioJpaEntity saved = usuarioJpaRepository.save(entity);
+        return toDomain(saved);
+    }
+
+    @Override
+    public Optional<Usuario> findById(Integer id) {
+        return usuarioJpaRepository.findById(id).map(this::toDomain);
+    }
+
+    @Override
+    public Optional<Usuario> findByEmail(String email) {
+        UsuarioJpaEntity entity = usuarioJpaRepository.findByEmail(email);
+        return Optional.ofNullable(entity).map(this::toDomain);
+    }
+
+    @Override
+    public Optional<Usuario> findByEmailAndSenha(String email, String senha) {
+        UsuarioJpaEntity entity = usuarioJpaRepository.findByEmailAndSenha(email, senha);
+        return Optional.ofNullable(entity).map(this::toDomain);
+    }
+
+    @Override
+    public List<Usuario> findAll() {
+        return usuarioJpaRepository.findAll().stream().map(this::toDomain).collect(Collectors.toList());
+    }
+
+    @Override
+    public boolean existsById(Integer id) {
+        return usuarioJpaRepository.existsById(id);
+    }
+
+    @Override
+    public void deleteById(Integer id) {
+        usuarioJpaRepository.deleteById(id);
+    }
+
+    private UsuarioJpaEntity toEntity(Usuario usuario) {
+        UsuarioJpaEntity entity = new UsuarioJpaEntity();
+        entity.setId(usuario.getId());
+        entity.setNome(usuario.getNome());
+        entity.setEmail(usuario.getEmail());
+        entity.setSenha(usuario.getSenha());
+        return entity;
+    }
+
+    private Usuario toDomain(UsuarioJpaEntity entity) {
+        Usuario usuario = new Usuario();
+        usuario.setId(entity.getId());
+        usuario.setNome(entity.getNome());
+        usuario.setEmail(entity.getEmail());
+        usuario.setSenha(entity.getSenha());
+        return usuario;
+    }
+}
