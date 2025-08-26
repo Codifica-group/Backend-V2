@@ -1,4 +1,4 @@
-package codifica.eleve.interfaces.controller.usuario;
+package codifica.eleve.interfaces.controller;
 
 import codifica.eleve.application.usecase.usuario.*;
 import codifica.eleve.domain.usuario.Usuario;

@@ -1,10 +1,10 @@
-package codifica.eleve.infrastructure.persistence.jpa.usuario;
+package codifica.eleve.infrastructure.persistence.usuario;
 
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "usuario")
-public class UsuarioJpaEntity {
+public class UsuarioEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

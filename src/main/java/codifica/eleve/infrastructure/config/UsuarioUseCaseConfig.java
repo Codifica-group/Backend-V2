@@ -1,4 +1,4 @@
-package codifica.eleve.infrastructure.persistence.jpa.usuario;
+package codifica.eleve.infrastructure.config;
 
 import codifica.eleve.application.usecase.usuario.*;
 import codifica.eleve.domain.usuario.UsuarioRepository;
