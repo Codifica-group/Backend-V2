@@ -1,5 +1,6 @@
 package codifica.eleve.application.usecase.usuario;
 
+import codifica.eleve.domain.shared.exceptions.NotFoundException;
 import codifica.eleve.domain.usuario.UsuarioRepository;
 
 public class DeleteUsuarioUseCase {
@@ -11,7 +12,7 @@ public class DeleteUsuarioUseCase {
 
     public void execute(Integer id) {
         if (!usuarioRepository.existsById(id)) {
-            throw new RuntimeException("Usuário não encontrado.");
+            throw new NotFoundException("Usuário não encontrado.");
         }
 
         usuarioRepository.deleteById(id);

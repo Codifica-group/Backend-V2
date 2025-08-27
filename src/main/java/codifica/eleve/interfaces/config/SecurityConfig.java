@@ -1,4 +1,4 @@
-package codifica.eleve.config;
+package codifica.eleve.interfaces.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,4 +1,0 @@
-package codifica.eleve.application.usecase.pet;
-
-public class CreatePetUseCase {
-}

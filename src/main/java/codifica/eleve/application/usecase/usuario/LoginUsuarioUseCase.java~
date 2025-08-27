@@ -1,6 +1,5 @@
 package codifica.eleve.application.usecase.usuario;
 
-import codifica.eleve.domain.shared.exceptions.UnauthorizedException;
 import codifica.eleve.domain.usuario.Usuario;
 import codifica.eleve.domain.usuario.UsuarioRepository;
 
@@ -12,10 +11,10 @@ public class LoginUsuarioUseCase {
     }
 
     public String execute(Usuario usuario) {
-        if (!usuarioRepository.findByEmailAndSenha(usuario.getEmail(), usuario.getSenha()).isPresent()) {
-            throw new UnauthorizedException("Credenciais inválidas.");
+        if (usuarioRepository.findByEmailAndSenha(usuario.getEmail(), usuario.getSenha()).isPresent()) {
+            return "Acesso autorizado.";
+        } else {
+            throw new RuntimeException("Credenciais inválidas.");
         }
-
-        return "Acesso autorizado.";
     }
 }

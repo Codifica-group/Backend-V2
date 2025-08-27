@@ -2,6 +2,7 @@ package codifica.eleve.application.usecase.pet;
 
 import codifica.eleve.domain.pet.Pet;
 import codifica.eleve.domain.pet.PetRepository;
+import codifica.eleve.domain.shared.exceptions.NotFoundException;
 
 public class UpdatePetUseCase {
     private final PetRepository petRepository;
@@ -10,11 +11,12 @@ public class UpdatePetUseCase {
         this.petRepository = petRepository;
     }
 
-    public Pet execute(Integer id, Pet pet) {
+    public String execute(Integer id, Pet pet) {
         if (!petRepository.existsById(id)) {
-            throw new RuntimeException("Pet não encontrado.");
+            throw new NotFoundException("Pet não encontrado.");
         }
+
         pet.setId(id);
-        return petRepository.save(pet);
+        return "Pet atualizado com sucesso.";
     }
 }

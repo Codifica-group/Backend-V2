@@ -2,6 +2,9 @@ package codifica.eleve.application.usecase.pet;
 
 import codifica.eleve.domain.pet.Pet;
 import codifica.eleve.domain.pet.PetRepository;
+import codifica.eleve.domain.shared.exceptions.ConflictException;
+
+import java.util.HashMap;
 
 public class CreatePetUseCase {
     private final PetRepository petRepository;
@@ -10,10 +13,16 @@ public class CreatePetUseCase {
         this.petRepository = petRepository;
     }
 
-    public Pet execute(Pet pet) {
+    public Object execute(Pet pet) {
         if (petRepository.existsByNomeAndClienteId(pet.getNome(), pet.getCliente().getId())) {
-            throw new RuntimeException("Impossível cadastrar dois pets com dados iguais.");
+            throw new ConflictException("Impossível cadastrar dois pets com dados iguais.");
         }
-        return petRepository.save(pet);
+
+        petRepository.save(pet);
+
+        var resposta = new HashMap<String, Object>();
+        resposta.put("mensagem", "Pet cadastrado com sucesso.");
+        resposta.put("id", pet.getId());
+        return resposta;
     }
 }

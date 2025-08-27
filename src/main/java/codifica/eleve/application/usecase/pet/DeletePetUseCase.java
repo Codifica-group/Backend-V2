@@ -1,6 +1,8 @@
 package codifica.eleve.application.usecase.pet;
 
 import codifica.eleve.domain.pet.PetRepository;
+import codifica.eleve.domain.shared.exceptions.NotFoundException;
+import codifica.eleve.domain.shared.exceptions.ConflictException;
 
 public class DeletePetUseCase {
     private final PetRepository petRepository;
@@ -12,11 +14,13 @@ public class DeletePetUseCase {
 
     public void execute(Integer id) {
         if (!petRepository.existsById(id)) {
-            throw new RuntimeException("Pet não encontrado.");
+            throw new NotFoundException("Pet não encontrado.");
         }
+
         // if (agendaRepository.existsByPetId(id)) {
-        //     throw new RuntimeException("Não é possível deletar pets que possuem agendas associadas.");
+        //     throw new ConflictException("Não é possível deletar pets que possuem agendas associadas.");
         // }
+
         petRepository.deleteById(id);
     }
 }

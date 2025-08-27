@@ -1,5 +1,6 @@
 package codifica.eleve.application.usecase.usuario;
 
+import codifica.eleve.domain.shared.exceptions.NotFoundException;
 import codifica.eleve.domain.usuario.Usuario;
 import codifica.eleve.domain.usuario.UsuarioRepository;
 
@@ -12,7 +13,7 @@ public class UpdateUsuarioUseCase {
 
     public String execute(Integer id, Usuario usuario) {
         if (!usuarioRepository.existsById(id)) {
-            throw new RuntimeException("Usuário não encontrado.");
+            throw new NotFoundException("Usuário não encontrado.");
         }
 
         usuario.setId(id);

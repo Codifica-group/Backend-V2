@@ -1,6 +1,5 @@
 package codifica.eleve.application.usecase.usuario;
 
-import codifica.eleve.domain.shared.exceptions.ConflictException;
 import codifica.eleve.domain.usuario.Usuario;
 import codifica.eleve.domain.usuario.UsuarioRepository;
 
@@ -13,7 +12,7 @@ public class RegisterUsuarioUseCase {
 
     public String execute(Usuario usuario) {
         if (usuarioRepository.findByEmail(usuario.getEmail()).isPresent()) {
-            throw new ConflictException("Impossivel cadastrar dois usuários com o mesmo e-mail.");
+            throw new RuntimeException("Impossivel cadastrar dois usuários com o mesmo e-mail.");
         }
 
         usuarioRepository.save(usuario);

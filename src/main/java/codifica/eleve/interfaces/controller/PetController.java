@@ -2,11 +2,14 @@ package codifica.eleve.interfaces.controller;
 
 import codifica.eleve.application.usecase.pet.*;
 import codifica.eleve.domain.pet.Pet;
+import codifica.eleve.interfaces.adapters.PetDtoMapper;
+import codifica.eleve.interfaces.dto.PetDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @RestController
@@ -32,18 +35,15 @@ public class PetController {
     }
 
     @PostMapping
-    public ResponseEntity<PetDTO> create(@RequestBody PetDTO petDTO) {
-        Pet pet = createPetUseCase.execute(petDtoMapper.toDomain(petDTO));
-        return ResponseEntity.status(HttpStatus.CREATED).body(petDtoMapper.toDto(pet));
+    public ResponseEntity<Object> create(@RequestBody PetDTO petDTO) {
+        Object json = createPetUseCase.execute(petDtoMapper.toDomain(petDTO));
+        return ResponseEntity.status(HttpStatus.CREATED).body(json);
     }
 
     @GetMapping
     public ResponseEntity<List<PetDTO>> list() {
         List<Pet> pets = listPetUseCase.execute();
-        if (pets.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(pets.stream().map(petDtoMapper::toDto).collect(Collectors.toList()));
+        return pets.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(pets);
     }
 
     @GetMapping("/{id}")
@@ -53,13 +53,13 @@ public class PetController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PetDTO> update(@PathVariable Integer id, @RequestBody PetDTO petDTO) {
-        Pet pet = updatePetUseCase.execute(id, petDtoMapper.toDomain(petDTO));
-        return ResponseEntity.ok(petDtoMapper.toDto(pet));
+    public ResponseEntity<String> update(@PathVariable Integer id, @RequestBody PetDTO petDTO) {
+        String message = updatePetUseCase.execute(id, petDtoMapper.toDomain(petDTO));
+        return ResponseEntity.ok(message);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Integer id) {
+    public ResponseEntity delete(@PathVariable Integer id) {
         deletePetUseCase.execute(id);
         return ResponseEntity.noContent().build();
     }
