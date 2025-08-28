@@ -1,8 +1,8 @@
 package codifica.eleve.infrastructure.adapters;
 
-import codifica.eleve.domain.cliente.Cliente;
-import codifica.eleve.domain.pet.Pet;
-import codifica.eleve.domain.raca.Raca;
+import codifica.eleve.core.domain.cliente.Cliente;
+import codifica.eleve.core.domain.pet.Pet;
+import codifica.eleve.core.domain.raca.Raca;
 import codifica.eleve.infrastructure.persistence.cliente.ClienteEntity;
 import codifica.eleve.infrastructure.persistence.pet.PetEntity;
 import codifica.eleve.infrastructure.persistence.raca.RacaEntity;

@@ -1,7 +1,7 @@
 package codifica.eleve.interfaces.controller;
 
-import codifica.eleve.application.usecase.pet.*;
-import codifica.eleve.domain.pet.Pet;
+import codifica.eleve.core.application.usecase.pet.*;
+import codifica.eleve.core.domain.pet.Pet;
 import codifica.eleve.interfaces.adapters.PetDtoMapper;
 import codifica.eleve.interfaces.dto.PetDTO;
 import org.springframework.http.HttpStatus;
@@ -9,8 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/pets")

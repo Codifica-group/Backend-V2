@@ -1,7 +1,7 @@
 package codifica.eleve.interfaces.controller;
 
-import codifica.eleve.application.usecase.usuario.*;
-import codifica.eleve.domain.usuario.Usuario;
+import codifica.eleve.core.application.usecase.usuario.*;
+import codifica.eleve.core.domain.usuario.Usuario;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

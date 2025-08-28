@@ -1,7 +1,7 @@
 package codifica.eleve.infrastructure.config;
 
-import codifica.eleve.application.usecase.pet.*;
-import codifica.eleve.domain.pet.PetRepository;
+import codifica.eleve.core.application.usecase.pet.*;
+import codifica.eleve.core.domain.pet.PetRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

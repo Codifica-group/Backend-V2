@@ -1,4 +1,0 @@
-package codifica.eleve.domain.usuario;
-
-public interface UsuarioRepository {
-}

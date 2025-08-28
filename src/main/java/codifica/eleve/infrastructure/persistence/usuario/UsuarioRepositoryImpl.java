@@ -1,7 +1,7 @@
 package codifica.eleve.infrastructure.persistence.usuario;
 
-import codifica.eleve.domain.usuario.Usuario;
-import codifica.eleve.domain.usuario.UsuarioRepository;
+import codifica.eleve.core.domain.usuario.Usuario;
+import codifica.eleve.core.domain.usuario.UsuarioRepository;
 import codifica.eleve.infrastructure.adapters.UsuarioMapper;
 import org.springframework.stereotype.Repository;
 

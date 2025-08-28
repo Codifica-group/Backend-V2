@@ -1,7 +1,7 @@
 package codifica.eleve.interfaces.exceptions;
 
-import codifica.eleve.domain.shared.exceptions.*;
-import codifica.eleve.domain.shared.exceptions.IllegalArgumentException;
+import codifica.eleve.core.domain.shared.exceptions.*;
+import codifica.eleve.core.domain.shared.exceptions.IllegalArgumentException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -30,6 +30,15 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(UnauthorizedException.class)
     public ResponseEntity<ApiError> handleUnauthorizedException(UnauthorizedException ex) {
+        ApiError errorResponse = new ApiError(
+                HttpStatus.UNAUTHORIZED.name(),
+                ex.getMessage()
+        );
+        return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(InvalidTokenException.class)
+    public ResponseEntity<ApiError> handleInvalidTokenException(InvalidTokenException ex) {
         ApiError errorResponse = new ApiError(
                 HttpStatus.UNAUTHORIZED.name(),
                 ex.getMessage()

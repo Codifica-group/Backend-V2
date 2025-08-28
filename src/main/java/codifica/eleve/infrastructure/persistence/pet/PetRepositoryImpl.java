@@ -1,7 +1,7 @@
 package codifica.eleve.infrastructure.persistence.pet;
 
-import codifica.eleve.domain.pet.Pet;
-import codifica.eleve.domain.pet.PetRepository;
+import codifica.eleve.core.domain.pet.Pet;
+import codifica.eleve.core.domain.pet.PetRepository;
 import codifica.eleve.infrastructure.adapters.PetMapper;
 import org.springframework.stereotype.Repository;
 

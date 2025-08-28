@@ -1,7 +1,7 @@
 package codifica.eleve.infrastructure.config;
 
-import codifica.eleve.application.usecase.usuario.*;
-import codifica.eleve.domain.usuario.UsuarioRepository;
+import codifica.eleve.core.application.usecase.usuario.*;
+import codifica.eleve.core.domain.usuario.UsuarioRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

@@ -1,6 +1,6 @@
 package codifica.eleve.infrastructure.adapters;
 
-import codifica.eleve.domain.usuario.Usuario;
+import codifica.eleve.core.domain.usuario.Usuario;
 import codifica.eleve.infrastructure.persistence.usuario.UsuarioEntity;
 
 public class UsuarioMapper {

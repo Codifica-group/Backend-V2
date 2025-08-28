@@ -1,8 +1,8 @@
 package codifica.eleve.interfaces.adapters;
 
-import codifica.eleve.domain.cliente.Cliente;
-import codifica.eleve.domain.pet.Pet;
-import codifica.eleve.domain.raca.Raca;
+import codifica.eleve.core.domain.cliente.Cliente;
+import codifica.eleve.core.domain.pet.Pet;
+import codifica.eleve.core.domain.raca.Raca;
 import codifica.eleve.interfaces.dto.PetDTO;
 import org.springframework.stereotype.Component;
 
