@@ -15,11 +15,13 @@ public class RegisterUsuarioUseCase {
     }
 
     public String execute(Usuario usuario) {
-        if (usuarioRepository.findByEmail(usuario.getEmail()).isPresent()) {
-            throw new ConflictException("Impossivel cadastrar dois usuários com o mesmo e-mail.");
+        if (usuarioRepository.findByEmail(usuario.getEmail().getEndereco()).isPresent()) {
+            throw new ConflictException("Impossível cadastrar dois usuários com o mesmo e-mail.");
         }
 
-        usuario.setSenha(passwordEncoderPort.encode(usuario.getSenha()));
+        String senhaCodificada = passwordEncoderPort.encode(usuario.getSenha().getValor());
+        usuario.setSenhaCodificada(senhaCodificada);
+
         usuarioRepository.save(usuario);
         return "Usuário cadastrado com sucesso.";
     }

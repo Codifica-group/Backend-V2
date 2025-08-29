@@ -21,14 +21,14 @@ public class LoginUsuarioUseCase {
     }
 
     public Object execute(Usuario usuario) {
-        Optional<Usuario> foundUserOptional = usuarioRepository.findByEmail(usuario.getEmail());
-        if (foundUserOptional.isEmpty() || !passwordEncoder.matches(usuario.getSenha(), foundUserOptional.get().getSenha())) {
+        Optional<Usuario> foundUserOptional = usuarioRepository.findByEmail(usuario.getEmail().getEndereco());
+        if (foundUserOptional.isEmpty() || !passwordEncoder.matches(usuario.getSenha().getValor(), foundUserOptional.get().getSenhaCodificada())) {
             throw new UnauthorizedException("Credenciais inválidas.");
         }
 
         var response = new HashMap<String, Object>();
         response.put("mensagem", "Acesso autorizado.");
-        response.put("Token", tokenPort.generate(foundUserOptional.get().getEmail()));
+        response.put("Token", tokenPort.generate(foundUserOptional.get().getEmail().getEndereco()));
         return response;
     }
 }

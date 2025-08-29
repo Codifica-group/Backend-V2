@@ -1,20 +1,33 @@
 package codifica.eleve.core.domain.pet;
 
-import codifica.eleve.core.domain.raca.Raca;
 import codifica.eleve.core.domain.cliente.Cliente;
+import codifica.eleve.core.domain.raca.Raca;
+import codifica.eleve.core.domain.shared.Id;
+import codifica.eleve.core.domain.shared.exceptions.IllegalArgumentException;
 
 public class Pet {
 
-    private Integer id;
+    private Id id;
     private String nome;
     private Raca raca;
     private Cliente cliente;
 
-    public Integer getId() {
+    public Pet(String nome, Raca raca, Cliente cliente) {
+        if (nome == null || nome.trim().isEmpty()) {
+            throw new IllegalArgumentException("O nome do pet não pode ser vazio.");
+        }
+        this.nome = nome;
+        this.raca = raca;
+        this.cliente = cliente;
+    }
+
+    public Pet() {}
+
+    public Id getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Id id) {
         this.id = id;
     }
 

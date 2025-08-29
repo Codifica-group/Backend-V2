@@ -1,15 +1,31 @@
 package codifica.eleve.core.domain.raca;
 
+import codifica.eleve.core.domain.shared.Id;
+import codifica.eleve.core.domain.shared.exceptions.IllegalArgumentException;
+
 public class Raca {
-    private Integer id;
+    private Id id;
     private String nome;
     private Porte porte;
 
-    public Integer getId() {
+    public Raca(String nome, Porte porte) {
+        if (nome == null || nome.trim().isEmpty()) {
+            throw new IllegalArgumentException("O nome da raça não pode ser vazio.");
+        }
+        if (porte == null) {
+            throw new IllegalArgumentException("O porte da raça não pode ser nulo.");
+        }
+        this.nome = nome;
+        this.porte = porte;
+    }
+
+    public Raca() {}
+
+    public Id getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Id id) {
         this.id = id;
     }
 

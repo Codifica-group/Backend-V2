@@ -1,16 +1,33 @@
 package codifica.eleve.core.domain.usuario;
 
-public class Usuario {
-    private Integer id;
-    private String nome;
-    private String email;
-    private String senha;
+import codifica.eleve.core.domain.shared.Email;
+import codifica.eleve.core.domain.shared.Id;
+import codifica.eleve.core.domain.shared.Senha;
+import codifica.eleve.core.domain.shared.exceptions.IllegalArgumentException;
 
-    public Integer getId() {
+public class Usuario {
+    private Id id;
+    private String nome;
+    private Email email;
+    private Senha senha;
+    private String senhaCodificada;
+
+    public Usuario(String nome, Email email, Senha senha) {
+        if (nome == null || nome.trim().isEmpty()) {
+            throw new IllegalArgumentException("O nome do usuário não pode ser vazio.");
+        }
+        this.nome = nome;
+        this.email = email;
+        this.senha = senha;
+    }
+
+    public Usuario() {}
+
+    public Id getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Id id) {
         this.id = id;
     }
 
@@ -22,19 +39,27 @@ public class Usuario {
         this.nome = nome;
     }
 
-    public String getEmail() {
+    public Email getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
+    public void setEmail(Email email) {
         this.email = email;
     }
 
-    public String getSenha() {
+    public Senha getSenha() {
         return senha;
     }
 
-    public void setSenha(String senha) {
+    public void setSenha(Senha senha) {
         this.senha = senha;
+    }
+
+    public String getSenhaCodificada() {
+        return senhaCodificada;
+    }
+
+    public void setSenhaCodificada(String senhaCodificada) {
+        this.senhaCodificada = senhaCodificada;
     }
 }
