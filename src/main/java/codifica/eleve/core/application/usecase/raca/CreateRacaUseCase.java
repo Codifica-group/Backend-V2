@@ -3,7 +3,6 @@ package codifica.eleve.core.application.usecase.raca;
 import codifica.eleve.core.domain.raca.Raca;
 import codifica.eleve.core.domain.raca.RacaRepository;
 import codifica.eleve.core.domain.shared.exceptions.ConflictException;
-
 import java.util.HashMap;
 import java.util.Map;
 

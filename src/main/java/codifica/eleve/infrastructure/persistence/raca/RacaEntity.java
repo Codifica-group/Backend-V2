@@ -1,6 +1,6 @@
 package codifica.eleve.infrastructure.persistence.raca;
 
-import codifica.eleve.core.domain.raca.Porte;
+import codifica.eleve.infrastructure.persistence.raca.porte.PorteEntity;
 import jakarta.persistence.*;
 
 @Entity
@@ -13,8 +13,9 @@ public class RacaEntity {
 
     private String nome;
 
-    @Enumerated(EnumType.STRING)
-    private Porte porte;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "porte_id", nullable = false)
+    private PorteEntity porte;
 
     public Integer getId() {
         return id;
@@ -32,11 +33,11 @@ public class RacaEntity {
         this.nome = nome;
     }
 
-    public Porte getPorte() {
+    public PorteEntity getPorte() {
         return porte;
     }
 
-    public void setPorte(Porte porte) {
+    public void setPorte(PorteEntity porte) {
         this.porte = porte;
     }
 }

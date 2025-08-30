@@ -1,6 +1,5 @@
 package codifica.eleve.interfaces.dto;
 
-import codifica.eleve.core.domain.raca.Porte;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -8,7 +7,7 @@ public class RacaDTO {
 
     private Integer id;
     private String nome;
-    private Porte porte;
+    private Integer porteId;
 
     public Integer getId() {
         return id;
@@ -26,11 +25,11 @@ public class RacaDTO {
         this.nome = nome;
     }
 
-    public Porte getPorte() {
-        return porte;
+    public Integer getPorteId() {
+        return porteId;
     }
 
-    public void setPorte(Porte porte) {
-        this.porte = porte;
+    public void setPorteId(Integer porteId) {
+        this.porteId = porteId;
     }
 }

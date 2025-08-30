@@ -1,5 +1,6 @@
 package codifica.eleve.core.domain.raca;
 
+import codifica.eleve.core.domain.raca.porte.Porte;
 import codifica.eleve.core.domain.shared.Id;
 import codifica.eleve.core.domain.shared.exceptions.IllegalArgumentException;
 
