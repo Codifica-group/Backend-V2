@@ -31,8 +31,8 @@ public class UsuarioUseCaseConfig {
     }
 
     @Bean
-    public UpdateUsuarioUseCase updateUsuarioUseCase(UsuarioRepository usuarioRepository) {
-        return new UpdateUsuarioUseCase(usuarioRepository);
+    public UpdateUsuarioUseCase updateUsuarioUseCase(UsuarioRepository usuarioRepository, PasswordEncoderPort passwordEncoderPort) {
+        return new UpdateUsuarioUseCase(usuarioRepository, passwordEncoderPort);
     }
 
     @Bean

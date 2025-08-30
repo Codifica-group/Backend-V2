@@ -2,7 +2,6 @@ package codifica.eleve.infrastructure.adapters;
 
 import codifica.eleve.core.domain.shared.Email;
 import codifica.eleve.core.domain.shared.Id;
-import codifica.eleve.core.domain.shared.Senha;
 import codifica.eleve.core.domain.usuario.Usuario;
 import codifica.eleve.infrastructure.persistence.usuario.UsuarioEntity;
 import org.springframework.stereotype.Component;
@@ -16,7 +15,7 @@ public class UsuarioMapper {
         }
         entity.setNome(domain.getNome());
         entity.setEmail(domain.getEmail().getEndereco());
-        entity.setSenha(domain.getSenha().getValor());
+        entity.setSenha(domain.getSenhaCodificada());
         return entity;
     }
 
@@ -25,7 +24,8 @@ public class UsuarioMapper {
         domain.setId(new Id(entity.getId()));
         domain.setNome(entity.getNome());
         domain.setEmail(new Email(entity.getEmail()));
-        domain.setSenha(new Senha(entity.getSenha()));
+        domain.setSenhaCodificada(entity.getSenha());
+        domain.setSenha(null);
         return domain;
     }
 }

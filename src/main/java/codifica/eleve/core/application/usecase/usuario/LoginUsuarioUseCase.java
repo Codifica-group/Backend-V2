@@ -28,7 +28,7 @@ public class LoginUsuarioUseCase {
 
         var response = new HashMap<String, Object>();
         response.put("mensagem", "Acesso autorizado.");
-        response.put("Token", tokenPort.generate(foundUserOptional.get().getEmail().getEndereco()));
+        response.put("token", tokenPort.generate(foundUserOptional.get().getEmail().getEndereco()));
         return response;
     }
 }

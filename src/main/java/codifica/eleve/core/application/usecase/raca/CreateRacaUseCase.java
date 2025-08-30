@@ -23,7 +23,7 @@ public class CreateRacaUseCase {
 
         Map<String, Object> response = new HashMap<>();
         response.put("mensagem", "Raça cadastrada com sucesso.");
-        response.put("id", savedRaca.getId());
+        response.put("id", savedRaca.getId().getValue());
         return response;
     }
 }
