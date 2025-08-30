@@ -2,10 +2,13 @@ package codifica.eleve.interfaces.controller;
 
 import codifica.eleve.core.application.usecase.usuario.*;
 import codifica.eleve.core.domain.usuario.Usuario;
+import codifica.eleve.interfaces.adapters.UsuarioDtoMapper;
+import codifica.eleve.interfaces.dto.UsuarioDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/usuarios")
@@ -17,6 +20,7 @@ public class UsuarioController {
     private final FindUsuarioByIdUseCase findByIdUseCase;
     private final UpdateUsuarioUseCase updateUseCase;
     private final DeleteUsuarioUseCase deleteUseCase;
+    private final UsuarioDtoMapper usuarioDtoMapper;
 
     public UsuarioController(
             RegisterUsuarioUseCase registerUseCase,
@@ -24,7 +28,8 @@ public class UsuarioController {
             ListUsuarioUseCase listUseCase,
             FindUsuarioByIdUseCase findByIdUseCase,
             UpdateUsuarioUseCase updateUseCase,
-            DeleteUsuarioUseCase deleteUseCase
+            DeleteUsuarioUseCase deleteUseCase,
+            UsuarioDtoMapper usuarioDtoMapper
     ) {
         this.registerUseCase = registerUseCase;
         this.loginUseCase = loginUseCase;
@@ -32,39 +37,43 @@ public class UsuarioController {
         this.findByIdUseCase = findByIdUseCase;
         this.updateUseCase = updateUseCase;
         this.deleteUseCase = deleteUseCase;
+        this.usuarioDtoMapper = usuarioDtoMapper;
     }
 
     @PostMapping
-    public ResponseEntity<String> register(@RequestBody Usuario usuario) {
-        String message = registerUseCase.execute(usuario);
+    public ResponseEntity<String> register(@RequestBody UsuarioDTO usuarioDTO) {
+        String message = registerUseCase.execute(usuarioDtoMapper.toDomain(usuarioDTO));
         return ResponseEntity.ok(message);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody Usuario usuario) {
-        String token = loginUseCase.execute(usuario);
+    public ResponseEntity<?> login(@RequestBody UsuarioDTO usuarioDTO) {
+        Object token = loginUseCase.execute(usuarioDtoMapper.toDomain(usuarioDTO));
         return ResponseEntity.ok(token);
     }
 
     @GetMapping
-    public ResponseEntity<List<Usuario>> list() {
+    public ResponseEntity<List<UsuarioDTO>> list() {
         List<Usuario> usuarios = listUseCase.execute();
-        return usuarios.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(usuarios);
+        List<UsuarioDTO> usuarioDTOS = usuarios.stream()
+                .map(usuarioDtoMapper::toDto)
+                .collect(Collectors.toList());
+        return usuarioDTOS.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(usuarioDTOS);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Usuario> findById(@PathVariable Integer id) {
-        return ResponseEntity.ok(findByIdUseCase.execute(id));
+    public ResponseEntity<UsuarioDTO> findById(@PathVariable Integer id) {
+        return ResponseEntity.ok(usuarioDtoMapper.toDto(findByIdUseCase.execute(id)));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> update(@PathVariable Integer id, @RequestBody Usuario usuario) {
-        String message = updateUseCase.execute(id, usuario);
+    public ResponseEntity<String> update(@PathVariable Integer id, @RequestBody UsuarioDTO usuarioDTO) {
+        String message = updateUseCase.execute(id, usuarioDtoMapper.toDomain(usuarioDTO));
         return ResponseEntity.ok(message);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> delete(@PathVariable Integer id) {
+    public ResponseEntity<Void> delete(@PathVariable Integer id) {
         deleteUseCase.execute(id);
         return ResponseEntity.noContent().build();
     }

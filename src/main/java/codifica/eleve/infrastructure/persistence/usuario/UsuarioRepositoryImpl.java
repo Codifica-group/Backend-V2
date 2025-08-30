@@ -29,24 +29,24 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
 
     @Override
     public Optional<Usuario> findById(Integer id) {
-        return usuarioJpaRepository.findById(id).map(this::usuarioMapper.toDomain);
+        return usuarioJpaRepository.findById(id).map(entity -> usuarioMapper.toDomain(entity));
     }
 
     @Override
     public Optional<Usuario> findByEmail(String email) {
         UsuarioEntity entity = usuarioJpaRepository.findByEmail(email);
-        return Optional.ofNullable(entity).map(this::usuarioMapper.toDomain);
+        return Optional.ofNullable(entity).map(userEntity -> usuarioMapper.toDomain(userEntity));
     }
 
     @Override
     public Optional<Usuario> findByEmailAndSenha(String email, String senha) {
         UsuarioEntity entity = usuarioJpaRepository.findByEmailAndSenha(email, senha);
-        return Optional.ofNullable(entity).map(this::usuarioMapper.toDomain);
+        return Optional.ofNullable(entity).map(userEntity -> usuarioMapper.toDomain(userEntity));
     }
 
     @Override
     public List<Usuario> findAll() {
-        return usuarioJpaRepository.findAll().stream().map(this::usuarioMapper.toDomain).collect(Collectors.toList());
+        return usuarioJpaRepository.findAll().stream().map(entity -> usuarioMapper.toDomain(entity)).collect(Collectors.toList());
     }
 
     @Override

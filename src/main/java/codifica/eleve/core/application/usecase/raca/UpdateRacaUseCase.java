@@ -2,6 +2,7 @@ package codifica.eleve.core.application.usecase.raca;
 
 import codifica.eleve.core.domain.raca.Raca;
 import codifica.eleve.core.domain.raca.RacaRepository;
+import codifica.eleve.core.domain.shared.Id;
 import codifica.eleve.core.domain.shared.exceptions.NotFoundException;
 
 public class UpdateRacaUseCase {
@@ -16,7 +17,7 @@ public class UpdateRacaUseCase {
             throw new NotFoundException("Raça não encontrada.");
         }
 
-        raca.setId(id);
+        raca.setId(new Id(id));
         racaRepository.save(raca);
         return "Raça atualizada com sucesso.";
     }

@@ -14,7 +14,7 @@ public class CreatePetUseCase {
     }
 
     public Object execute(Pet pet) {
-        if (petRepository.existsByNomeAndClienteId(pet.getNome(), pet.getCliente().getId())) {
+        if (petRepository.existsByNomeAndClienteId(pet.getNome(), pet.getCliente().getId().getValue())) {
             throw new ConflictException("Impossível cadastrar dois pets com dados iguais.");
         }
 

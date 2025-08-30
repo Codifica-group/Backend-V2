@@ -1,6 +1,7 @@
 package codifica.eleve.infrastructure.adapters;
 
 import codifica.eleve.core.domain.raca.Raca;
+import codifica.eleve.core.domain.shared.Id;
 import codifica.eleve.infrastructure.persistence.raca.RacaEntity;
 import org.springframework.stereotype.Component;
 
@@ -12,7 +13,7 @@ public class RacaMapper {
             return null;
         }
         RacaEntity entity = new RacaEntity();
-        entity.setId(domain.getId());
+        entity.setId(domain.getId().getValue());
         entity.setNome(domain.getNome());
         entity.setPorte(domain.getPorte());
         return entity;
@@ -23,7 +24,7 @@ public class RacaMapper {
             return null;
         }
         Raca domain = new Raca();
-        domain.setId(entity.getId());
+        domain.setId(new Id(entity.getId()));
         domain.setNome(entity.getNome());
         domain.setPorte(entity.getPorte());
         return domain;

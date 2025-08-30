@@ -1,5 +1,6 @@
 package codifica.eleve.core.application.usecase.usuario;
 
+import codifica.eleve.core.domain.shared.Id;
 import codifica.eleve.core.domain.usuario.Usuario;
 import codifica.eleve.core.domain.usuario.UsuarioRepository;
 import codifica.eleve.core.domain.shared.exceptions.NotFoundException;
@@ -16,7 +17,7 @@ public class UpdateUsuarioUseCase {
             throw new NotFoundException("Usuário não encontrado.");
         }
 
-        usuario.setId(id);
+        usuario.setId(new Id(id));
         usuarioRepository.save(usuario);
         return "Usuário atualizado com sucesso.";
     }

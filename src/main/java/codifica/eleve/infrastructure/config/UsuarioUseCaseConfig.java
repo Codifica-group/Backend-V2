@@ -1,5 +1,7 @@
 package codifica.eleve.infrastructure.config;
 
+import codifica.eleve.core.application.ports.out.PasswordEncoderPort;
+import codifica.eleve.core.application.ports.out.TokenPort;
 import codifica.eleve.core.application.usecase.usuario.*;
 import codifica.eleve.core.domain.usuario.UsuarioRepository;
 import org.springframework.context.annotation.Bean;
@@ -9,13 +11,13 @@ import org.springframework.context.annotation.Configuration;
 public class UsuarioUseCaseConfig {
 
     @Bean
-    public RegisterUsuarioUseCase registerUsuarioUseCase(UsuarioRepository usuarioRepository) {
-        return new RegisterUsuarioUseCase(usuarioRepository);
+    public RegisterUsuarioUseCase registerUsuarioUseCase(UsuarioRepository usuarioRepository, PasswordEncoderPort passwordEncoderPort) {
+        return new RegisterUsuarioUseCase(usuarioRepository, passwordEncoderPort);
     }
 
     @Bean
-    public LoginUsuarioUseCase loginUsuarioUseCase(UsuarioRepository usuarioRepository) {
-        return new LoginUsuarioUseCase(usuarioRepository);
+    public LoginUsuarioUseCase loginUsuarioUseCase(UsuarioRepository usuarioRepository, PasswordEncoderPort passwordEncoder, TokenPort tokenPort) {
+        return new LoginUsuarioUseCase(usuarioRepository, passwordEncoder, tokenPort);
     }
 
     @Bean

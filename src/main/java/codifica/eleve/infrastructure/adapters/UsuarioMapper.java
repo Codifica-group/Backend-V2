@@ -1,24 +1,31 @@
 package codifica.eleve.infrastructure.adapters;
 
+import codifica.eleve.core.domain.shared.Email;
+import codifica.eleve.core.domain.shared.Id;
+import codifica.eleve.core.domain.shared.Senha;
 import codifica.eleve.core.domain.usuario.Usuario;
 import codifica.eleve.infrastructure.persistence.usuario.UsuarioEntity;
+import org.springframework.stereotype.Component;
 
+@Component
 public class UsuarioMapper {
     public UsuarioEntity toEntity(Usuario domain) {
         UsuarioEntity entity = new UsuarioEntity();
-        entity.setId(domain.getId());
+        if (domain.getId() != null) {
+            entity.setId(domain.getId().getValue());
+        }
         entity.setNome(domain.getNome());
-        entity.setEmail(domain.getEmail());
-        entity.setSenha(domain.getSenha());
+        entity.setEmail(domain.getEmail().getEndereco());
+        entity.setSenha(domain.getSenha().getValor());
         return entity;
     }
 
     public Usuario toDomain(UsuarioEntity entity) {
         Usuario domain = new Usuario();
-        domain.setId(entity.getId());
+        domain.setId(new Id(entity.getId()));
         domain.setNome(entity.getNome());
-        domain.setEmail(entity.getEmail());
-        domain.setSenha(entity.getSenha());
+        domain.setEmail(new Email(entity.getEmail()));
+        domain.setSenha(new Senha(entity.getSenha()));
         return domain;
     }
 }

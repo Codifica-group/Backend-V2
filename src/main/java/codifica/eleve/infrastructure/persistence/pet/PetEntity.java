@@ -4,6 +4,8 @@ import codifica.eleve.infrastructure.persistence.cliente.ClienteEntity;
 import codifica.eleve.infrastructure.persistence.raca.RacaEntity;
 import jakarta.persistence.*;
 
+@Entity
+@Table(name = "pet")
 public class PetEntity {
 
     @Id
@@ -20,7 +22,6 @@ public class PetEntity {
     @JoinColumn(name = "cliente_id")
     private ClienteEntity cliente;
 
-    // Getters and Setters
     public Integer getId() {
         return id;
     }

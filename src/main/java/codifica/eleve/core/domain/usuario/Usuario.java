@@ -13,9 +13,6 @@ public class Usuario {
     private String senhaCodificada;
 
     public Usuario(String nome, Email email, Senha senha) {
-        if (nome == null || nome.trim().isEmpty()) {
-            throw new IllegalArgumentException("O nome do usuário não pode ser vazio.");
-        }
         this.nome = nome;
         this.email = email;
         this.senha = senha;

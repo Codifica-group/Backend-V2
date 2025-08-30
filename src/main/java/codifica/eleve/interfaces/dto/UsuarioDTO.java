@@ -3,11 +3,12 @@ package codifica.eleve.interfaces.dto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class PetDTO {
+public class UsuarioDTO {
+
     private Integer id;
     private String nome;
-    private RacaDTO raca;
-    private ClienteDTO cliente;
+    private String email;
+    private String senha;
 
     public Integer getId() {
         return id;
@@ -25,19 +26,19 @@ public class PetDTO {
         this.nome = nome;
     }
 
-    public RacaDTO getRaca() {
-        return raca;
+    public String getEmail() {
+        return email;
     }
 
-    public void setRaca(RacaDTO raca) {
-        this.raca = raca;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public ClienteDTO getCliente() {
-        return cliente;
+    public String getSenha() {
+        return senha;
     }
 
-    public void setCliente(ClienteDTO cliente) {
-        this.cliente = cliente;
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 }

@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/pets")
@@ -40,7 +41,7 @@ public class PetController {
 
     @GetMapping
     public ResponseEntity<List<PetDTO>> list() {
-        List<Pet> pets = listPetUseCase.execute();
+        List<PetDTO> pets = listPetUseCase.execute().stream().map(petDtoMapper::toDto).collect(Collectors.toList());
         return pets.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(pets);
     }
 
@@ -57,7 +58,7 @@ public class PetController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity delete(@PathVariable Integer id) {
+    public ResponseEntity<Void> delete(@PathVariable Integer id) {
         deletePetUseCase.execute(id);
         return ResponseEntity.noContent().build();
     }

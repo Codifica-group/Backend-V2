@@ -15,6 +15,10 @@ public class RegisterUsuarioUseCase {
     }
 
     public String execute(Usuario usuario) {
+        if (usuario.getNome() == null || usuario.getNome().trim().isEmpty()) {
+            throw new IllegalArgumentException("O nome do usuário não pode ser vazio.");
+        }
+
         if (usuarioRepository.findByEmail(usuario.getEmail().getEndereco()).isPresent()) {
             throw new ConflictException("Impossível cadastrar dois usuários com o mesmo e-mail.");
         }

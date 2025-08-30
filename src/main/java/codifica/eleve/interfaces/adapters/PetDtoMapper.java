@@ -3,48 +3,50 @@ package codifica.eleve.interfaces.adapters;
 import codifica.eleve.core.domain.cliente.Cliente;
 import codifica.eleve.core.domain.pet.Pet;
 import codifica.eleve.core.domain.raca.Raca;
+import codifica.eleve.core.domain.shared.Id;
+import codifica.eleve.interfaces.dto.ClienteDTO;
 import codifica.eleve.interfaces.dto.PetDTO;
+import codifica.eleve.interfaces.dto.RacaDTO;
 import org.springframework.stereotype.Component;
 
 @Component
 public class PetDtoMapper {
     public Pet toDomain(PetDTO dto) {
         Pet domain = new Pet();
-        domain.setId(dto.getId());
+        if (dto.getId() != null) {
+            domain.setId(new Id(dto.getId()));
+        }
         domain.setNome(dto.getNome());
 
-        if (dto.getClienteId() != null) {
+        if (dto.getCliente() != null) {
             Cliente cliente = new Cliente();
-            cliente.setId(dto.getClienteId());
+            cliente.setId(new Id(dto.getCliente().getId()));
             domain.setCliente(cliente);
         }
 
-        if (dto.getRacaId() != null) {
+        if (dto.getRaca() != null) {
             Raca raca = new Raca();
-            raca.setId(dto.getRacaId());
+            raca.setId(new Id(dto.getRaca().getId()));
             domain.setRaca(raca);
         }
         return domain;
     }
 
-
     public PetDTO toDto(Pet domain) {
         PetDTO dto = new PetDTO();
-        dto.setId(domain.getId());
+        dto.setId(domain.getId().getValue());
         dto.setNome(domain.getNome());
 
         if (domain.getCliente() != null) {
-            dto.setClienteId(domain.getCliente().getId());
-            PetDTO.ClienteDTO clienteDTO = new PetDTO.ClienteDTO();
-            clienteDTO.setId(domain.getCliente().getId());
+            ClienteDTO clienteDTO = new ClienteDTO();
+            clienteDTO.setId(domain.getCliente().getId().getValue());
             clienteDTO.setNome(domain.getCliente().getNome());
             dto.setCliente(clienteDTO);
         }
 
         if (domain.getRaca() != null) {
-            dto.setRacaId(domain.getRaca().getId());
-            PetDTO.RacaDTO racaDTO = new PetDTO.RacaDTO();
-            racaDTO.setId(domain.getRaca().getId());
+            RacaDTO racaDTO = new RacaDTO();
+            racaDTO.setId(domain.getRaca().getId().getValue());
             racaDTO.setNome(domain.getRaca().getNome());
             dto.setRaca(racaDTO);
         }
