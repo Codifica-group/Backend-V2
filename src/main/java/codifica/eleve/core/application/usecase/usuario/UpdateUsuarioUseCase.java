@@ -15,13 +15,16 @@ public class UpdateUsuarioUseCase {
     }
 
     public String execute(Integer id, Usuario usuario) {
+        if (usuario.getNome() == null || usuario.getNome().trim().isEmpty()) {
+            throw new IllegalArgumentException("O nome do usuário não pode ser vazio.");
+        }
+
         Usuario usuarioExistente = usuarioRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Usuário não encontrado."));
-
         usuarioExistente.setNome(usuario.getNome());
         usuarioExistente.setEmail(usuario.getEmail());
 
-        if (usuario.getSenha() != null && usuario.getSenha().getValor() != null && !usuario.getSenha().getValor().isEmpty()) {
+        if (usuario.getSenha().getValor() != null && !usuario.getSenha().getValor().isEmpty()) {
             String senhaCodificada = passwordEncoder.encode(usuario.getSenha().getValor());
             usuarioExistente.setSenhaCodificada(senhaCodificada);
         }

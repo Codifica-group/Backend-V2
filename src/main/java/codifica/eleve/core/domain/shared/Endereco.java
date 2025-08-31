@@ -26,7 +26,6 @@ public class Endereco {
             throw new IllegalArgumentException("O campo Cidade não pode ser vazio.");
         }
 
-
         this.cep = cep;
         this.rua = rua;
         this.numero = numero;
