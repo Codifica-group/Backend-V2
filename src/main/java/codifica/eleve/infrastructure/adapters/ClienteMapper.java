@@ -26,7 +26,7 @@ public class ClienteMapper {
         if (cliente.getEndereco() != null) {
             entity.setCep(cliente.getEndereco().getCep());
             entity.setRua(cliente.getEndereco().getRua());
-            entity.setNumEndereco(cliente.getEndereco().getNumEndereco());
+            entity.setNumEndereco(cliente.getEndereco().getNumero());
             entity.setBairro(cliente.getEndereco().getBairro());
             entity.setCidade(cliente.getEndereco().getCidade());
             entity.setComplemento(cliente.getEndereco().getComplemento());

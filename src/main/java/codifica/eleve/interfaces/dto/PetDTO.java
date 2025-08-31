@@ -7,7 +7,9 @@ public class PetDTO {
     private Integer id;
     private String nome;
     private RacaDTO raca;
+    private Integer racaId;
     private ClienteDTO cliente;
+    private Integer clienteId;
 
     public Integer getId() {
         return id;
@@ -33,11 +35,27 @@ public class PetDTO {
         this.raca = raca;
     }
 
+    public Integer getRacaId() {
+        return racaId;
+    }
+
+    public void setRacaId(Integer racaId) {
+        this.racaId = racaId;
+    }
+
     public ClienteDTO getCliente() {
         return cliente;
     }
 
     public void setCliente(ClienteDTO cliente) {
         this.cliente = cliente;
+    }
+
+    public Integer getClienteId() {
+        return clienteId;
+    }
+
+    public void setClienteId(Integer clienteId) {
+        this.clienteId = clienteId;
     }
 }

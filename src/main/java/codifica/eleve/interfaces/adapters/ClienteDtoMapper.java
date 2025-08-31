@@ -37,7 +37,7 @@ public class ClienteDtoMapper {
         if (domain.getEndereco() != null) {
             dto.setCep(domain.getEndereco().getCep());
             dto.setRua(domain.getEndereco().getRua());
-            dto.setNumEndereco(domain.getEndereco().getNumEndereco());
+            dto.setNumEndereco(domain.getEndereco().getNumero());
             dto.setBairro(domain.getEndereco().getBairro());
             dto.setCidade(domain.getEndereco().getCidade());
             dto.setComplemento(domain.getEndereco().getComplemento());

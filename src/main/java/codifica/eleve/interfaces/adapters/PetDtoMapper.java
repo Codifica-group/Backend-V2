@@ -1,9 +1,12 @@
 package codifica.eleve.interfaces.adapters;
 
 import codifica.eleve.core.domain.cliente.Cliente;
+import codifica.eleve.core.domain.cliente.ClienteRepository;
 import codifica.eleve.core.domain.pet.Pet;
 import codifica.eleve.core.domain.raca.Raca;
+import codifica.eleve.core.domain.raca.RacaRepository;
 import codifica.eleve.core.domain.shared.Id;
+import codifica.eleve.core.domain.shared.exceptions.NotFoundException;
 import codifica.eleve.interfaces.dto.ClienteDTO;
 import codifica.eleve.interfaces.dto.PetDTO;
 import codifica.eleve.interfaces.dto.RacaDTO;
@@ -11,23 +14,29 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class PetDtoMapper {
+
+    private final ClienteRepository clienteRepository;
+    private final RacaRepository racaRepository;
+
+    public PetDtoMapper(ClienteRepository clienteRepository, RacaRepository racaRepository) {
+        this.clienteRepository = clienteRepository;
+        this.racaRepository = racaRepository;
+    }
+
     public Pet toDomain(PetDTO dto) {
-        Pet domain = new Pet();
+        if (dto == null) {
+            return null;
+        }
+
+        Cliente cliente = clienteRepository.findById(dto.getClienteId())
+                .orElseThrow(() -> new NotFoundException("Cliente não encontrado."));
+
+        Raca raca = racaRepository.findById(dto.getRacaId())
+                .orElseThrow(() -> new NotFoundException("Raça não encontrada."));
+
+        Pet domain = new Pet(dto.getNome(), raca, cliente);
         if (dto.getId() != null) {
             domain.setId(new Id(dto.getId()));
-        }
-        domain.setNome(dto.getNome());
-
-        if (dto.getCliente() != null) {
-            Cliente cliente = new Cliente();
-            cliente.setId(new Id(dto.getCliente().getId()));
-            domain.setCliente(cliente);
-        }
-
-        if (dto.getRaca() != null) {
-            Raca raca = new Raca();
-            raca.setId(new Id(dto.getRaca().getId()));
-            domain.setRaca(raca);
         }
         return domain;
     }

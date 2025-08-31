@@ -13,11 +13,13 @@ public class UpdatePetUseCase {
     }
 
     public String execute(Integer id, Pet pet) {
-        if (!petRepository.existsById(id)) {
-            throw new NotFoundException("Pet não encontrado.");
-        }
+        Pet petExistente = petRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Pet não encontrado."));
 
-        pet.setId(new Id(id));
+        petExistente.setNome(pet.getNome());
+        petExistente.setRaca(pet.getRaca());
+        petExistente.setCliente(pet.getCliente());
+        petRepository.save(petExistente);
         return "Pet atualizado com sucesso.";
     }
 }

@@ -13,7 +13,7 @@ public class ClienteEntity {
     private String telefone;
     private String cep;
     private String rua;
-    private Integer numEndereco;
+    private String numEndereco;
     private String bairro;
     private String cidade;
     private String complemento;
@@ -58,11 +58,11 @@ public class ClienteEntity {
         this.rua = rua;
     }
 
-    public Integer getNumEndereco() {
+    public String getNumEndereco() {
         return numEndereco;
     }
 
-    public void setNumEndereco(Integer numEndereco) {
+    public void setNumEndereco(String numEndereco) {
         this.numEndereco = numEndereco;
     }
 

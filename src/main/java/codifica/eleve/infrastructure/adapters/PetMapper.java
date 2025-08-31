@@ -16,7 +16,11 @@ public class PetMapper {
         if (domain == null) return null;
 
         PetEntity entity = new PetEntity();
-        entity.setId(domain.getId().getValue());
+
+        if (domain.getId() != null) {
+            entity.setId(domain.getId().getValue());
+        }
+
         entity.setNome(domain.getNome());
 
         if (domain.getCliente() != null) {
@@ -32,7 +36,6 @@ public class PetMapper {
         }
         return entity;
     }
-
 
     public Pet toDomain(PetEntity entity) {
         if (entity == null) return null;

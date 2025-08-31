@@ -7,6 +7,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -21,10 +22,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final TokenPort tokenPort;
     private final UserDetailsService userDetailsService;
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
-    public JwtAuthenticationFilter(TokenPort tokenPort, UserDetailsService userDetailsService) {
+    public JwtAuthenticationFilter(TokenPort tokenPort, UserDetailsService userDetailsService, CustomAuthenticationEntryPoint customAuthenticationEntryPoint) {
         this.tokenPort = tokenPort;
         this.userDetailsService = userDetailsService;
+        this.customAuthenticationEntryPoint = customAuthenticationEntryPoint;
     }
 
     @Override
@@ -55,10 +58,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }
-        } catch (Exception e) {
-            throw new InvalidTokenException("Token de segurança inválido ou expirado. Faça o login novamente.");
+            filterChain.doFilter(request, response);
+        } catch (InvalidTokenException e) {
+            customAuthenticationEntryPoint.commence(request, response, new AuthenticationException(e.getMessage(), e) {});
         }
-
-        filterChain.doFilter(request, response);
     }
 }

@@ -7,25 +7,29 @@ public class Endereco {
 
     private final String cep;
     private final String rua;
-    private final Integer numEndereco;
+    private final String numero;
     private final String bairro;
     private final String cidade;
     private final String complemento;
 
-    public Endereco(String cep, String rua, Integer numEndereco, String bairro, String cidade, String complemento) {
+    public Endereco(String cep, String rua, String numero, String bairro, String cidade, String complemento) {
         if (cep == null || !cep.matches("\\d{8}")) {
             throw new IllegalArgumentException("O CEP deve conter 8 dígitos numéricos.");
         }
         if (rua == null || rua.trim().isEmpty()) {
-            throw new IllegalArgumentException("A rua não pode ser vazia.");
+            throw new IllegalArgumentException("O campo Rua não pode ser vazio.");
+        }
+        if (bairro == null || bairro.trim().isEmpty()) {
+            throw new IllegalArgumentException("O campo Bairro não pode ser vazio.");
         }
         if (cidade == null || cidade.trim().isEmpty()) {
-            throw new IllegalArgumentException("A cidade não pode ser vazia.");
+            throw new IllegalArgumentException("O campo Cidade não pode ser vazio.");
         }
+
 
         this.cep = cep;
         this.rua = rua;
-        this.numEndereco = numEndereco;
+        this.numero = numero;
         this.bairro = bairro;
         this.cidade = cidade;
         this.complemento = complemento;
@@ -39,8 +43,8 @@ public class Endereco {
         return rua;
     }
 
-    public Integer getNumEndereco() {
-        return numEndereco;
+    public String getNumero() {
+        return numero;
     }
 
     public String getBairro() {
@@ -60,11 +64,11 @@ public class Endereco {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Endereco endereco = (Endereco) o;
-        return Objects.equals(cep, endereco.cep) && Objects.equals(rua, endereco.rua) && Objects.equals(numEndereco, endereco.numEndereco) && Objects.equals(bairro, endereco.bairro) && Objects.equals(cidade, endereco.cidade) && Objects.equals(complemento, endereco.complemento);
+        return Objects.equals(cep, endereco.cep) && Objects.equals(rua, endereco.rua) && Objects.equals(numero, endereco.numero) && Objects.equals(bairro, endereco.bairro) && Objects.equals(cidade, endereco.cidade) && Objects.equals(complemento, endereco.complemento);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(cep, rua, numEndereco, bairro, cidade, complemento);
+        return Objects.hash(cep, rua, numero, bairro, cidade, complemento);
     }
 }

@@ -5,6 +5,7 @@ import codifica.eleve.core.domain.shared.exceptions.ConflictException;
 import codifica.eleve.core.domain.pet.Pet;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class CreatePetUseCase {
     private final PetRepository petRepository;
@@ -13,16 +14,16 @@ public class CreatePetUseCase {
         this.petRepository = petRepository;
     }
 
-    public Object execute(Pet pet) {
+    public Map<String, Object> execute(Pet pet) {
         if (petRepository.existsByNomeAndClienteId(pet.getNome(), pet.getCliente().getId().getValue())) {
             throw new ConflictException("Impossível cadastrar dois pets com dados iguais.");
         }
 
-        petRepository.save(pet);
+        Pet novoPet = petRepository.save(pet);
 
-        var response = new HashMap<String, Object>();
+        Map<String, Object> response = new HashMap<>();
         response.put("mensagem", "Pet cadastrado com sucesso.");
-        response.put("id", pet.getId());
+        response.put("id", novoPet.getId().getValue());
         return response;
     }
 }
