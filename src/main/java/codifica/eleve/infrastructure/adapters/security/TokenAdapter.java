@@ -41,7 +41,7 @@ public class TokenAdapter implements TokenPort {
                     .build();
             return verifier.verify(token).getSubject();
         } catch (JWTVerificationException e) {
-            throw new InvalidTokenException("Token de segurança inválido ou expirado");
+            throw new InvalidTokenException("Token de segurança inválido ou expirado. Faça o login novamente.");
         }
     }
 }

@@ -56,7 +56,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }
         } catch (Exception e) {
-            throw new InvalidTokenException("Token de segurança inválido ou expirado");
+            throw new InvalidTokenException("Token de segurança inválido ou expirado. Faça o login novamente.");
         }
 
         filterChain.doFilter(request, response);
