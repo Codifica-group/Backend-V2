@@ -17,6 +17,13 @@ public class RacaEntity {
     @JoinColumn(name = "porte_id", nullable = false)
     private PorteEntity porte;
 
+    public RacaEntity(String nome, PorteEntity porte) {
+        this.nome = nome;
+        this.porte = porte;
+    }
+
+    public RacaEntity() {}
+
     public Integer getId() {
         return id;
     }

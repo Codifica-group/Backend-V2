@@ -18,6 +18,19 @@ public class ClienteEntity {
     private String cidade;
     private String complemento;
 
+    public ClienteEntity(String nome, String telefone, String cep, String rua, String numEndereco, String bairro, String cidade, String complemento) {
+        this.nome = nome;
+        this.telefone = telefone;
+        this.cep = cep;
+        this.rua = rua;
+        this.numEndereco = numEndereco;
+        this.bairro = bairro;
+        this.cidade = cidade;
+        this.complemento = complemento;
+    }
+
+    public ClienteEntity() {}
+
     public Integer getId() {
         return id;
     }

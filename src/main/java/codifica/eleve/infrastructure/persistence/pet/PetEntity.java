@@ -22,6 +22,14 @@ public class PetEntity {
     @JoinColumn(name = "cliente_id")
     private ClienteEntity cliente;
 
+    public PetEntity(String nome, RacaEntity raca, ClienteEntity cliente) {
+        this.nome = nome;
+        this.raca = raca;
+        this.cliente = cliente;
+    }
+
+    public PetEntity() {}
+
     public Integer getId() {
         return id;
     }

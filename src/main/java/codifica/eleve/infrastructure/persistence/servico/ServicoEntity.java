@@ -15,6 +15,13 @@ public class ServicoEntity {
     private String nome;
     private BigDecimal valorBase;
 
+    public ServicoEntity(String nome, BigDecimal valorBase) {
+        this.nome = nome;
+        this.valorBase = valorBase;
+    }
+
+    public ServicoEntity() {}
+
     public Integer getId() {
         return id;
     }
