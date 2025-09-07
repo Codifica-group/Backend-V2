@@ -11,7 +11,9 @@ import codifica.eleve.core.domain.shared.exceptions.NotFoundException;
 import codifica.eleve.interfaces.dto.AgendaDTO;
 import codifica.eleve.interfaces.dto.ServicoDTO;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 
@@ -39,7 +41,9 @@ public class AgendaDtoMapper {
                 })
                 .collect(Collectors.toList());
 
-        ValorMonetario valorDeslocamento = new ValorMonetario(dto.getValorDeslocamento());
+        ValorMonetario valorDeslocamento = new ValorMonetario(
+                Optional.ofNullable(dto.getValorDeslocamento()).orElse(BigDecimal.ZERO)
+        );
         Periodo periodo = new Periodo(dto.getDataHoraInicio(), dto.getDataHoraFim());
 
         return new Agenda(pet, servicos, valorDeslocamento, periodo);

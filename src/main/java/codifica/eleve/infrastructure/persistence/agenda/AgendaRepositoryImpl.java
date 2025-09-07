@@ -2,6 +2,7 @@ package codifica.eleve.infrastructure.persistence.agenda;
 
 import codifica.eleve.core.domain.agenda.Agenda;
 import codifica.eleve.core.domain.agenda.AgendaRepository;
+import codifica.eleve.core.domain.shared.Id;
 import codifica.eleve.core.domain.shared.Periodo;
 import codifica.eleve.infrastructure.adapters.AgendaMapper;
 import java.util.List;
@@ -24,7 +25,8 @@ public class AgendaRepositoryImpl implements AgendaRepository {
     public Agenda save(Agenda agenda) {
         AgendaEntity entity = agendaMapper.toEntity(agenda);
         AgendaEntity saved = agendaJpaRepository.save(entity);
-        return agendaMapper.toDomain(saved);
+        agenda.setId(new Id(saved.getId()));
+        return agenda;
     }
 
     @Override
@@ -33,10 +35,31 @@ public class AgendaRepositoryImpl implements AgendaRepository {
     }
 
     @Override
+    public List<Agenda> findAll() {
+        return agendaJpaRepository.findAll()
+                .stream()
+                .map(agendaMapper::toDomain)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public List<Agenda> findConflitos(Periodo periodo) {
         return agendaJpaRepository.findConflitos(periodo.getInicio(), periodo.getFim())
                 .stream()
                 .map(agendaMapper::toDomain)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Agenda> findConflitosExcluindoId(Integer id, Periodo periodo) {
+        return agendaJpaRepository.findConflitosExcluindoId(id, periodo.getInicio(), periodo.getFim())
+                .stream()
+                .map(agendaMapper::toDomain)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void deleteById(Integer id) {
+        agendaJpaRepository.deleteById(id);
     }
 }

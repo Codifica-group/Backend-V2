@@ -1,10 +1,11 @@
 package codifica.eleve.infrastructure.persistence.agenda;
 
+import codifica.eleve.infrastructure.persistence.agenda.agendaServico.AgendaServicoEntity;
 import codifica.eleve.infrastructure.persistence.pet.PetEntity;
-import codifica.eleve.infrastructure.persistence.servico.ServicoEntity;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -19,17 +20,18 @@ public class AgendaEntity {
     @JoinColumn(name = "pet_id")
     private PetEntity pet;
 
-    @ManyToMany
-    @JoinTable(
-            name = "agenda_servico",
-            joinColumns = @JoinColumn(name = "agenda_id"),
-            inverseJoinColumns = @JoinColumn(name = "servico_id")
+    @OneToMany(
+            mappedBy = "agenda",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
     )
-    private List<ServicoEntity> servicos;
+    private List<AgendaServicoEntity> servicos = new ArrayList<>();
 
     private BigDecimal valorDeslocamento;
     private LocalDateTime dataHoraInicio;
     private LocalDateTime dataHoraFim;
+
+    public AgendaEntity() {}
 
     public Integer getId() {
         return id;
@@ -47,11 +49,11 @@ public class AgendaEntity {
         this.pet = pet;
     }
 
-    public List<ServicoEntity> getServicos() {
+    public List<AgendaServicoEntity> getServicos() {
         return servicos;
     }
 
-    public void setServicos(List<ServicoEntity> servicos) {
+    public void setServicos(List<AgendaServicoEntity> servicos) {
         this.servicos = servicos;
     }
 

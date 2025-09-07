@@ -7,6 +7,7 @@ import codifica.eleve.core.domain.shared.Id;
 import codifica.eleve.core.domain.shared.Periodo;
 import codifica.eleve.core.domain.shared.ValorMonetario;
 import codifica.eleve.infrastructure.persistence.agenda.AgendaEntity;
+import codifica.eleve.infrastructure.persistence.agenda.agendaServico.AgendaServicoEntity;
 import codifica.eleve.infrastructure.persistence.pet.PetEntity;
 import codifica.eleve.infrastructure.persistence.servico.ServicoEntity;
 
@@ -27,11 +28,20 @@ public class AgendaMapper {
         petEntity.setId(domain.getPet().getId().getValue());
         entity.setPet(petEntity);
 
-        entity.setServicos(domain.getServicos().stream().map(servico -> {
+        List<AgendaServicoEntity> agendaServicos = domain.getServicos().stream().map(servicoDomain -> {
+            AgendaServicoEntity agendaServicoEntity = new AgendaServicoEntity();
+            agendaServicoEntity.setAgenda(entity);
+
             ServicoEntity servicoEntity = new ServicoEntity();
-            servicoEntity.setId(servico.getId().getValue());
-            return servicoEntity;
-        }).collect(Collectors.toList()));
+            servicoEntity.setId(servicoDomain.getId().getValue());
+            agendaServicoEntity.setServico(servicoEntity);
+
+            agendaServicoEntity.setValor(servicoDomain.getValor().getValor());
+
+            return agendaServicoEntity;
+        }).collect(Collectors.toList());
+
+        entity.setServicos(agendaServicos);
 
         entity.setValorDeslocamento(domain.getValorDeslocamento().getValor());
         entity.setDataHoraInicio(domain.getPeriodo().getInicio());
@@ -44,11 +54,12 @@ public class AgendaMapper {
         pet.setId(new Id(entity.getPet().getId()));
         pet.setNome(entity.getPet().getNome());
 
-        List<Servico> servicos = entity.getServicos().stream().map(servicoEntity -> {
+        List<Servico> servicos = entity.getServicos().stream().map(agendaServicoEntity -> {
+            ServicoEntity servicoEntity = agendaServicoEntity.getServico();
             Servico servico = new Servico();
             servico.setId(new Id(servicoEntity.getId()));
             servico.setNome(servicoEntity.getNome());
-            servico.setValor(new ValorMonetario(servicoEntity.getValorBase()));
+            servico.setValor(new ValorMonetario(agendaServicoEntity.getValor()));
             return servico;
         }).collect(Collectors.toList());
 
