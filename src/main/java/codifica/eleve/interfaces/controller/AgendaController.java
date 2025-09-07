@@ -1,8 +1,13 @@
 package codifica.eleve.interfaces.controller;
 
 import codifica.eleve.core.application.usecase.agenda.*;
+import codifica.eleve.core.application.usecase.agenda.calculadora.CalcularServicoUseCase;
 import codifica.eleve.interfaces.adapters.AgendaDtoMapper;
+import codifica.eleve.interfaces.adapters.SugestaoServicoDtoMapper;
 import codifica.eleve.interfaces.dto.AgendaDTO;
+import codifica.eleve.interfaces.dto.CalcularServicoRequestDTO;
+import codifica.eleve.interfaces.dto.ServicoDTO;
+import codifica.eleve.interfaces.dto.SugestaoServicoDTO;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -18,21 +23,27 @@ public class AgendaController {
     private final FindAgendaByIdUseCase findAgendaByIdUseCase;
     private final ListAgendaUseCase listAgendaUseCase;
     private final UpdateAgendaUseCase updateAgendaUseCase;
-    private final AgendaDtoMapper agendaDtoMapper;
     private final DeleteAgendaUseCase deleteAgendaUseCase;
+    private final CalcularServicoUseCase calcularServicoUseCase;
+    private final AgendaDtoMapper agendaDtoMapper;
+    private final SugestaoServicoDtoMapper sugestaoServicoDtoMapper;
 
     public AgendaController(CreateAgendaUseCase createAgendaUseCase,
                             FindAgendaByIdUseCase findAgendaByIdUseCase,
                             ListAgendaUseCase listAgendaUseCase,
                             UpdateAgendaUseCase updateAgendaUseCase,
                             DeleteAgendaUseCase deleteAgendaUseCase,
-                            AgendaDtoMapper agendaDtoMapper) {
+                            CalcularServicoUseCase calcularServicoUseCase,
+                            AgendaDtoMapper agendaDtoMapper,
+                            SugestaoServicoDtoMapper sugestaoServicoDtoMapper) {
         this.createAgendaUseCase = createAgendaUseCase;
         this.findAgendaByIdUseCase = findAgendaByIdUseCase;
         this.listAgendaUseCase = listAgendaUseCase;
         this.updateAgendaUseCase = updateAgendaUseCase;
         this.deleteAgendaUseCase = deleteAgendaUseCase;
+        this.calcularServicoUseCase = calcularServicoUseCase;
         this.agendaDtoMapper = agendaDtoMapper;
+        this.sugestaoServicoDtoMapper = sugestaoServicoDtoMapper;
     }
 
     @PostMapping
@@ -65,5 +76,15 @@ public class AgendaController {
     public ResponseEntity<String> delete(@PathVariable Integer id) {
         deleteAgendaUseCase.execute(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/calcular/servico")
+    public ResponseEntity<SugestaoServicoDTO> calcularServico(@RequestBody CalcularServicoRequestDTO requestDTO) {
+        List<Integer> servicosId = requestDTO.getServicos().stream()
+                .map(ServicoDTO::getId)
+                .collect(Collectors.toList());
+
+        var sugestao = calcularServicoUseCase.execute(requestDTO.getPetId(), servicosId);
+        return ResponseEntity.ok(sugestaoServicoDtoMapper.toDto(sugestao));
     }
 }

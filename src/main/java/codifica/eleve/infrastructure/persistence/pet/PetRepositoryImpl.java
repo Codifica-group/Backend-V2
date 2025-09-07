@@ -2,6 +2,7 @@ package codifica.eleve.infrastructure.persistence.pet;
 
 import codifica.eleve.core.domain.pet.Pet;
 import codifica.eleve.core.domain.pet.PetRepository;
+import codifica.eleve.core.domain.shared.Id;
 import codifica.eleve.infrastructure.adapters.PetMapper;
 import org.springframework.stereotype.Repository;
 
@@ -24,7 +25,9 @@ public class PetRepositoryImpl implements PetRepository {
     public Pet save(Pet pet) {
         PetEntity entity = petMapper.toEntity(pet);
         PetEntity saved = petJpaRepository.save(entity);
-        return petMapper.toDomain(saved);
+
+        pet.setId(new Id(saved.getId()));
+        return pet;
     }
 
     @Override

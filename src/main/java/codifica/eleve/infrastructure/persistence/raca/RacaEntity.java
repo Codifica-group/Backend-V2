@@ -13,7 +13,7 @@ public class RacaEntity {
 
     private String nome;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "porte_id", nullable = false)
     private PorteEntity porte;
 

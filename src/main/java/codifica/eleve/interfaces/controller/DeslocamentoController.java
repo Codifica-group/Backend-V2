@@ -1,5 +1,6 @@
 package codifica.eleve.interfaces.controller;
 
+import codifica.eleve.core.application.usecase.agenda.calculadora.CalcularDeslocamentoUseCase;
 import codifica.eleve.core.domain.agenda.deslocamento.Deslocamento;
 import codifica.eleve.core.domain.shared.Endereco;
 import codifica.eleve.interfaces.adapters.DeslocamentoDtoMapper;
@@ -15,10 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/deslocamento")
 public class DeslocamentoController {
 
-    private final codifica.eleve.core.application.usecase.deslocamento.CalcularDeslocamentoUseCase calcularDeslocamentoUseCase;
+    private final CalcularDeslocamentoUseCase calcularDeslocamentoUseCase;
     private final DeslocamentoDtoMapper deslocamentoDtoMapper;
 
-    public DeslocamentoController(codifica.eleve.core.application.usecase.deslocamento.CalcularDeslocamentoUseCase calcularDeslocamentoUseCase, DeslocamentoDtoMapper deslocamentoDtoMapper) {
+    public DeslocamentoController(CalcularDeslocamentoUseCase calcularDeslocamentoUseCase, DeslocamentoDtoMapper deslocamentoDtoMapper) {
         this.calcularDeslocamentoUseCase = calcularDeslocamentoUseCase;
         this.deslocamentoDtoMapper = deslocamentoDtoMapper;
     }

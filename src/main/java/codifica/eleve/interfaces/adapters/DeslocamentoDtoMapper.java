@@ -4,6 +4,8 @@ import codifica.eleve.core.domain.agenda.deslocamento.Deslocamento;
 import codifica.eleve.core.domain.shared.Endereco;
 import codifica.eleve.interfaces.dto.DeslocamentoRequestDTO;
 import codifica.eleve.interfaces.dto.DeslocamentoResponseDTO;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -14,6 +16,10 @@ public class DeslocamentoDtoMapper {
     }
 
     public DeslocamentoResponseDTO toDto(Deslocamento domain) {
-        return new DeslocamentoResponseDTO(domain.getDistanciaKm(), domain.getTaxa(), domain.getTempoMinutos());
+        return new DeslocamentoResponseDTO(
+                BigDecimal.valueOf(domain.getDistanciaKm()).setScale(2, RoundingMode.HALF_UP),
+                BigDecimal.valueOf(domain.getTaxa()).setScale(2, RoundingMode.HALF_UP),
+                BigDecimal.valueOf(domain.getTempoMinutos()).setScale(2, RoundingMode.HALF_UP)
+        );
     }
 }

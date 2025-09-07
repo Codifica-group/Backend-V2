@@ -12,6 +12,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class PetMapper {
 
+    private final RacaMapper racaMapper;
+
+    public PetMapper(RacaMapper racaMapper) {
+        this.racaMapper = racaMapper;
+    }
+
     public PetEntity toEntity(Pet domain) {
         if (domain == null) return null;
 
@@ -52,9 +58,7 @@ public class PetMapper {
         }
 
         if (entity.getRaca() != null) {
-            Raca raca = new Raca();
-            raca.setId(new Id(entity.getRaca().getId()));
-            raca.setNome(entity.getRaca().getNome());
+            Raca raca = racaMapper.toDomain(entity.getRaca());
             domain.setRaca(raca);
         }
         return domain;

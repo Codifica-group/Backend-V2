@@ -1,7 +1,11 @@
 package codifica.eleve.infrastructure.config;
 
 import codifica.eleve.core.application.usecase.agenda.*;
+import codifica.eleve.core.application.usecase.agenda.calculadora.*;
 import codifica.eleve.core.domain.agenda.AgendaRepository;
+import codifica.eleve.core.domain.cliente.ClienteRepository;
+import codifica.eleve.core.domain.pet.PetRepository;
+import codifica.eleve.core.domain.servico.ServicoRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -31,5 +35,10 @@ public class AgendaUseCaseConfig {
     @Bean
     public DeleteAgendaUseCase deleteAgendaUseCase(AgendaRepository agendaRepository) {
         return new DeleteAgendaUseCase(agendaRepository);
+    }
+
+    @Bean
+    public CalcularServicoUseCase calcularServicoUseCase(PetRepository petRepository, ServicoRepository servicoRepository, ClienteRepository clienteRepository, CalcularDeslocamentoUseCase calcularDeslocamentoUseCase) {
+        return new CalcularServicoUseCase(petRepository, servicoRepository, clienteRepository, calcularDeslocamentoUseCase);
     }
 }

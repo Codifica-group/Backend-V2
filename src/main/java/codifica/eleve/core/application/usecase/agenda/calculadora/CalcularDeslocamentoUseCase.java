@@ -1,4 +1,4 @@
-package codifica.eleve.core.application.usecase.deslocamento;
+package codifica.eleve.core.application.usecase.agenda.calculadora;
 
 import codifica.eleve.core.application.ports.out.DeslocamentoPort;
 import codifica.eleve.core.domain.agenda.deslocamento.CalculadoraTaxa;
