@@ -2,13 +2,16 @@ package codifica.eleve.infrastructure.persistence.agenda;
 
 import codifica.eleve.core.domain.agenda.Agenda;
 import codifica.eleve.core.domain.agenda.AgendaRepository;
+import codifica.eleve.core.domain.agenda.Filtro;
 import codifica.eleve.core.domain.shared.Id;
 import codifica.eleve.core.domain.shared.Periodo;
 import codifica.eleve.infrastructure.adapters.AgendaMapper;
+import org.springframework.stereotype.Repository;
+
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import org.springframework.stereotype.Repository;
 
 @Repository
 public class AgendaRepositoryImpl implements AgendaRepository {
@@ -61,5 +64,34 @@ public class AgendaRepositoryImpl implements AgendaRepository {
     @Override
     public void deleteById(Integer id) {
         agendaJpaRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Agenda> findByFilter(Filtro filtro) {
+        LocalDateTime dataInicio = null;
+        LocalDateTime dataFim = null;
+        if (filtro.getPeriodo() != null) {
+            dataInicio = filtro.getPeriodo().getInicio();
+            dataFim = filtro.getPeriodo().getFim();
+        }
+
+        List<Integer> servicoId = filtro.getServicoId();
+        Long servicoIdSize = servicoId != null ? (long) servicoId.size() : null;
+        if (servicoId != null && servicoId.isEmpty()) {
+            servicoId = null;
+            servicoIdSize = null;
+        }
+
+        return agendaJpaRepository.findByFilter(
+                        dataInicio,
+                        dataFim,
+                        filtro.getClienteId(),
+                        filtro.getPetId(),
+                        filtro.getRacaId(),
+                        servicoId,
+                        servicoIdSize)
+                .stream()
+                .map(agendaMapper::toDomain)
+                .collect(Collectors.toList());
     }
 }

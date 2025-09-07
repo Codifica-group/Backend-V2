@@ -41,4 +41,9 @@ public class AgendaUseCaseConfig {
     public CalcularServicoUseCase calcularServicoUseCase(PetRepository petRepository, ServicoRepository servicoRepository, ClienteRepository clienteRepository, CalcularDeslocamentoUseCase calcularDeslocamentoUseCase) {
         return new CalcularServicoUseCase(petRepository, servicoRepository, clienteRepository, calcularDeslocamentoUseCase);
     }
+
+    @Bean
+    public FilterAgendaUseCase filterAgendaUseCase(AgendaRepository agendaRepository) {
+        return new FilterAgendaUseCase(agendaRepository);
+    }
 }

@@ -3,11 +3,14 @@ package codifica.eleve.interfaces.controller;
 import codifica.eleve.core.application.usecase.agenda.*;
 import codifica.eleve.core.application.usecase.agenda.calculadora.CalcularServicoUseCase;
 import codifica.eleve.interfaces.adapters.AgendaDtoMapper;
+import codifica.eleve.interfaces.adapters.FiltroDtoMapper;
 import codifica.eleve.interfaces.adapters.SugestaoServicoDtoMapper;
 import codifica.eleve.interfaces.dto.AgendaDTO;
 import codifica.eleve.interfaces.dto.CalcularServicoRequestDTO;
+import codifica.eleve.interfaces.dto.FiltroDTO;
 import codifica.eleve.interfaces.dto.ServicoDTO;
 import codifica.eleve.interfaces.dto.SugestaoServicoDTO;
+
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -25,8 +28,10 @@ public class AgendaController {
     private final UpdateAgendaUseCase updateAgendaUseCase;
     private final DeleteAgendaUseCase deleteAgendaUseCase;
     private final CalcularServicoUseCase calcularServicoUseCase;
+    private final FilterAgendaUseCase filterAgendaUseCase;
     private final AgendaDtoMapper agendaDtoMapper;
     private final SugestaoServicoDtoMapper sugestaoServicoDtoMapper;
+    private final FiltroDtoMapper filtroDtoMapper;
 
     public AgendaController(CreateAgendaUseCase createAgendaUseCase,
                             FindAgendaByIdUseCase findAgendaByIdUseCase,
@@ -34,16 +39,20 @@ public class AgendaController {
                             UpdateAgendaUseCase updateAgendaUseCase,
                             DeleteAgendaUseCase deleteAgendaUseCase,
                             CalcularServicoUseCase calcularServicoUseCase,
+                            FilterAgendaUseCase filterAgendaUseCase,
                             AgendaDtoMapper agendaDtoMapper,
-                            SugestaoServicoDtoMapper sugestaoServicoDtoMapper) {
+                            SugestaoServicoDtoMapper sugestaoServicoDtoMapper,
+                            FiltroDtoMapper filtroDtoMapper) {
         this.createAgendaUseCase = createAgendaUseCase;
         this.findAgendaByIdUseCase = findAgendaByIdUseCase;
         this.listAgendaUseCase = listAgendaUseCase;
         this.updateAgendaUseCase = updateAgendaUseCase;
         this.deleteAgendaUseCase = deleteAgendaUseCase;
         this.calcularServicoUseCase = calcularServicoUseCase;
+        this.filterAgendaUseCase = filterAgendaUseCase;
         this.agendaDtoMapper = agendaDtoMapper;
         this.sugestaoServicoDtoMapper = sugestaoServicoDtoMapper;
+        this.filtroDtoMapper = filtroDtoMapper;
     }
 
     @PostMapping
@@ -86,5 +95,13 @@ public class AgendaController {
 
         var sugestao = calcularServicoUseCase.execute(requestDTO.getPetId(), servicosId);
         return ResponseEntity.ok(sugestaoServicoDtoMapper.toDto(sugestao));
+    }
+
+    @PostMapping("/filtrar")
+    public ResponseEntity<List<AgendaDTO>> filtrar(@RequestBody FiltroDTO filtroDTO) {
+        List<AgendaDTO> agendas = filterAgendaUseCase.execute(filtroDtoMapper.toDomain(filtroDTO)).stream()
+                .map(agendaDtoMapper::toDto)
+                .collect(Collectors.toList());
+        return agendas.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(agendas);
     }
 }
