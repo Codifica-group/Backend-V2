@@ -43,7 +43,7 @@ public class DeslocamentoAdapter implements DeslocamentoPort {
         String enderecoFormatado = String.format("%s %s, %s, SP, %s, Brazil",
                 endereco.getRua(), endereco.getNumero(), endereco.getCidade(), endereco.getCep());
 
-        String url = UriComponentsBuilder.fromHttpUrl(orsGeocodeUrl)
+        String url = UriComponentsBuilder.fromUriString(orsGeocodeUrl)
                 .queryParam("api_key", orsApiKey)
                 .queryParam("text", enderecoFormatado)
                 .build().toUriString();
