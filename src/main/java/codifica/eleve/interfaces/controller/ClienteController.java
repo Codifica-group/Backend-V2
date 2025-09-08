@@ -1,7 +1,7 @@
 package codifica.eleve.interfaces.controller;
 
 import codifica.eleve.core.application.usecase.cliente.*;
-import codifica.eleve.interfaces.adapters.ClienteDtoMapper;
+import codifica.eleve.interfaces.dtoAdapters.ClienteDtoMapper;
 import codifica.eleve.interfaces.dto.ClienteDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -2,7 +2,7 @@ package codifica.eleve.interfaces.controller;
 
 import codifica.eleve.core.application.usecase.usuario.*;
 import codifica.eleve.core.domain.usuario.Usuario;
-import codifica.eleve.interfaces.adapters.UsuarioDtoMapper;
+import codifica.eleve.interfaces.dtoAdapters.UsuarioDtoMapper;
 import codifica.eleve.interfaces.dto.UsuarioDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

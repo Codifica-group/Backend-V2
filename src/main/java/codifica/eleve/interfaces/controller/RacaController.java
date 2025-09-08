@@ -2,7 +2,7 @@ package codifica.eleve.interfaces.controller;
 
 import codifica.eleve.core.application.usecase.raca.*;
 import codifica.eleve.core.domain.raca.Raca;
-import codifica.eleve.interfaces.adapters.RacaDtoMapper;
+import codifica.eleve.interfaces.dtoAdapters.RacaDtoMapper;
 import codifica.eleve.interfaces.dto.RacaDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

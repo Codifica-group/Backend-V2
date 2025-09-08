@@ -1,4 +1,4 @@
-package codifica.eleve.interfaces.exceptions;
+package codifica.eleve.config.exceptions;
 
 import codifica.eleve.core.domain.shared.exceptions.*;
 import codifica.eleve.core.domain.shared.exceptions.IllegalArgumentException;

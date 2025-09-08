@@ -1,4 +1,4 @@
-package codifica.eleve.infrastructure.config;
+package codifica.eleve.config;
 
 import codifica.eleve.infrastructure.persistence.agenda.AgendaEntity;
 import codifica.eleve.infrastructure.persistence.agenda.AgendaJpaRepository;

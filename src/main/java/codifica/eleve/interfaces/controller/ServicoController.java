@@ -1,7 +1,7 @@
 package codifica.eleve.interfaces.controller;
 
 import codifica.eleve.core.application.usecase.servico.*;
-import codifica.eleve.interfaces.adapters.ServicoDtoMapper;
+import codifica.eleve.interfaces.dtoAdapters.ServicoDtoMapper;
 import codifica.eleve.interfaces.dto.ServicoDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

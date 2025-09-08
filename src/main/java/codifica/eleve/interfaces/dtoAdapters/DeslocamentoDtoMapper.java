@@ -1,4 +1,4 @@
-package codifica.eleve.interfaces.adapters;
+package codifica.eleve.interfaces.dtoAdapters;
 
 import codifica.eleve.core.domain.agenda.deslocamento.Deslocamento;
 import codifica.eleve.core.domain.shared.Endereco;

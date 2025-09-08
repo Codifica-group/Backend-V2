@@ -2,7 +2,7 @@ package codifica.eleve.interfaces.controller;
 
 import codifica.eleve.core.application.usecase.cliente.cep.FindCepUseCase;
 import codifica.eleve.core.domain.shared.Endereco;
-import codifica.eleve.interfaces.adapters.CepDtoMapper;
+import codifica.eleve.interfaces.dtoAdapters.CepDtoMapper;
 import codifica.eleve.interfaces.dto.CepDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

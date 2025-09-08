@@ -2,9 +2,9 @@ package codifica.eleve.interfaces.controller;
 
 import codifica.eleve.core.application.usecase.agenda.*;
 import codifica.eleve.core.application.usecase.agenda.calculadora.CalcularServicoUseCase;
-import codifica.eleve.interfaces.adapters.AgendaDtoMapper;
-import codifica.eleve.interfaces.adapters.FiltroDtoMapper;
-import codifica.eleve.interfaces.adapters.SugestaoServicoDtoMapper;
+import codifica.eleve.interfaces.dtoAdapters.AgendaDtoMapper;
+import codifica.eleve.interfaces.dtoAdapters.FiltroDtoMapper;
+import codifica.eleve.interfaces.dtoAdapters.SugestaoServicoDtoMapper;
 import codifica.eleve.interfaces.dto.AgendaDTO;
 import codifica.eleve.interfaces.dto.CalcularServicoRequestDTO;
 import codifica.eleve.interfaces.dto.FiltroDTO;

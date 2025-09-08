@@ -1,4 +1,4 @@
-package codifica.eleve.interfaces.exceptions;
+package codifica.eleve.config.exceptions;
 
 import java.time.LocalDateTime;
 

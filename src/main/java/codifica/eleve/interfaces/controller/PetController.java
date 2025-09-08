@@ -2,7 +2,7 @@ package codifica.eleve.interfaces.controller;
 
 import codifica.eleve.core.application.usecase.pet.*;
 import codifica.eleve.core.domain.pet.Pet;
-import codifica.eleve.interfaces.adapters.PetDtoMapper;
+import codifica.eleve.interfaces.dtoAdapters.PetDtoMapper;
 import codifica.eleve.interfaces.dto.PetDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

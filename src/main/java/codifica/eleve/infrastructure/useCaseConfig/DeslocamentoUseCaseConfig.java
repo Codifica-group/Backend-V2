@@ -1,4 +1,4 @@
-package codifica.eleve.infrastructure.config;
+package codifica.eleve.infrastructure.useCaseConfig;
 
 import codifica.eleve.core.application.ports.out.DeslocamentoPort;
 import codifica.eleve.core.application.usecase.agenda.calculadora.CalcularDeslocamentoUseCase;
