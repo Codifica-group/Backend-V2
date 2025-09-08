@@ -22,12 +22,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final TokenPort tokenPort;
     private final UserDetailsService userDetailsService;
-    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
-    public JwtAuthenticationFilter(TokenPort tokenPort, UserDetailsService userDetailsService, CustomAuthenticationEntryPoint customAuthenticationEntryPoint) {
+    public JwtAuthenticationFilter(TokenPort tokenPort, UserDetailsService userDetailsService) {
         this.tokenPort = tokenPort;
         this.userDetailsService = userDetailsService;
-        this.customAuthenticationEntryPoint = customAuthenticationEntryPoint;
     }
 
     @Override
@@ -58,9 +56,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }
-            filterChain.doFilter(request, response);
-        } catch (InvalidTokenException e) {
-            customAuthenticationEntryPoint.commence(request, response, new AuthenticationException(e.getMessage(), e) {});
+        } catch (Exception e) {
+            throw new InvalidTokenException("Token de segurança inválido ou expirado. Faça o login novamente.");
         }
+
+        filterChain.doFilter(request, response);
     }
 }
