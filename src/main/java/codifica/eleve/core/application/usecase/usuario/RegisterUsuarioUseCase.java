@@ -1,7 +1,9 @@
 package codifica.eleve.core.application.usecase.usuario;
 
 import codifica.eleve.core.application.ports.out.PasswordEncoderPort;
+import codifica.eleve.core.domain.shared.Senha;
 import codifica.eleve.core.domain.shared.exceptions.ConflictException;
+import codifica.eleve.core.domain.shared.exceptions.IllegalArgumentException;
 import codifica.eleve.core.domain.usuario.Usuario;
 import codifica.eleve.core.domain.usuario.UsuarioRepository;
 
@@ -17,6 +19,10 @@ public class RegisterUsuarioUseCase {
     public String execute(Usuario usuario) {
         if (usuario.getNome() == null || usuario.getNome().trim().isEmpty()) {
             throw new IllegalArgumentException("O nome do usuário não pode ser vazio.");
+        }
+
+        if (!Senha.isValid(usuario.getSenha().getValor())) {
+            throw new IllegalArgumentException("A senha é inválida. Deve ter no mínimo 8 caracteres, uma letra maiúscula, uma minúscula e um número.");
         }
 
         if (usuarioRepository.findByEmail(usuario.getEmail().getEndereco()).isPresent()) {

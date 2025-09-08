@@ -8,8 +8,8 @@ public class Senha {
     private final String valor;
 
     public Senha(String valor) {
-        if (!isValid(valor)) {
-            throw new IllegalArgumentException("A senha é inválida. Deve ter no mínimo 8 caracteres, uma letra maiúscula, uma minúscula e um número.");
+        if (valor == null) {
+            throw new IllegalArgumentException("A senha não pode ser nula.");
         }
         this.valor = valor;
     }
@@ -18,7 +18,7 @@ public class Senha {
         return valor;
     }
 
-    private boolean isValid(String senha) {
+    public static boolean isValid(String senha) {
         if (senha == null || senha.length() < 8) {
             return false;
         }
