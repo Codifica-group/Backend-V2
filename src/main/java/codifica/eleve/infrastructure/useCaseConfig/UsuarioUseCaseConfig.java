@@ -21,6 +21,11 @@ public class UsuarioUseCaseConfig {
     }
 
     @Bean
+    public LogoutUsuarioUseCase logoutUsuarioUseCase(TokenPort tokenPort) {
+        return new LogoutUsuarioUseCase(tokenPort);
+    }
+
+    @Bean
     public ListUsuarioUseCase listUsuarioUseCase(UsuarioRepository usuarioRepository) {
         return new ListUsuarioUseCase(usuarioRepository);
     }

@@ -16,6 +16,7 @@ public class UsuarioController {
 
     private final RegisterUsuarioUseCase registerUseCase;
     private final LoginUsuarioUseCase loginUseCase;
+    private final LogoutUsuarioUseCase logoutUseCase;
     private final ListUsuarioUseCase listUseCase;
     private final FindUsuarioByIdUseCase findByIdUseCase;
     private final UpdateUsuarioUseCase updateUseCase;
@@ -25,6 +26,7 @@ public class UsuarioController {
     public UsuarioController(
             RegisterUsuarioUseCase registerUseCase,
             LoginUsuarioUseCase loginUseCase,
+            LogoutUsuarioUseCase logoutUseCase,
             ListUsuarioUseCase listUseCase,
             FindUsuarioByIdUseCase findByIdUseCase,
             UpdateUsuarioUseCase updateUseCase,
@@ -33,6 +35,7 @@ public class UsuarioController {
     ) {
         this.registerUseCase = registerUseCase;
         this.loginUseCase = loginUseCase;
+        this.logoutUseCase = logoutUseCase;
         this.listUseCase = listUseCase;
         this.findByIdUseCase = findByIdUseCase;
         this.updateUseCase = updateUseCase;
@@ -50,6 +53,12 @@ public class UsuarioController {
     public ResponseEntity<?> login(@RequestBody UsuarioDTO usuarioDTO) {
         Object token = loginUseCase.execute(usuarioDtoMapper.toDomain(usuarioDTO));
         return ResponseEntity.ok(token);
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(@RequestHeader("Authorization") String token) {
+        logoutUseCase.execute(token.replace("Bearer ", ""));
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping

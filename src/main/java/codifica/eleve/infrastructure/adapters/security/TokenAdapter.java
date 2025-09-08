@@ -9,7 +9,10 @@ import com.auth0.jwt.interfaces.JWTVerifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Service
 public class TokenAdapter implements TokenPort {
@@ -21,6 +24,8 @@ public class TokenAdapter implements TokenPort {
     private long expirationTime;
 
     private static final String ISSUER = "eleve";
+
+    private final Set<String> tokenBlacklist = Collections.synchronizedSet(new HashSet<>());
 
     @Override
     public String generate(String subject) {
@@ -34,6 +39,9 @@ public class TokenAdapter implements TokenPort {
 
     @Override
     public String validate(String token) {
+        if (tokenBlacklist.contains(token)) {
+            throw new InvalidTokenException("Token de segurança inválido ou expirado. Faça o login novamente.");
+        }
         try {
             Algorithm algorithm = Algorithm.HMAC256(secretKey);
             JWTVerifier verifier = JWT.require(algorithm)
@@ -43,5 +51,10 @@ public class TokenAdapter implements TokenPort {
         } catch (JWTVerificationException e) {
             throw new InvalidTokenException("Token de segurança inválido ou expirado. Faça o login novamente.");
         }
+    }
+
+    @Override
+    public void invalidate(String token) {
+        tokenBlacklist.add(token);
     }
 }
