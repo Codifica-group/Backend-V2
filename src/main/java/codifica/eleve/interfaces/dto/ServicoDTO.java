@@ -1,5 +1,6 @@
 package codifica.eleve.interfaces.dto;
 
+import codifica.eleve.interfaces.validation.SafeString;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.math.BigDecimal;
@@ -7,7 +8,10 @@ import java.math.BigDecimal;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ServicoDTO {
     private Integer id;
+
+    @SafeString
     private String nome;
+
     private BigDecimal valor;
 
     public Integer getId() {

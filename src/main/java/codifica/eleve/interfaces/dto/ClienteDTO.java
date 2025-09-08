@@ -1,17 +1,31 @@
 package codifica.eleve.interfaces.dto;
 
+import codifica.eleve.interfaces.validation.SafeString;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ClienteDTO {
     private Integer id;
+
+    @SafeString
     private String nome;
+
     private String telefone;
     private String cep;
+
+    @SafeString
     private String rua;
+
+    @SafeString
     private String numEndereco;
+
+    @SafeString
     private String bairro;
+
+    @SafeString
     private String cidade;
+
+    @SafeString
     private String complemento;
 
     public Integer getId() {

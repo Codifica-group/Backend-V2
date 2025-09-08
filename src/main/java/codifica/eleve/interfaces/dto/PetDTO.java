@@ -1,11 +1,15 @@
 package codifica.eleve.interfaces.dto;
 
+import codifica.eleve.interfaces.validation.SafeString;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class PetDTO {
     private Integer id;
+
+    @SafeString
     private String nome;
+
     private RacaDTO raca;
     private Integer racaId;
     private ClienteDTO cliente;

@@ -1,10 +1,20 @@
 package codifica.eleve.interfaces.dto;
 
+import codifica.eleve.interfaces.validation.SafeString;
+
 public class DeslocamentoRequestDTO {
     private String cep;
+
+    @SafeString
     private String rua;
+
+    @SafeString
     private String numero;
+
+    @SafeString
     private String bairro;
+
+    @SafeString
     private String cidade;
 
     public String getCep() { return cep; }

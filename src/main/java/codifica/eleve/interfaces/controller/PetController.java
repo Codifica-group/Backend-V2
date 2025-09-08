@@ -4,6 +4,7 @@ import codifica.eleve.core.application.usecase.pet.*;
 import codifica.eleve.core.domain.pet.Pet;
 import codifica.eleve.interfaces.dtoAdapters.PetDtoMapper;
 import codifica.eleve.interfaces.dto.PetDTO;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,7 +35,7 @@ public class PetController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> create(@RequestBody PetDTO petDTO) {
+    public ResponseEntity<Object> create(@RequestBody @Valid PetDTO petDTO) {
         Object json = createPetUseCase.execute(petDtoMapper.toDomain(petDTO));
         return ResponseEntity.status(HttpStatus.CREATED).body(json);
     }
@@ -52,7 +53,7 @@ public class PetController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> update(@PathVariable Integer id, @RequestBody PetDTO petDTO) {
+    public ResponseEntity<String> update(@PathVariable Integer id, @RequestBody @Valid PetDTO petDTO) {
         String message = updatePetUseCase.execute(id, petDtoMapper.toDomain(petDTO));
         return ResponseEntity.ok(message);
     }

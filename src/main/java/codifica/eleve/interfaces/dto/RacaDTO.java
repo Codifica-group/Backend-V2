@@ -1,12 +1,16 @@
 package codifica.eleve.interfaces.dto;
 
+import codifica.eleve.interfaces.validation.SafeString;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class RacaDTO {
 
     private Integer id;
+
+    @SafeString
     private String nome;
+
     private Integer porteId;
 
     public Integer getId() {

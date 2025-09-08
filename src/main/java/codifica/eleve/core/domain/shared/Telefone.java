@@ -9,7 +9,7 @@ public class Telefone {
 
     public Telefone(String numero) {
         if (numero == null || !numero.matches("^\\d{11}$")) {
-            throw new IllegalArgumentException("Número de telefone deve ter 11 dígitos.");
+            throw new IllegalArgumentException("Número de telefone deve ter 11 dígitos numéricos.");
         }
         this.numero = numero;
     }

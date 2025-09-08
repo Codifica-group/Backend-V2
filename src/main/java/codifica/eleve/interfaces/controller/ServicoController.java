@@ -3,6 +3,7 @@ package codifica.eleve.interfaces.controller;
 import codifica.eleve.core.application.usecase.servico.*;
 import codifica.eleve.interfaces.dtoAdapters.ServicoDtoMapper;
 import codifica.eleve.interfaces.dto.ServicoDTO;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -37,7 +38,7 @@ public class ServicoController {
     }
 
     @PostMapping
-    public ResponseEntity<Map<String, Object>> create(@RequestBody ServicoDTO servicoDTO) {
+    public ResponseEntity<Map<String, Object>> create(@RequestBody @Valid ServicoDTO servicoDTO) {
         Map<String, Object> response = createServicoUseCase.execute(servicoDtoMapper.toDomain(servicoDTO));
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
@@ -57,7 +58,7 @@ public class ServicoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> update(@PathVariable Integer id, @RequestBody ServicoDTO servicoDTO) {
+    public ResponseEntity<String> update(@PathVariable Integer id, @RequestBody @Valid ServicoDTO servicoDTO) {
         String response = updateServicoUseCase.execute(id, servicoDtoMapper.toDomain(servicoDTO));
         return ResponseEntity.ok(response);
     }

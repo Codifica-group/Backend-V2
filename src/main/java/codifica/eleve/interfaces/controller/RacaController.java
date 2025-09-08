@@ -4,6 +4,7 @@ import codifica.eleve.core.application.usecase.raca.*;
 import codifica.eleve.core.domain.raca.Raca;
 import codifica.eleve.interfaces.dtoAdapters.RacaDtoMapper;
 import codifica.eleve.interfaces.dto.RacaDTO;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,7 +35,7 @@ public class RacaController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> create(@RequestBody RacaDTO racaDTO) {
+    public ResponseEntity<Object> create(@RequestBody @Valid RacaDTO racaDTO) {
         Object json = createRacaUseCase.execute(racaDtoMapper.toDomain(racaDTO));
         return ResponseEntity.status(HttpStatus.CREATED).body(json);
     }
@@ -53,7 +54,7 @@ public class RacaController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> update(@PathVariable Integer id, @RequestBody RacaDTO racaDTO) {
+    public ResponseEntity<String> update(@PathVariable Integer id, @RequestBody @Valid RacaDTO racaDTO) {
         String message = updateRacaUseCase.execute(id, racaDtoMapper.toDomain(racaDTO));
         return ResponseEntity.ok(message);
     }

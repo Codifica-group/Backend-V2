@@ -6,6 +6,7 @@ import codifica.eleve.core.domain.shared.Endereco;
 import codifica.eleve.interfaces.dtoAdapters.DeslocamentoDtoMapper;
 import codifica.eleve.interfaces.dto.DeslocamentoRequestDTO;
 import codifica.eleve.interfaces.dto.DeslocamentoResponseDTO;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,7 +26,7 @@ public class DeslocamentoController {
     }
 
     @PostMapping("/calcular")
-    public ResponseEntity<DeslocamentoResponseDTO> calcular(@RequestBody DeslocamentoRequestDTO requestDTO) {
+    public ResponseEntity<DeslocamentoResponseDTO> calcular(@RequestBody @Valid DeslocamentoRequestDTO requestDTO) {
         Endereco endereco = deslocamentoDtoMapper.toDomain(requestDTO);
         Deslocamento deslocamento = calcularDeslocamentoUseCase.execute(endereco);
         return ResponseEntity.ok(deslocamentoDtoMapper.toDto(deslocamento));

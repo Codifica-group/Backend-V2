@@ -1,12 +1,16 @@
 package codifica.eleve.interfaces.dto;
 
+import codifica.eleve.interfaces.validation.SafeString;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UsuarioDTO {
 
     private Integer id;
+
+    @SafeString
     private String nome;
+
     private String email;
     private String senha;
 

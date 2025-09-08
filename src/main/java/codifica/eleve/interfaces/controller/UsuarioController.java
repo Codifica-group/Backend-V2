@@ -4,6 +4,7 @@ import codifica.eleve.core.application.usecase.usuario.*;
 import codifica.eleve.core.domain.usuario.Usuario;
 import codifica.eleve.interfaces.dtoAdapters.UsuarioDtoMapper;
 import codifica.eleve.interfaces.dto.UsuarioDTO;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,13 +45,13 @@ public class UsuarioController {
     }
 
     @PostMapping
-    public ResponseEntity<String> register(@RequestBody UsuarioDTO usuarioDTO) {
+    public ResponseEntity<String> register(@RequestBody @Valid UsuarioDTO usuarioDTO) {
         String message = registerUseCase.execute(usuarioDtoMapper.toDomain(usuarioDTO));
         return ResponseEntity.ok(message);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody UsuarioDTO usuarioDTO) {
+    public ResponseEntity<?> login(@RequestBody @Valid UsuarioDTO usuarioDTO) {
         Object token = loginUseCase.execute(usuarioDtoMapper.toDomain(usuarioDTO));
         return ResponseEntity.ok(token);
     }
@@ -76,7 +77,7 @@ public class UsuarioController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> update(@PathVariable Integer id, @RequestBody UsuarioDTO usuarioDTO) {
+    public ResponseEntity<String> update(@PathVariable Integer id, @RequestBody @Valid UsuarioDTO usuarioDTO) {
         String message = updateUseCase.execute(id, usuarioDtoMapper.toDomain(usuarioDTO));
         return ResponseEntity.ok(message);
     }

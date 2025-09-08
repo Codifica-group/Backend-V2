@@ -3,6 +3,7 @@ package codifica.eleve.interfaces.controller;
 import codifica.eleve.core.application.usecase.cliente.*;
 import codifica.eleve.interfaces.dtoAdapters.ClienteDtoMapper;
 import codifica.eleve.interfaces.dto.ClienteDTO;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +33,7 @@ public class ClienteController {
     }
 
     @PostMapping
-    public ResponseEntity<Map<String, Object>> create(@RequestBody ClienteDTO clienteDTO) {
+    public ResponseEntity<Map<String, Object>> create(@RequestBody @Valid ClienteDTO clienteDTO) {
         Map<String, Object> response = createClienteUseCase.execute(clienteDtoMapper.toDomain(clienteDTO));
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
@@ -52,7 +53,7 @@ public class ClienteController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<String> update(@PathVariable Integer id, @RequestBody ClienteDTO clienteDTO) {
+    public ResponseEntity<String> update(@PathVariable Integer id, @RequestBody @Valid ClienteDTO clienteDTO) {
         String response = updateClienteUseCase.execute(id, clienteDtoMapper.toDomain(clienteDTO));
         return ResponseEntity.ok(response);
     }
