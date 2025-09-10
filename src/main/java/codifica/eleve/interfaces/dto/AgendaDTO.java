@@ -10,10 +10,13 @@ public class AgendaDTO {
 
     private Integer id;
     private Integer petId;
+    private ClienteDTO cliente;
+    private PetDTO pet;
     private List<ServicoDTO> servicos;
     private BigDecimal valorDeslocamento;
     private LocalDateTime dataHoraInicio;
     private LocalDateTime dataHoraFim;
+    private BigDecimal valorTotal;
 
     public Integer getId() {
         return id;
@@ -29,6 +32,22 @@ public class AgendaDTO {
 
     public void setPetId(Integer petId) {
         this.petId = petId;
+    }
+
+    public ClienteDTO getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(ClienteDTO cliente) {
+        this.cliente = cliente;
+    }
+
+    public PetDTO getPet() {
+        return pet;
+    }
+
+    public void setPet(PetDTO pet) {
+        this.pet = pet;
     }
 
     public List<ServicoDTO> getServicos() {
@@ -61,5 +80,13 @@ public class AgendaDTO {
 
     public void setDataHoraFim(LocalDateTime dataHoraFim) {
         this.dataHoraFim = dataHoraFim;
+    }
+
+    public BigDecimal getValorTotal() {
+        return valorTotal;
+    }
+
+    public void setValorTotal(BigDecimal valorTotal) {
+        this.valorTotal = valorTotal;
     }
 }

@@ -8,8 +8,7 @@ import codifica.eleve.core.domain.servico.ServicoRepository;
 import codifica.eleve.core.domain.shared.Periodo;
 import codifica.eleve.core.domain.shared.ValorMonetario;
 import codifica.eleve.core.domain.shared.exceptions.NotFoundException;
-import codifica.eleve.interfaces.dto.AgendaDTO;
-import codifica.eleve.interfaces.dto.ServicoDTO;
+import codifica.eleve.interfaces.dto.*;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -22,10 +21,17 @@ public class AgendaDtoMapper {
 
     private final PetRepository petRepository;
     private final ServicoRepository servicoRepository;
+    private final PetDtoMapper petDtoMapper;
+    private final ClienteDtoMapper clienteDtoMapper;
+    private final RacaDtoMapper racaDtoMapper;
 
-    public AgendaDtoMapper(PetRepository petRepository, ServicoRepository servicoRepository) {
+
+    public AgendaDtoMapper(PetRepository petRepository, ServicoRepository servicoRepository, PetDtoMapper petDtoMapper, ClienteDtoMapper clienteDtoMapper, RacaDtoMapper racaDtoMapper) {
         this.petRepository = petRepository;
         this.servicoRepository = servicoRepository;
+        this.petDtoMapper = petDtoMapper;
+        this.clienteDtoMapper = clienteDtoMapper;
+        this.racaDtoMapper = racaDtoMapper;
     }
 
     public Agenda toDomain(AgendaDTO dto) {
@@ -54,7 +60,20 @@ public class AgendaDtoMapper {
         if (domain.getId() != null) {
             dto.setId(domain.getId().getValue());
         }
-        dto.setPetId(domain.getPet().getId().getValue());
+
+        Pet petDomain = domain.getPet();
+        PetDTO petDTO = new PetDTO();
+        petDTO.setId(petDomain.getId().getValue());
+        petDTO.setNome(petDomain.getNome());
+        RacaDTO racaDTO = racaDtoMapper.toDto(petDomain.getRaca());
+        petDTO.setRaca(racaDTO);
+        dto.setPet(petDTO);
+
+        ClienteDTO clienteDTO = new ClienteDTO();
+        clienteDTO.setId(petDomain.getCliente().getId().getValue());
+        clienteDTO.setNome(petDomain.getCliente().getNome());
+        dto.setCliente(clienteDTO);
+
         dto.setServicos(domain.getServicos().stream()
                 .map(servico -> {
                     ServicoDTO servicoDTO = new ServicoDTO();
@@ -67,6 +86,17 @@ public class AgendaDtoMapper {
         dto.setValorDeslocamento(domain.getValorDeslocamento().getValor());
         dto.setDataHoraInicio(domain.getPeriodo().getInicio());
         dto.setDataHoraFim(domain.getPeriodo().getFim());
+
+        BigDecimal valorTotal = BigDecimal.ZERO;
+        if (dto.getServicos() != null) {
+            valorTotal = dto.getServicos().stream()
+                    .map(ServicoDTO::getValor)
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+        }
+        if (dto.getValorDeslocamento() != null) {
+            valorTotal = valorTotal.add(dto.getValorDeslocamento());
+        }
+        dto.setValorTotal(valorTotal);
         return dto;
     }
 }
