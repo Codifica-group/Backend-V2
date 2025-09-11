@@ -1,17 +1,19 @@
-package codifica.eleve.core.application.usecase.security;
+package codifica.eleve.infrastructure.adapters.security;
 
+import codifica.eleve.core.application.ports.out.GeolocationPort;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-@Service
-public class GeolocationService {
+@Component
+public class GeolocationAdapter implements GeolocationPort {
 
-    private static final Logger logger = LoggerFactory.getLogger(GeolocationService.class);
+    private static final Logger logger = LoggerFactory.getLogger(GeolocationAdapter.class);
     private final RestTemplate restTemplate = new RestTemplate();
 
+    @Override
     public String getGeolocation(String ip) {
         if (ip == null || ip.isEmpty() || isPrivateIp(ip)) {
             return "Local IP";

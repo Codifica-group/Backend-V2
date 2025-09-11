@@ -1,9 +1,6 @@
 package codifica.eleve.infrastructure.useCaseConfig;
 
-import codifica.eleve.core.application.ports.out.PasswordEncoderPort;
-import codifica.eleve.core.application.ports.out.TokenPort;
-import codifica.eleve.core.application.usecase.security.GeolocationService;
-import codifica.eleve.core.application.usecase.security.LoginAttemptService;
+import codifica.eleve.core.application.ports.out.*;
 import codifica.eleve.core.application.usecase.usuario.*;
 import codifica.eleve.core.domain.usuario.UsuarioRepository;
 import org.springframework.context.annotation.Bean;
@@ -18,8 +15,14 @@ public class UsuarioUseCaseConfig {
     }
 
     @Bean
-    public LoginUsuarioUseCase loginUsuarioUseCase(UsuarioRepository usuarioRepository, PasswordEncoderPort passwordEncoder, TokenPort tokenPort, LoginAttemptService loginAttemptService, GeolocationService geolocationService) {
-        return new LoginUsuarioUseCase(usuarioRepository, passwordEncoder, tokenPort, loginAttemptService, geolocationService);
+    public LoginUsuarioUseCase loginUsuarioUseCase(
+            UsuarioRepository usuarioRepository,
+            PasswordEncoderPort passwordEncoder,
+            TokenPort tokenPort,
+            LoginAttemptPort loginAttemptPort,
+            GeolocationPort geolocationPort,
+            RequestContextPort requestContextPort) {
+        return new LoginUsuarioUseCase(usuarioRepository, passwordEncoder, tokenPort, loginAttemptPort, geolocationPort, requestContextPort);
     }
 
     @Bean
@@ -45,15 +48,5 @@ public class UsuarioUseCaseConfig {
     @Bean
     public DeleteUsuarioUseCase deleteUsuarioUseCase(UsuarioRepository usuarioRepository) {
         return new DeleteUsuarioUseCase(usuarioRepository);
-    }
-
-    @Bean
-    public LoginAttemptService loginAttemptService() {
-        return new LoginAttemptService();
-    }
-
-    @Bean
-    public GeolocationService geolocationService() {
-        return new GeolocationService();
     }
 }

@@ -1,4 +1,4 @@
-package codifica.eleve.core.application.usecase.security;
+package codifica.eleve.infrastructure.adapters.security;
 
 import codifica.eleve.core.domain.usuario.Usuario;
 import codifica.eleve.core.domain.usuario.UsuarioRepository;
@@ -22,7 +22,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Usuario usuario = usuarioRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado com o email: " + email));
+                .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado."));
 
         return new User(usuario.getEmail().getEndereco(), usuario.getSenhaCodificada(), Collections.emptyList());
     }

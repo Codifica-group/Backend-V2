@@ -1,6 +1,6 @@
 package codifica.eleve.config.security;
 
-import codifica.eleve.core.application.usecase.security.LoginAttemptService;
+import codifica.eleve.core.application.ports.out.LoginAttemptPort;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,10 +13,10 @@ import java.io.IOException;
 @Component
 public class IpBlockFilter extends OncePerRequestFilter {
 
-    private final LoginAttemptService loginAttemptService;
+    private final LoginAttemptPort loginAttemptPort;
 
-    public IpBlockFilter(LoginAttemptService loginAttemptService) {
-        this.loginAttemptService = loginAttemptService;
+    public IpBlockFilter(LoginAttemptPort loginAttemptPort) {
+        this.loginAttemptPort = loginAttemptPort;
     }
 
     @Override
@@ -25,7 +25,7 @@ public class IpBlockFilter extends OncePerRequestFilter {
                                     FilterChain filterChain) throws ServletException, IOException {
 
         String ip = getClientIP(request);
-        if (loginAttemptService.isBlocked(ip)) {
+        if (loginAttemptPort.isBlocked(ip)) {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             response.getWriter().write("Bloqueio temporário por tentativas excessivas de login. Tente novamente mais tarde...");
             return;
