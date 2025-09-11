@@ -5,6 +5,7 @@ import java.util.Optional;
 
 public interface CategoriaProdutoRepository {
     CategoriaProduto save(CategoriaProduto categoriaProduto);
+    Optional<CategoriaProduto> findById(Integer id);
     List<CategoriaProduto> findAll();
     void deleteById(Integer id);
     boolean existsById(Integer id);

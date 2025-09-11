@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 public class CategoriaProdutoController {
 
     private final CreateCategoriaProdutoUseCase createCategoriaProdutoUseCase;
+    private final FindCategoriaProdutoByIdUseCase findCategoriaProdutoByIdUseCase;
     private final ListCategoriaProdutoUseCase listCategoriaProdutoUseCase;
     private final UpdateCategoriaProdutoUseCase updateCategoriaProdutoUseCase;
     private final DeleteCategoriaProdutoUseCase deleteCategoriaProdutoUseCase;
@@ -24,11 +25,13 @@ public class CategoriaProdutoController {
 
     public CategoriaProdutoController(CreateCategoriaProdutoUseCase createCategoriaProdutoUseCase,
                                       ListCategoriaProdutoUseCase listCategoriaProdutoUseCase,
+                                      FindCategoriaProdutoByIdUseCase findCategoriaProdutoByIdUseCase,
                                       UpdateCategoriaProdutoUseCase updateCategoriaProdutoUseCase,
                                       DeleteCategoriaProdutoUseCase deleteCategoriaProdutoUseCase,
                                       CategoriaProdutoDtoMapper categoriaProdutoDtoMapper) {
         this.createCategoriaProdutoUseCase = createCategoriaProdutoUseCase;
         this.listCategoriaProdutoUseCase = listCategoriaProdutoUseCase;
+        this.findCategoriaProdutoByIdUseCase = findCategoriaProdutoByIdUseCase;
         this.updateCategoriaProdutoUseCase = updateCategoriaProdutoUseCase;
         this.deleteCategoriaProdutoUseCase = deleteCategoriaProdutoUseCase;
         this.categoriaProdutoDtoMapper = categoriaProdutoDtoMapper;
@@ -38,6 +41,12 @@ public class CategoriaProdutoController {
     public ResponseEntity<Map<String, Object>> create(@RequestBody @Valid CategoriaProdutoDTO categoriaProdutoDTO) {
         Map<String, Object> response = createCategoriaProdutoUseCase.execute(categoriaProdutoDtoMapper.toDomain(categoriaProdutoDTO));
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<CategoriaProdutoDTO> findById(@PathVariable Integer id) {
+        CategoriaProdutoDTO categoria = categoriaProdutoDtoMapper.toDto(findCategoriaProdutoByIdUseCase.execute(id));
+        return ResponseEntity.ok(categoria);
     }
 
     @GetMapping

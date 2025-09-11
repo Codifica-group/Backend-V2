@@ -7,6 +7,10 @@ import codifica.eleve.infrastructure.persistence.cliente.ClienteEntity;
 import codifica.eleve.infrastructure.persistence.cliente.ClienteJpaRepository;
 import codifica.eleve.infrastructure.persistence.pet.PetEntity;
 import codifica.eleve.infrastructure.persistence.pet.PetJpaRepository;
+import codifica.eleve.infrastructure.persistence.produto.ProdutoEntity;
+import codifica.eleve.infrastructure.persistence.produto.ProdutoJpaRepository;
+import codifica.eleve.infrastructure.persistence.produto.categoria.CategoriaProdutoEntity;
+import codifica.eleve.infrastructure.persistence.produto.categoria.CategoriaProdutoJpaRepository;
 import codifica.eleve.infrastructure.persistence.raca.RacaEntity;
 import codifica.eleve.infrastructure.persistence.raca.RacaJpaRepository;
 import codifica.eleve.infrastructure.persistence.raca.porte.PorteEntity;
@@ -59,6 +63,12 @@ public class DevDataInitializer {
     @Autowired
     private AgendaJpaRepository agendaJpaRepository;
 
+    @Autowired
+    private CategoriaProdutoJpaRepository categoriaProdutoJpaRepository;
+
+    @Autowired
+    private ProdutoJpaRepository produtoJpaRepository;
+
     @Bean
     public CommandLineRunner initDatabase() {
         return args -> {
@@ -83,6 +93,22 @@ public class DevDataInitializer {
                     new PorteEntity("Médio"),
                     new PorteEntity("Grande"));
             porteJpaRepository.saveAll(portes);
+
+            // CATEGORIAS DE PRODUTOS
+            List<CategoriaProdutoEntity> categorias = List.of(
+                    new CategoriaProdutoEntity("Gasto Fixo"),
+                    new CategoriaProdutoEntity("Manutenção"),
+                    new CategoriaProdutoEntity("Insumo")
+            );
+            categoriaProdutoJpaRepository.saveAll(categorias);
+
+            // PRODUTOS
+            List<ProdutoEntity> produtos = List.of(
+                    new ProdutoEntity("Conta de Água", categorias.get(0)),
+                    new ProdutoEntity("Secador", categorias.get(1)),
+                    new ProdutoEntity("Shampoo", categorias.get(2))
+            );
+            produtoJpaRepository.saveAll(produtos);
 
             // RAÇAS
             List<RacaEntity> racas = List.of(

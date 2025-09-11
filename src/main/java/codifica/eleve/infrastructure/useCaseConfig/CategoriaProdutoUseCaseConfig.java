@@ -14,6 +14,11 @@ public class CategoriaProdutoUseCaseConfig {
     }
 
     @Bean
+    public FindCategoriaProdutoByIdUseCase findCategoriaProdutoByIdUseCase(CategoriaProdutoRepository categoriaProdutoRepository) {
+        return new FindCategoriaProdutoByIdUseCase(categoriaProdutoRepository);
+    }
+
+    @Bean
     public ListCategoriaProdutoUseCase listCategoriaProdutoUseCase(CategoriaProdutoRepository categoriaProdutoRepository) {
         return new ListCategoriaProdutoUseCase(categoriaProdutoRepository);
     }

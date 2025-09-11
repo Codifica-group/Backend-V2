@@ -6,6 +6,7 @@ import codifica.eleve.infrastructure.adapters.CategoriaProdutoMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Repository
@@ -24,6 +25,11 @@ public class CategoriaProdutoRepositoryImpl implements CategoriaProdutoRepositor
         CategoriaProdutoEntity entity = categoriaProdutoMapper.toEntity(categoriaProduto);
         CategoriaProdutoEntity saved = categoriaProdutoJpaRepository.save(entity);
         return categoriaProdutoMapper.toDomain(saved);
+    }
+
+    @Override
+    public Optional<CategoriaProduto> findById(Integer id) {
+        return categoriaProdutoJpaRepository.findById(id).map(categoriaProdutoMapper::toDomain);
     }
 
     @Override
