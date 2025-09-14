@@ -35,4 +35,9 @@ public interface AgendaJpaRepository extends JpaRepository<AgendaEntity, Integer
                                     @Param("racaId") Integer racaId,
                                     @Param("servicoId") List<Integer> servicoId,
                                     @Param("servicoIdSize") Long servicoIdSize);
+
+    boolean existsByPetId(Integer petId);
+
+    @Query("SELECT COUNT(ase) > 0 FROM AgendaServicoEntity ase WHERE ase.servico.id = :servicoId")
+    boolean existsByServicoId(@Param("servicoId") Integer servicoId);
 }

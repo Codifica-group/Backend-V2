@@ -12,4 +12,6 @@ public interface AgendaRepository {
     List<Agenda> findConflitosExcluindoId(Integer id, Periodo periodo);
     void deleteById(Integer id);
     List<Agenda> findByFilter(Filtro filtro);
+    boolean existsByPetId(Integer petId);
+    boolean existsByServicoId(Integer servicoId);
 }

@@ -11,4 +11,5 @@ public interface ProdutoRepository {
     void deleteById(Integer id);
     boolean existsById(Integer id);
     boolean existsByCategoriaProdutoAndNome(Integer categoriaId, String nome);
+    boolean existsByCategoriaProdutoId(Integer categoriaId);
 }

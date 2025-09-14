@@ -2,6 +2,7 @@ package codifica.eleve.infrastructure.useCaseConfig;
 
 import codifica.eleve.core.application.usecase.cliente.*;
 import codifica.eleve.core.domain.cliente.ClienteRepository;
+import codifica.eleve.core.domain.pet.PetRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -28,7 +29,7 @@ public class ClienteUseCaseConfig {
     }
 
     @Bean
-    public DeleteClienteUseCase deleteClienteUseCase(ClienteRepository clienteRepository) {
-        return new DeleteClienteUseCase(clienteRepository);
+    public DeleteClienteUseCase deleteClienteUseCase(ClienteRepository clienteRepository, PetRepository petRepository) {
+        return new DeleteClienteUseCase(clienteRepository, petRepository);
     }
 }

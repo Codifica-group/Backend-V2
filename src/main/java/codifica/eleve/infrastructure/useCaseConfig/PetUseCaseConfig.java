@@ -1,6 +1,7 @@
 package codifica.eleve.infrastructure.useCaseConfig;
 
 import codifica.eleve.core.application.usecase.pet.*;
+import codifica.eleve.core.domain.agenda.AgendaRepository;
 import codifica.eleve.core.domain.pet.PetRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,7 +30,7 @@ public class PetUseCaseConfig {
     }
 
     @Bean
-    public DeletePetUseCase deletePetUseCase(PetRepository petRepository) {
-        return new DeletePetUseCase(petRepository);
+    public DeletePetUseCase deletePetUseCase(PetRepository petRepository, AgendaRepository agendaRepository) {
+        return new DeletePetUseCase(petRepository, agendaRepository);
     }
 }

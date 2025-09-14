@@ -1,6 +1,7 @@
 package codifica.eleve.infrastructure.useCaseConfig;
 
 import codifica.eleve.core.application.usecase.servico.*;
+import codifica.eleve.core.domain.agenda.AgendaRepository;
 import codifica.eleve.core.domain.servico.ServicoRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,8 +24,8 @@ public class ServicoUseCaseConfig {
     }
 
     @Bean
-    public DeleteServicoUseCase deleteServicoUseCase(ServicoRepository servicoRepository) {
-        return new DeleteServicoUseCase(servicoRepository);
+    public DeleteServicoUseCase deleteServicoUseCase(ServicoRepository servicoRepository, AgendaRepository agendaRepository) {
+        return new DeleteServicoUseCase(servicoRepository, agendaRepository);
     }
 
     @Bean

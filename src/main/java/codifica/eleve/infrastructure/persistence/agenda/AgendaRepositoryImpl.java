@@ -94,4 +94,14 @@ public class AgendaRepositoryImpl implements AgendaRepository {
                 .map(agendaMapper::toDomain)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public boolean existsByPetId(Integer petId) {
+        return agendaJpaRepository.existsByPetId(petId);
+    }
+
+    @Override
+    public boolean existsByServicoId(Integer servicoId) {
+        return agendaJpaRepository.existsByServicoId(servicoId);
+    }
 }

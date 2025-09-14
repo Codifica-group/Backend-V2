@@ -54,4 +54,14 @@ public class PetRepositoryImpl implements PetRepository {
     public boolean existsByNomeAndClienteId(String nome, Integer clienteId) {
         return petJpaRepository.existsByNomeAndClienteId(nome, clienteId);
     }
+
+    @Override
+    public boolean existsByRacaId(Integer racaId) {
+        return petJpaRepository.existsByRacaId(racaId);
+    }
+
+    @Override
+    public boolean existsByClienteId(Integer clienteId) {
+        return petJpaRepository.existsByClienteId(clienteId);
+    }
 }

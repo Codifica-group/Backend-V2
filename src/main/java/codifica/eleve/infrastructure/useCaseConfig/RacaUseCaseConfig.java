@@ -1,6 +1,7 @@
 package codifica.eleve.infrastructure.useCaseConfig;
 
 import codifica.eleve.core.application.usecase.raca.*;
+import codifica.eleve.core.domain.pet.PetRepository;
 import codifica.eleve.core.domain.raca.RacaRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,7 +30,7 @@ public class RacaUseCaseConfig {
     }
 
     @Bean
-    public DeleteRacaUseCase deleteRacaUseCase(RacaRepository racaRepository) {
-        return new DeleteRacaUseCase(racaRepository);
+    public DeleteRacaUseCase deleteRacaUseCase(RacaRepository racaRepository, PetRepository petRepository) {
+        return new DeleteRacaUseCase(racaRepository, petRepository);
     }
 }

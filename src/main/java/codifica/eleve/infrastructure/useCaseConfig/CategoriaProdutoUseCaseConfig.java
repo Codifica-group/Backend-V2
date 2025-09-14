@@ -1,6 +1,7 @@
 package codifica.eleve.infrastructure.useCaseConfig;
 
 import codifica.eleve.core.application.usecase.produto.categoria.*;
+import codifica.eleve.core.domain.produto.ProdutoRepository;
 import codifica.eleve.core.domain.produto.categoria.CategoriaProdutoRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,7 +30,7 @@ public class CategoriaProdutoUseCaseConfig {
     }
 
     @Bean
-    public DeleteCategoriaProdutoUseCase deleteCategoriaProdutoUseCase(CategoriaProdutoRepository categoriaProdutoRepository) {
-        return new DeleteCategoriaProdutoUseCase(categoriaProdutoRepository);
+    public DeleteCategoriaProdutoUseCase deleteCategoriaProdutoUseCase(CategoriaProdutoRepository categoriaProdutoRepository, ProdutoRepository produtoRepository) {
+        return new DeleteCategoriaProdutoUseCase(categoriaProdutoRepository, produtoRepository);
     }
 }
