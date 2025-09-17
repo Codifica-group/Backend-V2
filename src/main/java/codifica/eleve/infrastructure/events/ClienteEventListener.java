@@ -5,8 +5,6 @@ import codifica.eleve.core.application.usecase.cliente.CreateClienteUseCase;
 import codifica.eleve.core.domain.cliente.Cliente;
 import codifica.eleve.core.domain.shared.Endereco;
 import codifica.eleve.core.domain.shared.Telefone;
-import codifica.eleve.infrastructure.events.dto.ClienteCadastradoEvent;
-import codifica.eleve.infrastructure.events.dto.FalhaCadastroClienteEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -45,11 +43,14 @@ public class ClienteEventListener {
             Map<String, Object> response = createClienteUseCase.execute(cliente);
             Integer clienteId = (Integer) response.get("id");
             logger.info("Cliente do chatId {} cadastrado com Id: {}", event.getChatId(), clienteId);
-
-            clienteEventPublisher.publicarClienteCadastrado(new ClienteCadastradoEvent(event.getChatId(), clienteId));
+            clienteEventPublisher.publicarCadastroClienteResponse(
+                    CadastroClienteResponseEvent.sucesso(event.getChatId(), clienteId)
+            );
         } catch (Exception e) {
             logger.error("Erro ao processar evento de cadastro de cliente para o chatId: {}", event.getChatId(), e);
-            clienteEventPublisher.publicarFalhaCadastro(new FalhaCadastroClienteEvent(event.getChatId(), e.getMessage()));
+            clienteEventPublisher.publicarCadastroClienteResponse(
+                    CadastroClienteResponseEvent.falha(event.getChatId(), e.getMessage())
+            );
         }
     }
 }
