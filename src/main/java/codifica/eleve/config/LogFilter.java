@@ -33,7 +33,7 @@ public class LogFilter extends OncePerRequestFilter {
         String ip = request.getRemoteAddr();
         int status = response.getStatus();
 
-        logger.info("Requisição [Método: {}, URI: {}, Query: {}, IP: {}] - Resposta [Status: {}] - Duração: {} ms",
+        logger.info("REQUISIÇÃO [Método: {}, URI: {}, Query: {}, IP: {}] - Resposta [Status: {}] - Duração: {} ms",
                 metodo, uri, query, ip, status, duracao);
     }
 }

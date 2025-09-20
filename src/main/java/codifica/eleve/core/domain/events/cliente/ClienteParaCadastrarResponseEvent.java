@@ -1,26 +1,26 @@
-package codifica.eleve.infrastructure.events;
+package codifica.eleve.core.domain.events.cliente;
 
 import codifica.eleve.core.domain.shared.StatusEvent;
 
 import java.io.Serializable;
 
-public class CadastroClienteResponseEvent implements Serializable {
+public class ClienteParaCadastrarResponseEvent implements Serializable {
 
     private StatusEvent status;
     private Integer chatId;
     private Integer clienteId;
     private String erro;
 
-    public static CadastroClienteResponseEvent sucesso(Integer chatId, Integer clienteId) {
-        CadastroClienteResponseEvent event = new CadastroClienteResponseEvent();
+    public static ClienteParaCadastrarResponseEvent sucesso(Integer chatId, Integer clienteId) {
+        ClienteParaCadastrarResponseEvent event = new ClienteParaCadastrarResponseEvent();
         event.setStatus(StatusEvent.SUCESSO);
         event.setChatId(chatId);
         event.setClienteId(clienteId);
         return event;
     }
 
-    public static CadastroClienteResponseEvent falha(Integer chatId, String erro) {
-        CadastroClienteResponseEvent event = new CadastroClienteResponseEvent();
+    public static ClienteParaCadastrarResponseEvent falha(Integer chatId, String erro) {
+        ClienteParaCadastrarResponseEvent event = new ClienteParaCadastrarResponseEvent();
         event.setStatus(StatusEvent.FALHA);
         event.setChatId(chatId);
         event.setErro(erro);
