@@ -10,4 +10,5 @@ public interface RacaRepository {
     void deleteById(Integer id);
     boolean existsById(Integer id);
     boolean existsByNome(String nome);
+    Optional<Raca> findByNome(String nome);
 }

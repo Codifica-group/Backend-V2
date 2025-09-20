@@ -51,4 +51,9 @@ public class RacaRepositoryImpl implements RacaRepository {
     public boolean existsByNome(String nome) {
         return racaJpaRepository.existsByNome(nome);
     }
+
+    @Override
+    public Optional<Raca> findByNome(String nome) {
+        return racaJpaRepository.findByNome(nome).map(racaMapper::toDomain);
+    }
 }
