@@ -27,6 +27,7 @@ public class SolicitacaoAgendaEntity {
 
     private BigDecimal valorDeslocamento;
     private LocalDateTime dataHoraInicio;
+    private LocalDateTime dataHoraFim;
     private String status;
     private LocalDateTime dataHoraSolicitacao;
 
@@ -70,6 +71,14 @@ public class SolicitacaoAgendaEntity {
 
     public void setDataHoraInicio(LocalDateTime dataHoraInicio) {
         this.dataHoraInicio = dataHoraInicio;
+    }
+
+    public LocalDateTime getDataHoraFim() {
+        return dataHoraFim;
+    }
+
+    public void setDataHoraFim(LocalDateTime dataHoraFim) {
+        this.dataHoraFim = dataHoraFim;
     }
 
     public String getStatus() {

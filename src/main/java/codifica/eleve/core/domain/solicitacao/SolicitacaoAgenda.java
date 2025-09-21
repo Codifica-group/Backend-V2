@@ -10,17 +10,17 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public class SolicitacaoAgenda {
-    //TODO: adicionar campo DataHoraFim
 
     private Id id;
     private Pet pet;
     private List<Servico> servicos;
     private ValorMonetario valorDeslocamento;
     private LocalDateTime dataHoraInicio;
+    private LocalDateTime dataHoraFim;
     private LocalDateTime dataHoraSolicitacao;
     private String status;
 
-    public SolicitacaoAgenda(Pet pet, List<Servico> servicos, ValorMonetario valorDeslocamento, LocalDateTime dataHoraInicio, LocalDateTime dataHoraSolicitacao, String status) {
+    public SolicitacaoAgenda(Pet pet, List<Servico> servicos, ValorMonetario valorDeslocamento, LocalDateTime dataHoraInicio, LocalDateTime dataHoraFim, LocalDateTime dataHoraSolicitacao, String status) {
         if (servicos == null || servicos.isEmpty()) {
             throw new IllegalArgumentException("A lista de serviços não pode ser vazia.");
         }
@@ -34,6 +34,7 @@ public class SolicitacaoAgenda {
         this.servicos = servicos;
         this.valorDeslocamento = valorDeslocamento;
         this.dataHoraInicio = dataHoraInicio;
+        this.dataHoraFim = dataHoraFim;
         this.status = status;
 
         if (dataHoraSolicitacao == null) {
@@ -75,6 +76,14 @@ public class SolicitacaoAgenda {
 
     public void setDataHoraInicio(LocalDateTime dataHoraInicio) {
         this.dataHoraInicio = dataHoraInicio;
+    }
+
+    public LocalDateTime getDataHoraFim() {
+        return dataHoraFim;
+    }
+
+    public void setDataHoraFim(LocalDateTime dataHoraFim) {
+        this.dataHoraFim = dataHoraFim;
     }
 
     public String getStatus() {

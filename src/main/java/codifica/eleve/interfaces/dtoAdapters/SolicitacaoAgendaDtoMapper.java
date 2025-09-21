@@ -45,7 +45,7 @@ public class SolicitacaoAgendaDtoMapper {
                 Optional.ofNullable(dto.getValorDeslocamento()).orElse(BigDecimal.ZERO)
         );
 
-        return new SolicitacaoAgenda(pet, servicos, valorDeslocamento, dto.getDataHoraInicio(), dto.getDataHoraSolicitacao(), dto.getStatus());
+        return new SolicitacaoAgenda(pet, servicos, valorDeslocamento, dto.getDataHoraInicio(), dto.getDataHoraFim(), dto.getDataHoraSolicitacao(), dto.getStatus());
     }
 
     public SolicitacaoAgendaDTO toDto(SolicitacaoAgenda domain) {
@@ -78,6 +78,7 @@ public class SolicitacaoAgendaDtoMapper {
                 .collect(Collectors.toList()));
         dto.setValorDeslocamento(domain.getValorDeslocamento().getValor());
         dto.setDataHoraInicio(domain.getDataHoraInicio());
+        dto.setDataHoraFim(domain.getDataHoraFim());
         dto.setDataHoraSolicitacao(domain.getDataHoraSolicitacao());
         dto.setStatus(domain.getStatus());
 

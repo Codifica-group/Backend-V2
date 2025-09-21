@@ -15,6 +15,7 @@ public class SolicitacaoAgendaDTO {
     private List<ServicoDTO> servicos;
     private BigDecimal valorDeslocamento;
     private LocalDateTime dataHoraInicio;
+    private LocalDateTime dataHoraFim;
     private LocalDateTime dataHoraSolicitacao;
     private BigDecimal valorTotal;
     private String status;
@@ -75,6 +76,14 @@ public class SolicitacaoAgendaDTO {
 
     public void setDataHoraInicio(LocalDateTime dataHoraInicio) {
         this.dataHoraInicio = dataHoraInicio;
+    }
+
+    public LocalDateTime getDataHoraFim() {
+        return dataHoraFim;
+    }
+
+    public void setDataHoraFim(LocalDateTime dataHoraFim) {
+        this.dataHoraFim = dataHoraFim;
     }
 
     public LocalDateTime getDataHoraSolicitacao() {

@@ -58,6 +58,7 @@ public class SolicitacaoAgendaMapper {
 
         entity.setValorDeslocamento(domain.getValorDeslocamento().getValor());
         entity.setDataHoraInicio(domain.getDataHoraInicio());
+        entity.setDataHoraFim(domain.getDataHoraFim());
         entity.setDataHoraSolicitacao(domain.getDataHoraSolicitacao());
         entity.setStatus(domain.getStatus());
         return entity;
@@ -86,10 +87,8 @@ public class SolicitacaoAgendaMapper {
         }).collect(Collectors.toList());
 
         ValorMonetario valorDeslocamento = new ValorMonetario(entity.getValorDeslocamento());
-        LocalDateTime dataHoraInicio = entity.getDataHoraInicio();
-        LocalDateTime dataHoraSolicitacao = entity.getDataHoraSolicitacao();
 
-        SolicitacaoAgenda domain = new SolicitacaoAgenda(pet, servicos, valorDeslocamento, dataHoraInicio, dataHoraSolicitacao, entity.getStatus());
+        SolicitacaoAgenda domain = new SolicitacaoAgenda(pet, servicos, valorDeslocamento, entity.getDataHoraInicio(), entity.getDataHoraFim(), entity.getDataHoraSolicitacao(), entity.getStatus());
         if (entity.getId() != null) {
             domain.setId(new Id(entity.getId()));
         }
