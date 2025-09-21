@@ -1,6 +1,8 @@
 package codifica.eleve.core.domain.agenda;
 
 import codifica.eleve.core.domain.shared.Periodo;
+
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,4 +16,5 @@ public interface AgendaRepository {
     List<Agenda> findByFilter(Filtro filtro);
     boolean existsByPetId(Integer petId);
     boolean existsByServicoId(Integer servicoId);
+    List<Agenda> findConflitosByDataHoraInicio(LocalDateTime dataHoraInicio);
 }

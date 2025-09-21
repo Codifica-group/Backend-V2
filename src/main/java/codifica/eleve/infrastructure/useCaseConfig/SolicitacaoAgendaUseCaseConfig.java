@@ -1,6 +1,7 @@
 package codifica.eleve.infrastructure.useCaseConfig;
 
 import codifica.eleve.core.application.usecase.solicitacao.*;
+import codifica.eleve.core.domain.agenda.AgendaRepository;
 import codifica.eleve.core.domain.solicitacao.SolicitacaoAgendaRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,8 +10,8 @@ import org.springframework.context.annotation.Configuration;
 public class SolicitacaoAgendaUseCaseConfig {
 
     @Bean
-    public CreateSolicitacaoAgendaUseCase createSolicitacaoAgendaUseCase(SolicitacaoAgendaRepository repository) {
-        return new CreateSolicitacaoAgendaUseCase(repository);
+    public CreateSolicitacaoAgendaUseCase createSolicitacaoAgendaUseCase(SolicitacaoAgendaRepository repository, AgendaRepository agendaRepository) {
+        return new CreateSolicitacaoAgendaUseCase(repository, agendaRepository);
     }
 
     @Bean
@@ -24,8 +25,8 @@ public class SolicitacaoAgendaUseCaseConfig {
     }
 
     @Bean
-    public UpdateSolicitacaoAgendaUseCase updateSolicitacaoAgendaUseCase(SolicitacaoAgendaRepository repository) {
-        return new UpdateSolicitacaoAgendaUseCase(repository);
+    public UpdateSolicitacaoAgendaUseCase updateSolicitacaoAgendaUseCase(SolicitacaoAgendaRepository repository, AgendaRepository agendaRepository) {
+        return new UpdateSolicitacaoAgendaUseCase(repository, agendaRepository);
     }
 
     @Bean

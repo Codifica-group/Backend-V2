@@ -1,9 +1,9 @@
 package codifica.eleve.infrastructure.persistence.solicitacao;
 
+import codifica.eleve.core.domain.shared.Id;
 import codifica.eleve.core.domain.solicitacao.SolicitacaoAgenda;
 import codifica.eleve.core.domain.solicitacao.SolicitacaoAgendaRepository;
 import codifica.eleve.infrastructure.adapters.SolicitacaoAgendaMapper;
-import codifica.eleve.interfaces.dtoAdapters.SolicitacaoAgendaDtoMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -25,7 +25,8 @@ public class SolicitacaoAgendaRepositoryImpl implements SolicitacaoAgendaReposit
     public SolicitacaoAgenda save(SolicitacaoAgenda solicitacaoAgenda) {
         SolicitacaoAgendaEntity entity = mapper.toEntity(solicitacaoAgenda);
         SolicitacaoAgendaEntity savedEntity = jpaRepository.save(entity);
-        return mapper.toDomain(savedEntity);
+        solicitacaoAgenda.setId(new Id(savedEntity.getId()));
+        return solicitacaoAgenda;
     }
 
     @Override

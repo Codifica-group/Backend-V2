@@ -104,4 +104,12 @@ public class AgendaRepositoryImpl implements AgendaRepository {
     public boolean existsByServicoId(Integer servicoId) {
         return agendaJpaRepository.existsByServicoId(servicoId);
     }
+
+    @Override
+    public List<Agenda> findConflitosByDataHoraInicio(LocalDateTime dataHoraInicio) {
+        return agendaJpaRepository.findConflitosByDataHoraInicio(dataHoraInicio)
+                .stream()
+                .map(agendaMapper::toDomain)
+                .collect(Collectors.toList());
+    }
 }
