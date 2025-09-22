@@ -15,6 +15,7 @@ import codifica.eleve.core.domain.solicitacao.SolicitacaoAgenda;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -47,20 +48,16 @@ public class SolicitacaoParaCadastrarUseCase implements SolicitacaoEventListener
                     .orElseThrow(() -> new NotFoundException("Pet não encontrado."));
 
             List<Servico> servicos = event.getServicos().stream()
-                    .map(servicoEvent -> {
-                        Servico servico = servicoRepository.findById(servicoEvent.getId())
-                                .orElseThrow(() -> new NotFoundException("Serviço não encontrado."));
-                        servico.setValor(new ValorMonetario(servicoEvent.getValor()));
-                        return servico;
-                    })
+                    .map(servicoId -> servicoRepository.findById(servicoId)
+                            .orElseThrow(() -> new NotFoundException("Serviço não encontrado.")))
                     .collect(Collectors.toList());
 
             SolicitacaoAgenda solicitacaoAgenda = new SolicitacaoAgenda(
                     pet,
                     servicos,
-                    new ValorMonetario(event.getValorDeslocamento()),
+                    new ValorMonetario(BigDecimal.ZERO),
                     event.getDataHoraInicio(),
-                    event.getDataHoraFim(),
+                    null,
                     event.getDataHoraSolicitacao(),
                     event.getStatus()
             );
