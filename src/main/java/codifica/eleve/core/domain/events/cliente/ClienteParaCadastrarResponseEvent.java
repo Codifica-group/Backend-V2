@@ -9,13 +9,15 @@ public class ClienteParaCadastrarResponseEvent implements Serializable {
     private StatusEvent status;
     private Integer chatId;
     private Integer clienteId;
+    private String clienteNome;
     private String erro;
 
-    public static ClienteParaCadastrarResponseEvent sucesso(Integer chatId, Integer clienteId) {
+    public static ClienteParaCadastrarResponseEvent sucesso(Integer chatId, Integer clienteId, String clienteNome) {
         ClienteParaCadastrarResponseEvent event = new ClienteParaCadastrarResponseEvent();
         event.setStatus(StatusEvent.SUCESSO);
         event.setChatId(chatId);
         event.setClienteId(clienteId);
+        event.setClienteNome(clienteNome);
         return event;
     }
 
@@ -49,6 +51,14 @@ public class ClienteParaCadastrarResponseEvent implements Serializable {
 
     public void setClienteId(Integer clienteId) {
         this.clienteId = clienteId;
+    }
+
+    public String getClienteNome() {
+        return clienteNome;
+    }
+
+    public void setClienteNome(String clienteNome) {
+        this.clienteNome = clienteNome;
     }
 
     public String getErro() {

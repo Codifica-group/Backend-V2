@@ -50,10 +50,11 @@ public class ClienteParaCadastrarUseCase implements ClienteEventListenerPort {
 
             Map<String, Object> response = createClienteUseCase.execute(cliente);
             Integer clienteId = (Integer) response.get("id");
+            String primeiroNome = cliente.getNome().split(" ")[0];
             logger.info("SUCESSO: Cliente do chatId {} cadastrado com Id: {}", event.getChatId(), clienteId);
 
             clienteEventPublisher.publishClienteParaCadastrarResponse(
-                    ClienteParaCadastrarResponseEvent.sucesso(event.getChatId(), clienteId)
+                    ClienteParaCadastrarResponseEvent.sucesso(event.getChatId(), clienteId, primeiroNome)
             );
 
         } catch (Exception e) {
