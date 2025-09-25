@@ -46,4 +46,9 @@ public class AgendaUseCaseConfig {
     public FilterAgendaUseCase filterAgendaUseCase(AgendaRepository agendaRepository) {
         return new FilterAgendaUseCase(agendaRepository);
     }
+
+    @Bean
+    public DisponibilidadeAgendaUseCase disponibilidadeAgendaUseCase(AgendaRepository agendaRepository) {
+        return new DisponibilidadeAgendaUseCase(agendaRepository);
+    }
 }
