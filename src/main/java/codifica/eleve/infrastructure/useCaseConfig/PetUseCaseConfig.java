@@ -25,6 +25,11 @@ public class PetUseCaseConfig {
     }
 
     @Bean
+    public FindPetsByClienteIdUseCase findPetsByClienteIdUseCase(PetRepository petRepository) {
+        return new FindPetsByClienteIdUseCase(petRepository);
+    }
+
+    @Bean
     public UpdatePetUseCase updatePetUseCase(PetRepository petRepository) {
         return new UpdatePetUseCase(petRepository);
     }

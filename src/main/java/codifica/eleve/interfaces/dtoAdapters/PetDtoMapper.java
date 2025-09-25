@@ -61,4 +61,11 @@ public class PetDtoMapper {
         }
         return dto;
     }
+
+    public PetDTO toChatbotDto(Pet domain) {
+        PetDTO dto = new PetDTO();
+        dto.setId(domain.getId().getValue());
+        dto.setNome(domain.getNome());
+        return dto;
+    }
 }

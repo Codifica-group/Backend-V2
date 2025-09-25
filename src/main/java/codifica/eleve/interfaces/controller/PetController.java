@@ -19,16 +19,19 @@ public class PetController {
     private final CreatePetUseCase createPetUseCase;
     private final ListPetUseCase listPetUseCase;
     private final FindPetByIdUseCase findPetByIdUseCase;
+    private final FindPetsByClienteIdUseCase findPetsByClienteIdUseCase;
     private final UpdatePetUseCase updatePetUseCase;
     private final DeletePetUseCase deletePetUseCase;
     private final PetDtoMapper petDtoMapper;
 
     public PetController(CreatePetUseCase createPetUseCase, ListPetUseCase listPetUseCase,
-                         FindPetByIdUseCase findPetByIdUseCase, UpdatePetUseCase updatePetUseCase,
-                         DeletePetUseCase deletePetUseCase, PetDtoMapper petDtoMapper) {
+                         FindPetByIdUseCase findPetByIdUseCase, FindPetsByClienteIdUseCase findPetsByClienteIdUseCase,
+                         UpdatePetUseCase updatePetUseCase, DeletePetUseCase deletePetUseCase,
+                         PetDtoMapper petDtoMapper) {
         this.createPetUseCase = createPetUseCase;
         this.listPetUseCase = listPetUseCase;
         this.findPetByIdUseCase = findPetByIdUseCase;
+        this.findPetsByClienteIdUseCase = findPetsByClienteIdUseCase;
         this.updatePetUseCase = updatePetUseCase;
         this.deletePetUseCase = deletePetUseCase;
         this.petDtoMapper = petDtoMapper;
@@ -62,5 +65,13 @@ public class PetController {
     public ResponseEntity<Void> delete(@PathVariable Integer id) {
         deletePetUseCase.execute(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/filtro")
+    public ResponseEntity<List<PetDTO>> findByClienteId(@RequestParam(value = "clienteId", required = true) Integer clienteId) {
+        List<PetDTO> pets = findPetsByClienteIdUseCase.execute(clienteId).stream()
+                .map(petDtoMapper::toChatbotDto)
+                .collect(Collectors.toList());
+        return pets.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(pets);
     }
 }

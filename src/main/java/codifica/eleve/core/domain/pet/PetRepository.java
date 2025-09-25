@@ -6,6 +6,7 @@ import java.util.Optional;
 public interface PetRepository {
     Pet save(Pet pet);
     Optional<Pet> findById(Integer id);
+    List<Pet> findByClienteId(Integer id);
     List<Pet> findAll();
     void deleteById(Integer id);
     boolean existsById(Integer id);

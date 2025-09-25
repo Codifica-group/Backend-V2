@@ -36,6 +36,11 @@ public class PetRepositoryImpl implements PetRepository {
     }
 
     @Override
+    public List<Pet> findByClienteId(Integer id) {
+        return petJpaRepository.findByClienteId(id).stream().map(petMapper::toDomain).collect(Collectors.toList());
+    }
+
+    @Override
     public List<Pet> findAll() {
         return petJpaRepository.findAll().stream().map(petMapper::toDomain).collect(Collectors.toList());
     }
