@@ -13,7 +13,7 @@ public class ListClienteUseCase {
         this.clienteRepository = clienteRepository;
     }
 
-    public List<Cliente> execute() {
-        return clienteRepository.findAll();
+    public List<Cliente> execute(int offset, int size) {
+        return clienteRepository.findAll(offset, size);
     }
 }

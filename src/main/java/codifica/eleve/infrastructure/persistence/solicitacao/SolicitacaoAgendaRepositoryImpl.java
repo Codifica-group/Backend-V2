@@ -4,6 +4,7 @@ import codifica.eleve.core.domain.shared.Id;
 import codifica.eleve.core.domain.solicitacao.SolicitacaoAgenda;
 import codifica.eleve.core.domain.solicitacao.SolicitacaoAgendaRepository;
 import codifica.eleve.infrastructure.adapters.SolicitacaoAgendaMapper;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -35,8 +36,8 @@ public class SolicitacaoAgendaRepositoryImpl implements SolicitacaoAgendaReposit
     }
 
     @Override
-    public List<SolicitacaoAgenda> findAll() {
-        return jpaRepository.findAll().stream().map(mapper::toDomain).collect(Collectors.toList());
+    public List<SolicitacaoAgenda> findAll(int offset, int size) {
+        return jpaRepository.findAll(PageRequest.of(offset, size)).stream().map(mapper::toDomain).collect(Collectors.toList());
     }
 
     @Override

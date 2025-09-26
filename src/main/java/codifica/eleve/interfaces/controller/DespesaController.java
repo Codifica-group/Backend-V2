@@ -44,8 +44,9 @@ public class DespesaController {
     }
 
     @GetMapping
-    public ResponseEntity<List<DespesaDTO>> listAll() {
-        List<DespesaDTO> despesas = listDespesaUseCase.execute().stream()
+    public ResponseEntity<List<DespesaDTO>> listAll(@RequestParam(defaultValue = "0") int offset,
+                                                    @RequestParam(defaultValue = "10") int size) {
+        List<DespesaDTO> despesas = listDespesaUseCase.execute(offset, size).stream()
                 .map(despesaDtoMapper::toDto)
                 .collect(Collectors.toList());
         return despesas.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(despesas);

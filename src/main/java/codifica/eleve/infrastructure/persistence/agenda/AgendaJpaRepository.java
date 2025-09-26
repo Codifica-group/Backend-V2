@@ -2,6 +2,7 @@ package codifica.eleve.infrastructure.persistence.agenda;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -34,7 +35,8 @@ public interface AgendaJpaRepository extends JpaRepository<AgendaEntity, Integer
                                     @Param("petId") Integer petId,
                                     @Param("racaId") Integer racaId,
                                     @Param("servicoId") List<Integer> servicoId,
-                                    @Param("servicoIdSize") Long servicoIdSize);
+                                    @Param("servicoIdSize") Long servicoIdSize,
+                                    Pageable pageable);
 
     boolean existsByPetId(Integer petId);
 

@@ -63,8 +63,9 @@ public class UsuarioController {
     }
 
     @GetMapping
-    public ResponseEntity<List<UsuarioDTO>> list() {
-        List<Usuario> usuarios = listUseCase.execute();
+    public ResponseEntity<List<UsuarioDTO>> list(@RequestParam(defaultValue = "0") int offset,
+                                                 @RequestParam(defaultValue = "10") int size) {
+        List<Usuario> usuarios = listUseCase.execute(offset, size);
         List<UsuarioDTO> usuarioDTOS = usuarios.stream()
                 .map(usuarioDtoMapper::toDto)
                 .collect(Collectors.toList());

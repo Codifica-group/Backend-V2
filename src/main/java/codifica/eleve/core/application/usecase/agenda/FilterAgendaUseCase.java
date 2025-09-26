@@ -14,7 +14,7 @@ public class FilterAgendaUseCase {
         this.agendaRepository = agendaRepository;
     }
 
-    public List<Agenda> execute(Filtro filtro) {
-        return agendaRepository.findByFilter(filtro);
+    public List<Agenda> execute(Filtro filtro, int offset, int size) {
+        return agendaRepository.findByFilter(filtro, offset, size);
     }
 }

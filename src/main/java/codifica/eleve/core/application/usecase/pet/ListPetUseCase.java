@@ -11,7 +11,7 @@ public class ListPetUseCase {
         this.petRepository = petRepository;
     }
 
-    public List<Pet> execute() {
-        return petRepository.findAll();
+    public List<Pet> execute(int offset, int size) {
+        return petRepository.findAll(offset, size);
     }
 }

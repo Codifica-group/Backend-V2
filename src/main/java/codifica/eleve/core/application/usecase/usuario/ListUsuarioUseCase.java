@@ -12,7 +12,7 @@ public class ListUsuarioUseCase {
         this.usuarioRepository = usuarioRepository;
     }
 
-    public List<Usuario> execute() {
-        return usuarioRepository.findAll();
+    public List<Usuario> execute(int offset, int size) {
+        return usuarioRepository.findAll(offset, size);
     }
 }

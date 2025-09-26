@@ -3,6 +3,7 @@ package codifica.eleve.infrastructure.persistence.despesa;
 import codifica.eleve.core.domain.despesa.Despesa;
 import codifica.eleve.core.domain.despesa.DespesaRepository;
 import codifica.eleve.infrastructure.adapters.DespesaMapper;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -33,8 +34,8 @@ public class DespesaRepositoryImpl implements DespesaRepository {
     }
 
     @Override
-    public List<Despesa> findAll() {
-        return despesaJpaRepository.findAll().stream().map(despesaMapper::toDomain).collect(Collectors.toList());
+    public List<Despesa> findAll(int offset, int size) {
+        return despesaJpaRepository.findAll(PageRequest.of(offset, size)).stream().map(despesaMapper::toDomain).collect(Collectors.toList());
     }
 
     @Override

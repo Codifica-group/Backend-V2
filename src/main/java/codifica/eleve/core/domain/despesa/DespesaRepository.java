@@ -6,7 +6,7 @@ import java.util.Optional;
 public interface DespesaRepository {
     Despesa save(Despesa despesa);
     Optional<Despesa> findById(Integer id);
-    List<Despesa> findAll();
+    List<Despesa> findAll(int offset, int size);
     void deleteById(Integer id);
     boolean existsById(Integer id);
     boolean existsByProdutoId(Integer produtoId);

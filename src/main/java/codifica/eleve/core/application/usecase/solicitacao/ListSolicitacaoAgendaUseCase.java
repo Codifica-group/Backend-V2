@@ -13,7 +13,7 @@ public class ListSolicitacaoAgendaUseCase {
         this.repository = repository;
     }
 
-    public List<SolicitacaoAgenda> execute() {
-        return repository.findAll();
+    public List<SolicitacaoAgenda> execute(int offset, int size) {
+        return repository.findAll(offset, size);
     }
 }

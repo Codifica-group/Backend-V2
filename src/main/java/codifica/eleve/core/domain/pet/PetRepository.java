@@ -7,7 +7,7 @@ public interface PetRepository {
     Pet save(Pet pet);
     Optional<Pet> findById(Integer id);
     List<Pet> findByClienteId(Integer id);
-    List<Pet> findAll();
+    List<Pet> findAll(int offset, int size);
     void deleteById(Integer id);
     boolean existsById(Integer id);
     boolean existsByNomeAndClienteId(String nome, Integer clienteId);

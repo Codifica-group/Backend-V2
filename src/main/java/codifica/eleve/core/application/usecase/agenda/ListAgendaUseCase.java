@@ -12,7 +12,7 @@ public class ListAgendaUseCase {
         this.agendaRepository = agendaRepository;
     }
 
-    public List<Agenda> execute() {
-        return agendaRepository.findAll();
+    public List<Agenda> execute(int offset, int size) {
+        return agendaRepository.findAll(offset, size);
     }
 }

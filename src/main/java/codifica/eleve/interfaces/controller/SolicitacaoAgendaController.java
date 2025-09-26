@@ -49,8 +49,9 @@ public class SolicitacaoAgendaController {
     }
 
     @GetMapping
-    public ResponseEntity<List<SolicitacaoAgendaDTO>> listAll() {
-        List<SolicitacaoAgendaDTO> solicitacoes = listUseCase.execute().stream()
+    public ResponseEntity<List<SolicitacaoAgendaDTO>> listAll(@RequestParam(defaultValue = "0") int offset,
+                                                              @RequestParam(defaultValue = "10") int size) {
+        List<SolicitacaoAgendaDTO> solicitacoes = listUseCase.execute(offset, size).stream()
                 .map(mapper::toDto)
                 .collect(Collectors.toList());
         return solicitacoes.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(solicitacoes);

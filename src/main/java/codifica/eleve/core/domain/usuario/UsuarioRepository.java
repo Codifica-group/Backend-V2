@@ -8,7 +8,7 @@ public interface UsuarioRepository {
     Optional<Usuario> findById(Integer id);
     Optional<Usuario> findByEmail(String email);
     Optional<Usuario> findByEmailAndSenha(String email, String senha);
-    List<Usuario> findAll();
+    List<Usuario> findAll(int offset, int size);
     boolean existsById(Integer id);
     void deleteById(Integer id);
 }

@@ -6,6 +6,7 @@ import codifica.eleve.core.domain.agenda.Filtro;
 import codifica.eleve.core.domain.shared.Id;
 import codifica.eleve.core.domain.shared.Periodo;
 import codifica.eleve.infrastructure.adapters.AgendaMapper;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
@@ -38,8 +39,8 @@ public class AgendaRepositoryImpl implements AgendaRepository {
     }
 
     @Override
-    public List<Agenda> findAll() {
-        return agendaJpaRepository.findAll()
+    public List<Agenda> findAll(int offset, int size) {
+        return agendaJpaRepository.findAll(PageRequest.of(offset, size))
                 .stream()
                 .map(agendaMapper::toDomain)
                 .collect(Collectors.toList());
@@ -67,7 +68,7 @@ public class AgendaRepositoryImpl implements AgendaRepository {
     }
 
     @Override
-    public List<Agenda> findByFilter(Filtro filtro) {
+    public List<Agenda> findByFilter(Filtro filtro, int offset, int size) {
         LocalDateTime dataInicio = null;
         LocalDateTime dataFim = null;
         if (filtro.getPeriodo() != null) {
@@ -89,7 +90,8 @@ public class AgendaRepositoryImpl implements AgendaRepository {
                         filtro.getPetId(),
                         filtro.getRacaId(),
                         servicoId,
-                        servicoIdSize)
+                        servicoIdSize,
+                        PageRequest.of(offset, size))
                 .stream()
                 .map(agendaMapper::toDomain)
                 .collect(Collectors.toList());

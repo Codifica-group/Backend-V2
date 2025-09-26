@@ -4,6 +4,7 @@ import codifica.eleve.core.domain.pet.Pet;
 import codifica.eleve.core.domain.pet.PetRepository;
 import codifica.eleve.core.domain.shared.Id;
 import codifica.eleve.infrastructure.adapters.PetMapper;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -41,8 +42,8 @@ public class PetRepositoryImpl implements PetRepository {
     }
 
     @Override
-    public List<Pet> findAll() {
-        return petJpaRepository.findAll().stream().map(petMapper::toDomain).collect(Collectors.toList());
+    public List<Pet> findAll(int offset, int size) {
+        return petJpaRepository.findAll(PageRequest.of(offset, size)).stream().map(petMapper::toDomain).collect(Collectors.toList());
     }
 
     @Override

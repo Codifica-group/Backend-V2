@@ -6,7 +6,7 @@ import java.util.Optional;
 public interface SolicitacaoAgendaRepository {
     SolicitacaoAgenda save(SolicitacaoAgenda solicitacaoAgenda);
     Optional<SolicitacaoAgenda> findById(Integer id);
-    List<SolicitacaoAgenda> findAll();
+    List<SolicitacaoAgenda> findAll(int offset, int size);
     void deleteById(Integer id);
     boolean existsById(Integer id);
 }

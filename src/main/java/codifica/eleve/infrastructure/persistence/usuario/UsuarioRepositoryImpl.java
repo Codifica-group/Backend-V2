@@ -3,6 +3,7 @@ package codifica.eleve.infrastructure.persistence.usuario;
 import codifica.eleve.core.domain.usuario.Usuario;
 import codifica.eleve.core.domain.usuario.UsuarioRepository;
 import codifica.eleve.infrastructure.adapters.UsuarioMapper;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -45,8 +46,8 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
     }
 
     @Override
-    public List<Usuario> findAll() {
-        return usuarioJpaRepository.findAll().stream().map(entity -> usuarioMapper.toDomain(entity)).collect(Collectors.toList());
+    public List<Usuario> findAll(int offset, int size) {
+        return usuarioJpaRepository.findAll(PageRequest.of(offset, size)).stream().map(entity -> usuarioMapper.toDomain(entity)).collect(Collectors.toList());
     }
 
     @Override

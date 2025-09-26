@@ -39,8 +39,9 @@ public class ClienteController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ClienteDTO>> listAll() {
-        List<ClienteDTO> clientes = listClienteUseCase.execute().stream()
+    public ResponseEntity<List<ClienteDTO>> listAll(@RequestParam(defaultValue = "0") int offset,
+                                                    @RequestParam(defaultValue = "10") int size) {
+        List<ClienteDTO> clientes = listClienteUseCase.execute(offset, size).stream()
                 .map(clienteDtoMapper::toDto)
                 .collect(Collectors.toList());
         return clientes.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(clientes);

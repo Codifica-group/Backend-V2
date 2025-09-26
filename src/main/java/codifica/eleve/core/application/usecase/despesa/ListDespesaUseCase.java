@@ -11,7 +11,7 @@ public class ListDespesaUseCase {
         this.despesaRepository = despesaRepository;
     }
 
-    public List<Despesa> execute() {
-        return despesaRepository.findAll();
+    public List<Despesa> execute(int offset, int size) {
+        return despesaRepository.findAll(offset, size);
     }
 }

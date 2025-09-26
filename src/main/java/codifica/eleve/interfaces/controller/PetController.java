@@ -44,8 +44,9 @@ public class PetController {
     }
 
     @GetMapping
-    public ResponseEntity<List<PetDTO>> list() {
-        List<PetDTO> pets = listPetUseCase.execute().stream().map(petDtoMapper::toDto).collect(Collectors.toList());
+    public ResponseEntity<List<PetDTO>> list(@RequestParam(defaultValue = "0") int offset,
+                                             @RequestParam(defaultValue = "10") int size) {
+        List<PetDTO> pets = listPetUseCase.execute(offset, size).stream().map(petDtoMapper::toDto).collect(Collectors.toList());
         return pets.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(pets);
     }
 

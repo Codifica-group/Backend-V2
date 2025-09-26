@@ -72,8 +72,11 @@ public class AgendaController {
     }
 
     @GetMapping
-    public ResponseEntity<List<AgendaDTO>> listAll() {
-        List<AgendaDTO> agendas = listAgendaUseCase.execute().stream()
+    public ResponseEntity<List<AgendaDTO>> listAll(
+            @RequestParam(defaultValue = "0") int offset,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        List<AgendaDTO> agendas = listAgendaUseCase.execute(offset, size).stream()
                 .map(agendaDtoMapper::toDto)
                 .collect(Collectors.toList());
         return agendas.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(agendas);
@@ -102,8 +105,10 @@ public class AgendaController {
     }
 
     @PostMapping("/filtrar")
-    public ResponseEntity<List<AgendaDTO>> filtrar(@RequestBody FiltroDTO filtroDTO) {
-        List<AgendaDTO> agendas = filterAgendaUseCase.execute(filtroDtoMapper.toDomain(filtroDTO)).stream()
+    public ResponseEntity<List<AgendaDTO>> filtrar(@RequestBody FiltroDTO filtroDTO,
+                                                   @RequestParam(defaultValue = "0") int offset,
+                                                   @RequestParam(defaultValue = "10") int size) {
+        List<AgendaDTO> agendas = filterAgendaUseCase.execute(filtroDtoMapper.toDomain(filtroDTO), offset, size).stream()
                 .map(agendaDtoMapper::toDto)
                 .collect(Collectors.toList());
         return agendas.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(agendas);

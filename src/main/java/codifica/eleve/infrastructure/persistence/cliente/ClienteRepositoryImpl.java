@@ -3,6 +3,7 @@ package codifica.eleve.infrastructure.persistence.cliente;
 import codifica.eleve.core.domain.cliente.Cliente;
 import codifica.eleve.core.domain.cliente.ClienteRepository;
 import codifica.eleve.infrastructure.adapters.ClienteMapper;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -33,8 +34,8 @@ public class ClienteRepositoryImpl implements ClienteRepository {
     }
 
     @Override
-    public List<Cliente> findAll() {
-        return clienteJpaRepository.findAll().stream().map(clienteMapper::toDomain).collect(Collectors.toList());
+    public List<Cliente> findAll(int offset, int size) {
+        return clienteJpaRepository.findAll(PageRequest.of(offset, size)).stream().map(clienteMapper::toDomain).collect(Collectors.toList());
     }
 
     @Override
