@@ -61,6 +61,7 @@ As seguintes variáveis de ambiente precisam ser configuradas:
 | `TOKEN_EXPIRATION_TIME`   | Tempo de validade do token em milissegundos. **Padrão dev:** `28800000` (8 horas).          |
 | `CORS_ALLOWED_ORIGINS`    | Libera o acesso à API para o frontend. **Padrão dev:** `http://localhost:5173`.             |
 | `ORS_API_KEY`             | Chave da API do OpenRouteService para cálculos de rota. **Deve ser definida.**              |
+| `INTERNAL_API_KEY`       | Chave da API interna para conexão com microsserviço Chatbot. **Deve ser definida.**         |
 
 ### Passos para Execução
 
