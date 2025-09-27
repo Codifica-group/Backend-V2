@@ -4,6 +4,7 @@ import codifica.eleve.core.application.usecase.agenda.*;
 import codifica.eleve.core.application.usecase.agenda.calculadora.*;
 import codifica.eleve.core.domain.agenda.AgendaRepository;
 import codifica.eleve.core.domain.cliente.ClienteRepository;
+import codifica.eleve.core.domain.despesa.DespesaRepository;
 import codifica.eleve.core.domain.pet.PetRepository;
 import codifica.eleve.core.domain.servico.ServicoRepository;
 import org.springframework.context.annotation.Bean;
@@ -50,5 +51,10 @@ public class AgendaUseCaseConfig {
     @Bean
     public DisponibilidadeAgendaUseCase disponibilidadeAgendaUseCase(AgendaRepository agendaRepository) {
         return new DisponibilidadeAgendaUseCase(agendaRepository);
+    }
+
+    @Bean
+    public CalcularLucroUseCase calcularLucroUseCase(AgendaRepository agendaRepository, DespesaRepository despesaRepository) {
+        return new CalcularLucroUseCase(agendaRepository, despesaRepository);
     }
 }

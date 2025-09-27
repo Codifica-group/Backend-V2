@@ -2,6 +2,7 @@ package codifica.eleve.infrastructure.persistence.despesa;
 
 import codifica.eleve.core.domain.despesa.Despesa;
 import codifica.eleve.core.domain.despesa.DespesaRepository;
+import codifica.eleve.core.domain.shared.Periodo;
 import codifica.eleve.infrastructure.adapters.DespesaMapper;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
@@ -51,5 +52,13 @@ public class DespesaRepositoryImpl implements DespesaRepository {
     @Override
     public boolean existsByProdutoId(Integer produtoId) {
         return despesaJpaRepository.existsByProdutoId(produtoId);
+    }
+
+    @Override
+    public List<Despesa> findByPeriodo(Periodo periodo) {
+        return despesaJpaRepository.findByDataBetween(periodo.getInicio().toLocalDate(), periodo.getFim().toLocalDate())
+                .stream()
+                .map(despesaMapper::toDomain)
+                .collect(Collectors.toList());
     }
 }

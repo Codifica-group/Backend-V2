@@ -1,6 +1,7 @@
 package codifica.eleve.interfaces.controller;
 
 import codifica.eleve.core.application.usecase.agenda.*;
+import codifica.eleve.core.application.usecase.agenda.calculadora.CalcularLucroUseCase;
 import codifica.eleve.core.application.usecase.agenda.calculadora.CalcularServicoUseCase;
 import codifica.eleve.core.domain.shared.Periodo;
 import codifica.eleve.interfaces.dto.*;
@@ -9,11 +10,13 @@ import codifica.eleve.interfaces.dtoAdapters.FiltroDtoMapper;
 import codifica.eleve.interfaces.dtoAdapters.SugestaoServicoDtoMapper;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.springframework.cglib.core.Local;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +37,7 @@ public class AgendaController {
     private final AgendaDtoMapper agendaDtoMapper;
     private final SugestaoServicoDtoMapper sugestaoServicoDtoMapper;
     private final FiltroDtoMapper filtroDtoMapper;
+    private final CalcularLucroUseCase calcularLucroUseCase;
 
     public AgendaController(CreateAgendaUseCase createAgendaUseCase,
                             FindAgendaByIdUseCase findAgendaByIdUseCase,
@@ -45,7 +49,8 @@ public class AgendaController {
                             DisponibilidadeAgendaUseCase disponibilidadeAgendaUseCase,
                             AgendaDtoMapper agendaDtoMapper,
                             SugestaoServicoDtoMapper sugestaoServicoDtoMapper,
-                            FiltroDtoMapper filtroDtoMapper) {
+                            FiltroDtoMapper filtroDtoMapper,
+                            CalcularLucroUseCase calcularLucroUseCase) {
         this.createAgendaUseCase = createAgendaUseCase;
         this.findAgendaByIdUseCase = findAgendaByIdUseCase;
         this.listAgendaUseCase = listAgendaUseCase;
@@ -57,6 +62,7 @@ public class AgendaController {
         this.agendaDtoMapper = agendaDtoMapper;
         this.sugestaoServicoDtoMapper = sugestaoServicoDtoMapper;
         this.filtroDtoMapper = filtroDtoMapper;
+        this.calcularLucroUseCase = calcularLucroUseCase;
     }
 
     @PostMapping
@@ -125,5 +131,12 @@ public class AgendaController {
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dia) {
         List<LocalTime> horarios = disponibilidadeAgendaUseCase.findHorariosDisponiveis(dia);
         return ResponseEntity.ok(horarios);
+    }
+
+    @PostMapping("/calcular/lucro")
+    public ResponseEntity<LucroDTO> calcularLucro(@RequestBody LucroDTO lucroDTO) {
+        Periodo periodo = new Periodo(lucroDTO.getDataInicio().atStartOfDay(), lucroDTO.getDataFim().atTime(LocalTime.MAX));
+        LucroDTO lucro = calcularLucroUseCase.execute(periodo);
+        return ResponseEntity.ok(lucro);
     }
 }

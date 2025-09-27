@@ -1,5 +1,7 @@
 package codifica.eleve.core.domain.despesa;
 
+import codifica.eleve.core.domain.shared.Periodo;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -10,4 +12,5 @@ public interface DespesaRepository {
     void deleteById(Integer id);
     boolean existsById(Integer id);
     boolean existsByProdutoId(Integer produtoId);
+    List<Despesa> findByPeriodo(Periodo periodo);
 }
