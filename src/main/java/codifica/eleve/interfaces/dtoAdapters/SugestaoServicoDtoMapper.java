@@ -17,7 +17,7 @@ public class SugestaoServicoDtoMapper {
         SugestaoServicoDTO dto = new SugestaoServicoDTO();
         dto.setValor(domain.getValor().setScale(2, RoundingMode.HALF_UP));
 
-        dto.setServicos(domain.getServicos().stream().map(servico -> {
+        dto.setServico(domain.getServicos().stream().map(servico -> {
             ServicoDTO servicoDto = new ServicoDTO();
             servicoDto.setId(servico.getId().getValue());
             servicoDto.setNome(servico.getNome());

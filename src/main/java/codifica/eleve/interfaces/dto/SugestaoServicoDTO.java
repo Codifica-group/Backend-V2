@@ -8,7 +8,7 @@ import java.util.List;
 public class SugestaoServicoDTO {
 
     private BigDecimal valor;
-    private List<ServicoDTO> servicos;
+    private List<ServicoDTO> servico;
     private DeslocamentoResponseDTO deslocamento;
 
     public BigDecimal getValor() {
@@ -19,12 +19,12 @@ public class SugestaoServicoDTO {
         this.valor = valor;
     }
 
-    public List<ServicoDTO> getServicos() {
-        return servicos;
+    public List<ServicoDTO> getServico() {
+        return servico;
     }
 
-    public void setServicos(List<ServicoDTO> servicos) {
-        this.servicos = servicos;
+    public void setServico(List<ServicoDTO> servico) {
+        this.servico = servico;
     }
 
     public DeslocamentoResponseDTO getDeslocamento() {

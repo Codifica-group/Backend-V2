@@ -4,19 +4,36 @@ import java.math.BigDecimal;
 
 public class DeslocamentoResponseDTO {
     private BigDecimal distanciaKm;
-    private BigDecimal taxa;
-    private BigDecimal tempoMinutos;
+    private BigDecimal valor;
+    private BigDecimal tempo;
 
-    public DeslocamentoResponseDTO(BigDecimal distanciaKm, BigDecimal taxa, BigDecimal tempoMinutos) {
+    public DeslocamentoResponseDTO(BigDecimal distanciaKm, BigDecimal valor, BigDecimal tempo) {
         this.distanciaKm = distanciaKm;
-        this.taxa = taxa;
-        this.tempoMinutos = tempoMinutos;
+        this.valor = valor;
+        this.tempo = tempo;
     }
 
-    public BigDecimal getDistanciaKm() { return distanciaKm; }
-    public void setDistanciaKm(BigDecimal distanciaKm) { this.distanciaKm = distanciaKm; }
-    public BigDecimal getTaxa() { return taxa; }
-    public void setTaxa(BigDecimal taxa) { this.taxa = taxa; }
-    public BigDecimal getTempoMinutos() { return tempoMinutos; }
-    public void setTempoMinutos(BigDecimal tempoMinutos) { this.tempoMinutos = tempoMinutos; }
+    public BigDecimal getDistanciaKm() {
+        return distanciaKm;
+    }
+
+    public void setDistanciaKm(BigDecimal distanciaKm) {
+        this.distanciaKm = distanciaKm;
+    }
+
+    public BigDecimal getValor() {
+        return valor;
+    }
+
+    public void setValor(BigDecimal valor) {
+        this.valor = valor;
+    }
+
+    public BigDecimal getTempo() {
+        return tempo;
+    }
+
+    public void setTempo(BigDecimal tempo) {
+        this.tempo = tempo;
+    }
 }
