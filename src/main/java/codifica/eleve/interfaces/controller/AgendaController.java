@@ -121,7 +121,11 @@ public class AgendaController {
     }
 
     @GetMapping("/disponibilidade/dias")
-    public ResponseEntity<List<Map<String, Object>>> getDiasDisponiveis(@RequestBody Periodo periodo) {
+    public ResponseEntity<List<Map<String, Object>>> getDiasDisponiveis(
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate inicio,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fim) {
+
+        Periodo periodo = new Periodo(inicio.atStartOfDay(), fim.atTime(LocalTime.MAX));
         List<Map<String, Object>> dias = disponibilidadeAgendaUseCase.findDiasDisponiveis(periodo);
         return dias.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(dias);
     }
