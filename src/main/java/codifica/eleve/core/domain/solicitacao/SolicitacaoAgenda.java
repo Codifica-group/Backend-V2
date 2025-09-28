@@ -12,6 +12,7 @@ import java.util.List;
 public class SolicitacaoAgenda {
 
     private Id id;
+    private Integer chatId;
     private Pet pet;
     private List<Servico> servicos;
     private ValorMonetario valorDeslocamento;
@@ -20,7 +21,7 @@ public class SolicitacaoAgenda {
     private LocalDateTime dataHoraSolicitacao;
     private String status;
 
-    public SolicitacaoAgenda(Pet pet, List<Servico> servicos, ValorMonetario valorDeslocamento, LocalDateTime dataHoraInicio, LocalDateTime dataHoraFim, LocalDateTime dataHoraSolicitacao, String status) {
+    public SolicitacaoAgenda(Integer chatId, Pet pet, List<Servico> servicos, ValorMonetario valorDeslocamento, LocalDateTime dataHoraInicio, LocalDateTime dataHoraFim, LocalDateTime dataHoraSolicitacao, String status) {
         if (servicos == null || servicos.isEmpty()) {
             throw new IllegalArgumentException("A lista de serviços não pode ser vazia.");
         }
@@ -30,6 +31,7 @@ public class SolicitacaoAgenda {
         if (status == null || status.isEmpty()) {
             throw new IllegalArgumentException("O status da solicitação não pode ser vazio.");
         }
+        this.chatId = chatId;
         this.pet = pet;
         this.servicos = servicos;
         this.valorDeslocamento = valorDeslocamento;
@@ -52,6 +54,14 @@ public class SolicitacaoAgenda {
 
     public void setId(Id id) {
         this.id = id;
+    }
+
+    public Integer getChatId() {
+        return chatId;
+    }
+
+    public void setChatId(Integer chatId) {
+        this.chatId = chatId;
     }
 
     public Pet getPet() {

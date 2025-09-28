@@ -36,6 +36,7 @@ public class SolicitacaoAgendaMapper {
         if (domain.getId() != null) {
             entity.setId(domain.getId().getValue());
         }
+        entity.setChatId(domain.getChatId());
 
         PetEntity petEntity = new PetEntity();
         petEntity.setId(domain.getPet().getId().getValue());
@@ -88,7 +89,7 @@ public class SolicitacaoAgendaMapper {
 
         ValorMonetario valorDeslocamento = new ValorMonetario(entity.getValorDeslocamento());
 
-        SolicitacaoAgenda domain = new SolicitacaoAgenda(pet, servicos, valorDeslocamento, entity.getDataHoraInicio(), entity.getDataHoraFim(), entity.getDataHoraSolicitacao(), entity.getStatus());
+        SolicitacaoAgenda domain = new SolicitacaoAgenda(entity.getChatId(), pet, servicos, valorDeslocamento, entity.getDataHoraInicio(), entity.getDataHoraFim(), entity.getDataHoraSolicitacao(), entity.getStatus());
         if (entity.getId() != null) {
             domain.setId(new Id(entity.getId()));
         }
