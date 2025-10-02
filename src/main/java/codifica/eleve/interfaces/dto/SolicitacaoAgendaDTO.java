@@ -9,7 +9,6 @@ import java.util.List;
 public class SolicitacaoAgendaDTO {
 
     private Integer id;
-    private Integer chatId;
     private Integer petId;
     private ClienteDTO cliente;
     private PetDTO pet;
@@ -29,14 +28,6 @@ public class SolicitacaoAgendaDTO {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getChatId() {
-        return chatId;
-    }
-
-    public void setChatId(Integer chatId) {
-        this.chatId = chatId;
     }
 
     public Integer getPetId() {

@@ -1,10 +1,8 @@
 package codifica.eleve.infrastructure.useCaseConfig;
 
-import codifica.eleve.core.application.ports.out.events.SolicitacaoEventPublisherPort;
 import codifica.eleve.core.application.usecase.solicitacao.*;
 import codifica.eleve.core.domain.agenda.AgendaRepository;
 import codifica.eleve.core.domain.solicitacao.SolicitacaoAgendaRepository;
-import codifica.eleve.interfaces.dtoAdapters.SolicitacaoAgendaDtoMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -27,8 +25,8 @@ public class SolicitacaoAgendaUseCaseConfig {
     }
 
     @Bean
-    public UpdateSolicitacaoAgendaUseCase updateSolicitacaoAgendaUseCase(SolicitacaoAgendaRepository repository, AgendaRepository agendaRepository, SolicitacaoEventPublisherPort solicitacaoEventPublisher, SolicitacaoAgendaDtoMapper solicitacaoAgendaDtoMapper) {
-        return new UpdateSolicitacaoAgendaUseCase(repository, agendaRepository, solicitacaoEventPublisher, solicitacaoAgendaDtoMapper);
+    public UpdateSolicitacaoAgendaUseCase updateSolicitacaoAgendaUseCase(SolicitacaoAgendaRepository repository, AgendaRepository agendaRepository) {
+        return new UpdateSolicitacaoAgendaUseCase(repository, agendaRepository);
     }
 
     @Bean

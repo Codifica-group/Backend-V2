@@ -15,8 +15,6 @@ public class SolicitacaoAgendaEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private Integer chatId;
-
     @ManyToOne
     private PetEntity pet;
 
@@ -41,14 +39,6 @@ public class SolicitacaoAgendaEntity {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Integer getChatId() {
-        return chatId;
-    }
-
-    public void setChatId(Integer chatId) {
-        this.chatId = chatId;
     }
 
     public PetEntity getPet() {

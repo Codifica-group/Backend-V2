@@ -53,7 +53,6 @@ public class SolicitacaoParaCadastrarUseCase implements SolicitacaoEventListener
                     .collect(Collectors.toList());
 
             SolicitacaoAgenda solicitacaoAgenda = new SolicitacaoAgenda(
-                    event.getChatId(),
                     pet,
                     servicos,
                     new ValorMonetario(BigDecimal.ZERO),
