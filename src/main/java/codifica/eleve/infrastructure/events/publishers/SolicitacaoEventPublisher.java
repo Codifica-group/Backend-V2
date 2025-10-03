@@ -1,6 +1,7 @@
 package codifica.eleve.infrastructure.events.publishers;
 
 import codifica.eleve.core.application.ports.out.events.SolicitacaoEventPublisherPort;
+import codifica.eleve.core.domain.events.solicitacao.SolicitacaoAtualizadaEvent;
 import codifica.eleve.core.domain.events.solicitacao.SolicitacaoParaCadastrarResponseEvent;
 import codifica.eleve.infrastructure.rabbitMQ.RabbitMQConfig;
 import codifica.eleve.infrastructure.rabbitMQ.SolicitacaoRabbitMQConfig;
@@ -21,6 +22,15 @@ public class SolicitacaoEventPublisher implements SolicitacaoEventPublisherPort 
         rabbitTemplate.convertAndSend(
                 RabbitMQConfig.EXCHANGE_NAME,
                 SolicitacaoRabbitMQConfig.ROUTING_KEY_SOLICITACAO_RESPONSE,
+                event
+        );
+    }
+
+    @Override
+    public void publishSolicitacaoAtualizada(SolicitacaoAtualizadaEvent event) {
+        rabbitTemplate.convertAndSend(
+                RabbitMQConfig.EXCHANGE_NAME,
+                SolicitacaoRabbitMQConfig.ROUTING_KEY_SOLICITACAO_ATUALIZADA,
                 event
         );
     }

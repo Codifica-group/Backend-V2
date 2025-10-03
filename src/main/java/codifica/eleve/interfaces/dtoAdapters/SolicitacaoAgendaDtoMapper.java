@@ -45,7 +45,7 @@ public class SolicitacaoAgendaDtoMapper {
                 Optional.ofNullable(dto.getValorDeslocamento()).orElse(BigDecimal.ZERO)
         );
 
-        return new SolicitacaoAgenda(pet, servicos, valorDeslocamento, dto.getDataHoraInicio(), dto.getDataHoraFim(), dto.getDataHoraSolicitacao(), dto.getStatus());
+        return new SolicitacaoAgenda(dto.getChatId(), pet, servicos, valorDeslocamento, dto.getDataHoraInicio(), dto.getDataHoraFim(), dto.getDataHoraSolicitacao(), dto.getStatus());
     }
 
     public SolicitacaoAgendaDTO toDto(SolicitacaoAgenda domain) {
@@ -53,6 +53,7 @@ public class SolicitacaoAgendaDtoMapper {
         if (domain.getId() != null) {
             dto.setId(domain.getId().getValue());
         }
+        dto.setChatId(domain.getChatId());
 
         Pet petDomain = domain.getPet();
         PetDTO petDTO = new PetDTO();
@@ -92,6 +93,47 @@ public class SolicitacaoAgendaDtoMapper {
             valorTotal = valorTotal.add(dto.getValorDeslocamento());
         }
         dto.setValorTotal(valorTotal);
+        return dto;
+    }
+
+    public SolicitacaoAgendaDTO toDtoEvent(SolicitacaoAgenda domain) {
+        SolicitacaoAgendaDTO dto = toDto(domain);
+        dto.setId(domain.getId().getValue());
+        dto.setChatId(domain.getChatId());
+
+        PetDTO petDTO = new PetDTO();
+        petDTO.setId(domain.getPet().getId().getValue());
+        petDTO.setNome(domain.getPet().getNome());
+        dto.setPet(petDTO);
+
+        dto.setServicos(domain.getServicos().stream()
+                .map(servico -> {
+                    ServicoDTO servicoDTO = new ServicoDTO();
+                    servicoDTO.setId(servico.getId().getValue());
+                    servicoDTO.setNome(servico.getNome());
+                    servicoDTO.setValor(servico.getValor().getValor());
+                    return servicoDTO;
+                })
+                .collect(Collectors.toList()));
+
+        dto.setValorDeslocamento(domain.getValorDeslocamento().getValor());
+        dto.setDataHoraInicio(domain.getDataHoraInicio());
+        dto.setDataHoraFim(domain.getDataHoraFim());
+        dto.setDataHoraSolicitacao(domain.getDataHoraSolicitacao());
+        dto.setDataHoraSolicitacao(domain.getDataHoraSolicitacao());
+        dto.setStatus(domain.getStatus());
+
+        BigDecimal valorTotal = BigDecimal.ZERO;
+        if (dto.getServicos() != null) {
+            valorTotal = dto.getServicos().stream()
+                    .map(ServicoDTO::getValor)
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+        }
+        if (dto.getValorDeslocamento() != null) {
+            valorTotal = valorTotal.add(dto.getValorDeslocamento());
+        }
+        dto.setValorTotal(valorTotal);
+
         return dto;
     }
 }
