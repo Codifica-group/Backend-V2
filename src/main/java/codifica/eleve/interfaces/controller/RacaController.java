@@ -23,18 +23,20 @@ public class RacaController {
     private final DeleteRacaUseCase deleteRacaUseCase;
     private final RacaDtoMapper racaDtoMapper;
     private final FindRacaByNomeUseCase findRacaByNomeUseCase;
+    private final FindRacasByNomeSemelhanteUseCase findRacasByNomeSemelhanteUseCase;
 
     public RacaController(CreateRacaUseCase createRacaUseCase, ListRacaUseCase listRacaUseCase,
                           FindRacaByIdUseCase findRacaByIdUseCase, UpdateRacaUseCase updateRacaUseCase,
                           DeleteRacaUseCase deleteRacaUseCase, RacaDtoMapper racaDtoMapper,
-                          FindRacaByNomeUseCase findRacaByNomeUseCase) {
+                          FindRacaByNomeUseCase findRacaByNomeUseCase, FindRacasByNomeSemelhanteUseCase findRacasByNomeSemelhanteUseCase) {
         this.createRacaUseCase = createRacaUseCase;
         this.listRacaUseCase = listRacaUseCase;
         this.findRacaByIdUseCase = findRacaByIdUseCase;
         this.updateRacaUseCase = updateRacaUseCase;
         this.deleteRacaUseCase = deleteRacaUseCase;
         this.racaDtoMapper = racaDtoMapper;
-        this.findRacaByNomeUseCase = findRacaByNomeUseCase; 
+        this.findRacaByNomeUseCase = findRacaByNomeUseCase;
+        this.findRacasByNomeSemelhanteUseCase = findRacasByNomeSemelhanteUseCase;
     }
 
     @PostMapping
@@ -60,6 +62,13 @@ public class RacaController {
     public ResponseEntity<RacaDTO> findByNome(@PathVariable String nome) {
         Raca raca = findRacaByNomeUseCase.execute(nome);
         return ResponseEntity.ok(racaDtoMapper.toDto(raca));
+    }
+
+    @GetMapping("/nome/aproximado/{nome}")
+    public ResponseEntity<List<RacaDTO>> findByNomeSemelhante(@PathVariable String nome) {
+        List<Raca> racas = findRacasByNomeSemelhanteUseCase.execute(nome);
+        List<RacaDTO> racaDTOS = racas.stream().map(racaDtoMapper::toDto).collect(Collectors.toList());
+        return racaDTOS.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(racaDTOS);
     }
 
     @PutMapping("/{id}")

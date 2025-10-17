@@ -38,4 +38,9 @@ public class RacaUseCaseConfig {
     public FindRacaByNomeUseCase findRacaByNomeUseCase(RacaRepository racaRepository) {
         return new FindRacaByNomeUseCase(racaRepository);
     }
+
+    @Bean
+    public FindRacasByNomeSemelhanteUseCase findRacasByNomeSemelhanteUseCase(RacaRepository racaRepository) {
+        return new FindRacasByNomeSemelhanteUseCase(racaRepository);
+    }
 }
