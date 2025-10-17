@@ -22,16 +22,19 @@ public class RacaController {
     private final UpdateRacaUseCase updateRacaUseCase;
     private final DeleteRacaUseCase deleteRacaUseCase;
     private final RacaDtoMapper racaDtoMapper;
+    private final FindRacaByNomeUseCase findRacaByNomeUseCase;
 
     public RacaController(CreateRacaUseCase createRacaUseCase, ListRacaUseCase listRacaUseCase,
                           FindRacaByIdUseCase findRacaByIdUseCase, UpdateRacaUseCase updateRacaUseCase,
-                          DeleteRacaUseCase deleteRacaUseCase, RacaDtoMapper racaDtoMapper) {
+                          DeleteRacaUseCase deleteRacaUseCase, RacaDtoMapper racaDtoMapper,
+                          FindRacaByNomeUseCase findRacaByNomeUseCase) {
         this.createRacaUseCase = createRacaUseCase;
         this.listRacaUseCase = listRacaUseCase;
         this.findRacaByIdUseCase = findRacaByIdUseCase;
         this.updateRacaUseCase = updateRacaUseCase;
         this.deleteRacaUseCase = deleteRacaUseCase;
         this.racaDtoMapper = racaDtoMapper;
+        this.findRacaByNomeUseCase = findRacaByNomeUseCase; 
     }
 
     @PostMapping
@@ -50,6 +53,12 @@ public class RacaController {
     @GetMapping("/{id}")
     public ResponseEntity<RacaDTO> findById(@PathVariable Integer id) {
         Raca raca = findRacaByIdUseCase.execute(id);
+        return ResponseEntity.ok(racaDtoMapper.toDto(raca));
+    }
+
+    @GetMapping("/nome/{nome}")
+    public ResponseEntity<RacaDTO> findByNome(@PathVariable String nome) {
+        Raca raca = findRacaByNomeUseCase.execute(nome);
         return ResponseEntity.ok(racaDtoMapper.toDto(raca));
     }
 

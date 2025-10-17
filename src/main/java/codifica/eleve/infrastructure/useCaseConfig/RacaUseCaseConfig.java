@@ -33,4 +33,9 @@ public class RacaUseCaseConfig {
     public DeleteRacaUseCase deleteRacaUseCase(RacaRepository racaRepository, PetRepository petRepository) {
         return new DeleteRacaUseCase(racaRepository, petRepository);
     }
+
+    @Bean
+    public FindRacaByNomeUseCase findRacaByNomeUseCase(RacaRepository racaRepository) {
+        return new FindRacaByNomeUseCase(racaRepository);
+    }
 }

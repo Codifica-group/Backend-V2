@@ -54,6 +54,6 @@ public class RacaRepositoryImpl implements RacaRepository {
 
     @Override
     public Optional<Raca> findByNome(String nome) {
-        return racaJpaRepository.findByNome(nome).map(racaMapper::toDomain);
+        return racaJpaRepository.findByNomeRemovingSpacesAndIgnoringCase(nome).map(racaMapper::toDomain);
     }
 }

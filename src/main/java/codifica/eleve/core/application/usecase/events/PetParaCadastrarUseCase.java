@@ -9,8 +9,9 @@ import codifica.eleve.core.domain.events.pet.PetParaCadastrarEvent;
 import codifica.eleve.core.domain.events.pet.PetParaCadastrarResponseEvent;
 import codifica.eleve.core.domain.pet.Pet;
 import codifica.eleve.core.domain.raca.Raca;
-import codifica.eleve.core.domain.raca.RacaRepository;
+import codifica.eleve.core.domain.shared.Id;
 import codifica.eleve.core.domain.shared.exceptions.NotFoundException;
+import codifica.eleve.interfaces.dtoAdapters.RacaDtoMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,20 +21,20 @@ public class PetParaCadastrarUseCase implements PetEventListenerPort {
 
     private static final Logger logger = LoggerFactory.getLogger(PetParaCadastrarUseCase.class);
 
-    private final RacaRepository racaRepository;
     private final ClienteRepository clienteRepository;
     private final CreatePetUseCase createPetUseCase;
     private final PetEventPublisherPort petEventPublisher;
+    private final RacaDtoMapper racaDtoMapper;
 
     public PetParaCadastrarUseCase(
-            RacaRepository racaRepository,
             ClienteRepository clienteRepository,
             CreatePetUseCase createPetUseCase,
-            PetEventPublisherPort petEventPublisher) {
-        this.racaRepository = racaRepository;
+            PetEventPublisherPort petEventPublisher,
+            RacaDtoMapper racaDtoMapper) {
         this.clienteRepository = clienteRepository;
         this.createPetUseCase = createPetUseCase;
         this.petEventPublisher = petEventPublisher;
+        this.racaDtoMapper = racaDtoMapper;
     }
 
     @Override
@@ -43,9 +44,8 @@ public class PetParaCadastrarUseCase implements PetEventListenerPort {
             Cliente cliente = clienteRepository.findById(event.getClienteId())
                     .orElseThrow(() -> new NotFoundException("Cliente não encontrado."));
 
-            // TODO: Criar tratativa para Raça não encontrada.
-            Raca raca = racaRepository.findByNome(event.getRaca())
-                    .orElseThrow(() -> new NotFoundException("Raça nao encontrada."));
+            Raca raca = racaDtoMapper.toDomain(event.getRaca());
+            raca.setId(new Id(event.getRaca().getId()));
 
             Pet pet = new Pet(event.getNome(), raca, cliente);
             Map<String, Object> response = createPetUseCase.execute(pet);

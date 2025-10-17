@@ -1,5 +1,7 @@
 package codifica.eleve.core.domain.events.pet;
 
+import codifica.eleve.interfaces.dto.RacaDTO;
+
 import java.io.Serializable;
 
 public class PetParaCadastrarEvent implements Serializable {
@@ -7,7 +9,7 @@ public class PetParaCadastrarEvent implements Serializable {
     private Integer chatId;
     private Integer clienteId;
     private String nome;
-    private String raca;
+    private RacaDTO raca;
 
     public Integer getChatId() {
         return chatId;
@@ -21,7 +23,7 @@ public class PetParaCadastrarEvent implements Serializable {
         return nome;
     }
 
-    public String getRaca() {
+    public RacaDTO getRaca() {
         return raca;
     }
 }
