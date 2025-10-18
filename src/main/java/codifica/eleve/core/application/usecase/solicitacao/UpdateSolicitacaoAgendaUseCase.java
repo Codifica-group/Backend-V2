@@ -36,17 +36,16 @@ public class UpdateSolicitacaoAgendaUseCase {
         SolicitacaoAgenda solicitacaoExistente = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Solicitação de agenda não encontrada."));
 
-        if (!agendaRepository.findConflitosByDataHoraInicio(solicitacaoAgenda.getDataHoraInicio()).isEmpty()) {
+        boolean aceito = "ACEITO_PELO_PETSHOP".equalsIgnoreCase(solicitacaoAgenda.getStatus());
+
+        if (aceito && !agendaRepository.findConflitosByDataHoraInicio(solicitacaoAgenda.getDataHoraInicio()).isEmpty()) {
             throw new ConflictException("Já existe um agendamento para este período.");
         }
 
         boolean dataInicioAlterada = !Objects.equals(solicitacaoExistente.getDataHoraInicio(), solicitacaoAgenda.getDataHoraInicio());
-
         solicitacaoAgenda.setId(new Id(id));
         SolicitacaoAgenda solicitacao = repository.save(solicitacaoAgenda);
         SolicitacaoAgendaDTO solicitacaoDTO = solicitacaoAgendaDtoMapper.toDtoEvent(solicitacao);
-
-        boolean aceito = "ACEITO_PELO_USUARIO".equalsIgnoreCase(solicitacao.getStatus());
 
         solicitacaoEventPublisher.publishSolicitacaoAtualizada(new SolicitacaoAtualizadaEvent(aceito, dataInicioAlterada, solicitacaoDTO));
         logger.info("EVENTO: SolicitacaoAtualizada publicado com sucesso.");

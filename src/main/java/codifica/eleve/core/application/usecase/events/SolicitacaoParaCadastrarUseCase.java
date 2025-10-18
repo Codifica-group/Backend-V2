@@ -48,8 +48,12 @@ public class SolicitacaoParaCadastrarUseCase implements SolicitacaoEventListener
                     .orElseThrow(() -> new NotFoundException("Pet não encontrado."));
 
             List<Servico> servicos = event.getServicos().stream()
-                    .map(servicoId -> servicoRepository.findById(servicoId)
-                            .orElseThrow(() -> new NotFoundException("Serviço não encontrado.")))
+                    .map(servicoId -> {
+                        Servico servico = servicoRepository.findById(servicoId)
+                                .orElseThrow(() -> new NotFoundException("Serviço não encontrado."));
+                        servico.setValor(new ValorMonetario(BigDecimal.ZERO));
+                        return servico;
+                    })
                     .collect(Collectors.toList());
 
             SolicitacaoAgenda solicitacaoAgenda = new SolicitacaoAgenda(
