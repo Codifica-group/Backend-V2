@@ -57,4 +57,9 @@ public class AgendaUseCaseConfig {
     public CalcularLucroUseCase calcularLucroUseCase(AgendaRepository agendaRepository, DespesaRepository despesaRepository) {
         return new CalcularLucroUseCase(agendaRepository, despesaRepository);
     }
+
+    @Bean
+    public FindFutureAgendasByPetIdUseCase findFutureAgendasByPetIdUseCase(AgendaRepository agendaRepository) {
+        return new FindFutureAgendasByPetIdUseCase(agendaRepository);
+    }
 }

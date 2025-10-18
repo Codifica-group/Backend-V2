@@ -17,4 +17,5 @@ public interface AgendaRepository {
     boolean existsByPetId(Integer petId);
     boolean existsByServicoId(Integer servicoId);
     List<Agenda> findConflitosByDataHoraInicio(LocalDateTime dataHoraInicio);
+    Optional<Agenda> findFutureByPetId(Integer petId, LocalDateTime now);
 }

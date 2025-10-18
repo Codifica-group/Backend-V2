@@ -38,6 +38,7 @@ public class AgendaController {
     private final SugestaoServicoDtoMapper sugestaoServicoDtoMapper;
     private final FiltroDtoMapper filtroDtoMapper;
     private final CalcularLucroUseCase calcularLucroUseCase;
+    private final FindFutureAgendasByPetIdUseCase findFutureAgendasByPetIdUseCase;
 
     public AgendaController(CreateAgendaUseCase createAgendaUseCase,
                             FindAgendaByIdUseCase findAgendaByIdUseCase,
@@ -50,7 +51,8 @@ public class AgendaController {
                             AgendaDtoMapper agendaDtoMapper,
                             SugestaoServicoDtoMapper sugestaoServicoDtoMapper,
                             FiltroDtoMapper filtroDtoMapper,
-                            CalcularLucroUseCase calcularLucroUseCase) {
+                            CalcularLucroUseCase calcularLucroUseCase,
+                            FindFutureAgendasByPetIdUseCase findFutureAgendasByPetIdUseCase) {
         this.createAgendaUseCase = createAgendaUseCase;
         this.findAgendaByIdUseCase = findAgendaByIdUseCase;
         this.listAgendaUseCase = listAgendaUseCase;
@@ -63,6 +65,7 @@ public class AgendaController {
         this.sugestaoServicoDtoMapper = sugestaoServicoDtoMapper;
         this.filtroDtoMapper = filtroDtoMapper;
         this.calcularLucroUseCase = calcularLucroUseCase;
+        this.findFutureAgendasByPetIdUseCase = findFutureAgendasByPetIdUseCase;
     }
 
     @PostMapping
@@ -142,5 +145,12 @@ public class AgendaController {
         Periodo periodo = new Periodo(lucroDTO.getDataInicio().atStartOfDay(), lucroDTO.getDataFim().atTime(LocalTime.MAX));
         LucroDTO lucro = calcularLucroUseCase.execute(periodo);
         return ResponseEntity.ok(lucro);
+    }
+
+    @GetMapping("/futuro/pet/{petId}")
+    public ResponseEntity<AgendaDTO> findFutureByPetId(@PathVariable Integer petId) {
+        return findFutureAgendasByPetIdUseCase.execute(petId)
+                .map(agenda -> ResponseEntity.ok(agendaDtoMapper.toDto(agenda)))
+                .orElse(ResponseEntity.noContent().build());
     }
 }

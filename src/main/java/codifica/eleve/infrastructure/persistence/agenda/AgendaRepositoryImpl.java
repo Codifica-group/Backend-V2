@@ -114,4 +114,10 @@ public class AgendaRepositoryImpl implements AgendaRepository {
                 .map(agendaMapper::toDomain)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public Optional<Agenda> findFutureByPetId(Integer petId, LocalDateTime now) {
+        return agendaJpaRepository.findFirstByPetIdAndDataHoraInicioAfterOrderByDataHoraInicioAsc(petId, now)
+                .map(agendaMapper::toDomain);
+    }
 }
