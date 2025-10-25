@@ -123,21 +123,13 @@ public class AgendaController {
         return paginaAgendaDTO.dados().isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(paginaAgendaDTO);
     }
 
-    @GetMapping("/disponibilidade/dias")
-    public ResponseEntity<List<Map<String, Object>>> getDiasDisponiveis(
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate inicio,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fim) {
+    @GetMapping("/disponibilidade")
+    public ResponseEntity<List<DisponibilidadeDTO>> getDisponibilidade(
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime inicio,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fim) {
 
-        Periodo periodo = new Periodo(inicio.atStartOfDay(), fim.atTime(LocalTime.MAX));
-        List<Map<String, Object>> dias = disponibilidadeAgendaUseCase.findDiasDisponiveis(periodo);
-        return dias.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(dias);
-    }
-
-    @GetMapping("/disponibilidade/horarios")
-    public ResponseEntity<List<LocalTime>> getHorariosDisponiveis(
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dia) {
-        List<LocalTime> horarios = disponibilidadeAgendaUseCase.findHorariosDisponiveis(dia);
-        return ResponseEntity.ok(horarios);
+        List<DisponibilidadeDTO> disponibilidade = disponibilidadeAgendaUseCase.findDisponibilidade(inicio, fim);
+        return disponibilidade.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(disponibilidade);
     }
 
     @PostMapping("/calcular/lucro")

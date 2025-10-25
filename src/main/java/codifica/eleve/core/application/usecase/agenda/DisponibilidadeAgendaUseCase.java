@@ -4,10 +4,12 @@ import codifica.eleve.core.domain.agenda.Agenda;
 import codifica.eleve.core.domain.agenda.AgendaRepository;
 import codifica.eleve.core.domain.shared.DiaDaSemana;
 import codifica.eleve.core.domain.shared.Periodo;
+import codifica.eleve.interfaces.dto.DisponibilidadeDTO;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,28 +34,29 @@ public class DisponibilidadeAgendaUseCase {
         this.agendaRepository = agendaRepository;
     }
 
-    public List<Map<String, Object>> findDiasDisponiveis(Periodo periodo) {
-        LocalDate startDate = periodo.getInicio().toLocalDate();
-        LocalDate endDate = periodo.getFim().toLocalDate();
+    public List<DisponibilidadeDTO> findDisponibilidade(LocalDateTime startDateTime, LocalDateTime endDateTime) {
+        LocalDate startDate = startDateTime.toLocalDate();
+        LocalDate endDate = endDateTime.toLocalDate();
 
         return startDate.datesUntil(endDate.plusDays(1))
                 .filter(date -> {
-                    DayOfWeek dayOfWeek = date.getDayOfWeek();
-                    if (dayOfWeek == DayOfWeek.SUNDAY || dayOfWeek == DayOfWeek.MONDAY) {
-                        return false;
+                    if (date.isEqual(LocalDate.now()) && inicioExpediente.isBefore(startDateTime.toLocalTime())) {
+                        return true;
                     }
-                    return !findHorariosDisponiveis(date).isEmpty();
+                    return date.isAfter(LocalDate.now()) || date.isEqual(LocalDate.now());
                 })
                 .map(date -> {
-                    Map<String, Object> diaInfo = new HashMap<>();
-                    diaInfo.put("data", date);
-                    diaInfo.put("diaSemana", DiaDaSemana.fromDate(date));
-                    return diaInfo;
+                    List<LocalTime> horariosDisponiveis = findHorariosDisponiveis(date, startDateTime.toLocalTime());
+                    if (!horariosDisponiveis.isEmpty()) {
+                        return new DisponibilidadeDTO(date, DiaDaSemana.fromDate(date), horariosDisponiveis);
+                    }
+                    return null;
                 })
+                .filter(dto -> dto != null)
                 .collect(Collectors.toList());
     }
 
-    public List<LocalTime> findHorariosDisponiveis(LocalDate dia) {
+    private List<LocalTime> findHorariosDisponiveis(LocalDate dia, LocalTime startOfDayTime) {
         if (dia.getDayOfWeek() == DayOfWeek.SUNDAY || dia.getDayOfWeek() == DayOfWeek.MONDAY) {
             return new ArrayList<>();
         }
@@ -67,9 +70,23 @@ public class DisponibilidadeAgendaUseCase {
 
         List<LocalTime> horariosDisponiveis = new ArrayList<>();
         LocalTime horarioAtual = inicioExpediente;
+
+        if (dia.isEqual(LocalDate.now()) && startOfDayTime.isAfter(horarioAtual)) {
+            while (horarioAtual.isBefore(startOfDayTime.plusHours(duracaoMinimaAgendamentoHoras))) {
+                horarioAtual = horarioAtual.plusHours(duracaoMinimaAgendamentoHoras);
+            }
+        }
+
+
         while (horarioAtual.isBefore(fimExpediente)) {
             if (!horariosOcupados.contains(horarioAtual)) {
-                horariosDisponiveis.add(horarioAtual);
+                if (dia.isEqual(LocalDate.now())) {
+                    if (!horarioAtual.isBefore(startOfDayTime)) {
+                        horariosDisponiveis.add(horarioAtual);
+                    }
+                } else {
+                    horariosDisponiveis.add(horarioAtual);
+                }
             }
             horarioAtual = horarioAtual.plusHours(duracaoMinimaAgendamentoHoras);
         }
