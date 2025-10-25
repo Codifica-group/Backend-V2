@@ -1,6 +1,8 @@
 package codifica.eleve.interfaces.controller;
 
 import codifica.eleve.core.application.usecase.solicitacao.*;
+import codifica.eleve.core.domain.shared.Pagina;
+import codifica.eleve.core.domain.solicitacao.SolicitacaoAgenda;
 import codifica.eleve.interfaces.dto.SolicitacaoAgendaDTO;
 import codifica.eleve.interfaces.dtoAdapters.SolicitacaoAgendaDtoMapper;
 import org.springframework.http.HttpStatus;
@@ -49,12 +51,11 @@ public class SolicitacaoAgendaController {
     }
 
     @GetMapping
-    public ResponseEntity<List<SolicitacaoAgendaDTO>> listAll(@RequestParam(defaultValue = "0") int offset,
-                                                              @RequestParam(defaultValue = "10") int size) {
-        List<SolicitacaoAgendaDTO> solicitacoes = listUseCase.execute(offset, size).stream()
-                .map(mapper::toDto)
-                .collect(Collectors.toList());
-        return solicitacoes.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(solicitacoes);
+    public ResponseEntity<Pagina<SolicitacaoAgendaDTO>> listAll(@RequestParam(defaultValue = "0") int offset,
+                                                                @RequestParam(defaultValue = "10") int size) {
+        Pagina<SolicitacaoAgenda> paginaSolicitacoes = listUseCase.execute(offset, size);
+        Pagina<SolicitacaoAgendaDTO> paginaSolicitacoesDTO = paginaSolicitacoes.map(mapper::toDto);
+        return paginaSolicitacoesDTO.dados().isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(paginaSolicitacoesDTO);
     }
 
     @PutMapping("/{id}")

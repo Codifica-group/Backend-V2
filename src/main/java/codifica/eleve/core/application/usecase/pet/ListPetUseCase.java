@@ -2,6 +2,8 @@ package codifica.eleve.core.application.usecase.pet;
 
 import codifica.eleve.core.domain.pet.Pet;
 import codifica.eleve.core.domain.pet.PetRepository;
+import codifica.eleve.core.domain.shared.Pagina;
+
 import java.util.List;
 
 public class ListPetUseCase {
@@ -11,7 +13,11 @@ public class ListPetUseCase {
         this.petRepository = petRepository;
     }
 
-    public List<Pet> execute(int offset, int size) {
-        return petRepository.findAll(offset, size);
+    public Pagina<Pet> execute(int offset, int size) {
+        List<Pet> pets = petRepository.findAll(offset, size);
+        long totalItens = petRepository.countAll();
+        int totalPaginas = (int) Math.ceil((double) totalItens / size);
+
+        return new Pagina<>(pets, totalPaginas);
     }
 }

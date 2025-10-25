@@ -18,4 +18,6 @@ public interface AgendaRepository {
     boolean existsByServicoId(Integer servicoId);
     List<Agenda> findConflitosByDataHoraInicio(LocalDateTime dataHoraInicio);
     Optional<Agenda> findFutureByPetId(Integer petId, LocalDateTime now);
+    long countAll();
+    long countByFilter(Filtro filtro);
 }

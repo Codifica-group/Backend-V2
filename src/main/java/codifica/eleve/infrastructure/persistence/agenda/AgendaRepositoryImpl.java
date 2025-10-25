@@ -120,4 +120,34 @@ public class AgendaRepositoryImpl implements AgendaRepository {
         return agendaJpaRepository.findFirstByPetIdAndDataHoraInicioAfterOrderByDataHoraInicioAsc(petId, now)
                 .map(agendaMapper::toDomain);
     }
+
+    @Override
+    public long countAll() {
+        return agendaJpaRepository.count();
+    }
+
+    @Override
+    public long countByFilter(Filtro filtro) {
+        LocalDateTime dataInicio = null;
+        LocalDateTime dataFim = null;
+        if (filtro.getPeriodo() != null) {
+            dataInicio = filtro.getPeriodo().getInicio();
+            dataFim = filtro.getPeriodo().getFim();
+        }
+
+        List<Integer> servicoId = filtro.getServicoId();
+        Long servicoIdSize = servicoId != null ? (long) servicoId.size() : null;
+        if (servicoId != null && servicoId.isEmpty()) {
+            servicoId = null;
+            servicoIdSize = null;
+        }
+        return agendaJpaRepository.countByFilter(
+                dataInicio,
+                dataFim,
+                filtro.getClienteId(),
+                filtro.getPetId(),
+                filtro.getRacaId(),
+                servicoId,
+                servicoIdSize);
+    }
 }

@@ -2,6 +2,8 @@ package codifica.eleve.core.application.usecase.agenda;
 
 import codifica.eleve.core.domain.agenda.Agenda;
 import codifica.eleve.core.domain.agenda.AgendaRepository;
+import codifica.eleve.core.domain.shared.Pagina;
+
 import java.util.List;
 
 public class ListAgendaUseCase {
@@ -12,7 +14,11 @@ public class ListAgendaUseCase {
         this.agendaRepository = agendaRepository;
     }
 
-    public List<Agenda> execute(int offset, int size) {
-        return agendaRepository.findAll(offset, size);
+    public Pagina<Agenda> execute(int offset, int size) {
+        List<Agenda> agendas = agendaRepository.findAll(offset, size);
+        long totalItens = agendaRepository.countAll();
+        int totalPaginas = (int) Math.ceil((double) totalItens / size);
+
+        return new Pagina<>(agendas, totalPaginas);
     }
 }

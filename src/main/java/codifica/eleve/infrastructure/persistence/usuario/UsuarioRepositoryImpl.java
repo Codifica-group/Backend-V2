@@ -59,4 +59,9 @@ public class UsuarioRepositoryImpl implements UsuarioRepository {
     public void deleteById(Integer id) {
         usuarioJpaRepository.deleteById(id);
     }
+
+    @Override
+    public long countAll() {
+        return usuarioJpaRepository.count();
+    }
 }

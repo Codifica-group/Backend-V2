@@ -1,5 +1,6 @@
 package codifica.eleve.core.application.usecase.usuario;
 
+import codifica.eleve.core.domain.shared.Pagina;
 import codifica.eleve.core.domain.usuario.Usuario;
 import codifica.eleve.core.domain.usuario.UsuarioRepository;
 
@@ -12,7 +13,11 @@ public class ListUsuarioUseCase {
         this.usuarioRepository = usuarioRepository;
     }
 
-    public List<Usuario> execute(int offset, int size) {
-        return usuarioRepository.findAll(offset, size);
+    public Pagina<Usuario> execute(int offset, int size) {
+        List<Usuario> usuarios = usuarioRepository.findAll(offset, size);
+        long totalItens = usuarioRepository.countAll();
+        int totalPaginas = (int) Math.ceil((double) totalItens / size);
+
+        return new Pagina<>(usuarios, totalPaginas);
     }
 }

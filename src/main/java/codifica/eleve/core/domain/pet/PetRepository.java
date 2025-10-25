@@ -13,4 +13,5 @@ public interface PetRepository {
     boolean existsByNomeAndClienteId(String nome, Integer clienteId);
     boolean existsByRacaId(Integer racaId);
     boolean existsByClienteId(Integer clienteId);
+    long countAll();
 }

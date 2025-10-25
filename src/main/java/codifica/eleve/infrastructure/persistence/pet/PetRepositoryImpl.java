@@ -70,4 +70,9 @@ public class PetRepositoryImpl implements PetRepository {
     public boolean existsByClienteId(Integer clienteId) {
         return petJpaRepository.existsByClienteId(clienteId);
     }
+
+    @Override
+    public long countAll() {
+        return petJpaRepository.count();
+    }
 }

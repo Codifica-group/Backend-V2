@@ -1,6 +1,8 @@
 package codifica.eleve.interfaces.controller;
 
 import codifica.eleve.core.application.usecase.despesa.*;
+import codifica.eleve.core.domain.despesa.Despesa;
+import codifica.eleve.core.domain.shared.Pagina;
 import codifica.eleve.interfaces.dto.DespesaDTO;
 import codifica.eleve.interfaces.dtoAdapters.DespesaDtoMapper;
 import jakarta.validation.Valid;
@@ -44,12 +46,11 @@ public class DespesaController {
     }
 
     @GetMapping
-    public ResponseEntity<List<DespesaDTO>> listAll(@RequestParam(defaultValue = "0") int offset,
-                                                    @RequestParam(defaultValue = "10") int size) {
-        List<DespesaDTO> despesas = listDespesaUseCase.execute(offset, size).stream()
-                .map(despesaDtoMapper::toDto)
-                .collect(Collectors.toList());
-        return despesas.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(despesas);
+    public ResponseEntity<Pagina<DespesaDTO>> listAll(@RequestParam(defaultValue = "0") int offset,
+                                                      @RequestParam(defaultValue = "10") int size) {
+        Pagina<Despesa> paginaDespesa = listDespesaUseCase.execute(offset, size);
+        Pagina<DespesaDTO> paginaDespesaDTO = paginaDespesa.map(despesaDtoMapper::toDto);
+        return paginaDespesaDTO.dados().isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(paginaDespesaDTO);
     }
 
     @GetMapping("/{id}")

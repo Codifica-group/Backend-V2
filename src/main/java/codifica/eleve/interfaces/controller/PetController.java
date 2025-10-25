@@ -2,6 +2,7 @@ package codifica.eleve.interfaces.controller;
 
 import codifica.eleve.core.application.usecase.pet.*;
 import codifica.eleve.core.domain.pet.Pet;
+import codifica.eleve.core.domain.shared.Pagina;
 import codifica.eleve.interfaces.dtoAdapters.PetDtoMapper;
 import codifica.eleve.interfaces.dto.PetDTO;
 import jakarta.validation.Valid;
@@ -44,10 +45,11 @@ public class PetController {
     }
 
     @GetMapping
-    public ResponseEntity<List<PetDTO>> list(@RequestParam(defaultValue = "0") int offset,
-                                             @RequestParam(defaultValue = "10") int size) {
-        List<PetDTO> pets = listPetUseCase.execute(offset, size).stream().map(petDtoMapper::toDto).collect(Collectors.toList());
-        return pets.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(pets);
+    public ResponseEntity<Pagina<PetDTO>> list(@RequestParam(defaultValue = "0") int offset,
+                                               @RequestParam(defaultValue = "10") int size) {
+        Pagina<Pet> paginaPets = listPetUseCase.execute(offset, size);
+        Pagina<PetDTO> paginaPetsDTO = paginaPets.map(petDtoMapper::toDto);
+        return paginaPetsDTO.dados().isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(paginaPetsDTO);
     }
 
     @GetMapping("/{id}")

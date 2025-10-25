@@ -61,4 +61,9 @@ public class DespesaRepositoryImpl implements DespesaRepository {
                 .map(despesaMapper::toDomain)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public long countAll() {
+        return despesaJpaRepository.count();
+    }
 }

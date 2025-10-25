@@ -11,4 +11,5 @@ public interface UsuarioRepository {
     List<Usuario> findAll(int offset, int size);
     boolean existsById(Integer id);
     void deleteById(Integer id);
+    long countAll();
 }

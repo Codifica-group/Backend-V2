@@ -9,4 +9,5 @@ public interface SolicitacaoAgendaRepository {
     List<SolicitacaoAgenda> findAll(int offset, int size);
     void deleteById(Integer id);
     boolean existsById(Integer id);
+    long countAll();
 }

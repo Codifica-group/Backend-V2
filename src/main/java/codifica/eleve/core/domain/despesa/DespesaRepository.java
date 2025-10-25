@@ -13,4 +13,5 @@ public interface DespesaRepository {
     boolean existsById(Integer id);
     boolean existsByProdutoId(Integer produtoId);
     List<Despesa> findByPeriodo(Periodo periodo);
+    long countAll();
 }

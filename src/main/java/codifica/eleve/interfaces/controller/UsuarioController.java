@@ -1,6 +1,7 @@
 package codifica.eleve.interfaces.controller;
 
 import codifica.eleve.core.application.usecase.usuario.*;
+import codifica.eleve.core.domain.shared.Pagina;
 import codifica.eleve.core.domain.usuario.Usuario;
 import codifica.eleve.interfaces.dtoAdapters.UsuarioDtoMapper;
 import codifica.eleve.interfaces.dto.UsuarioDTO;
@@ -63,13 +64,11 @@ public class UsuarioController {
     }
 
     @GetMapping
-    public ResponseEntity<List<UsuarioDTO>> list(@RequestParam(defaultValue = "0") int offset,
-                                                 @RequestParam(defaultValue = "10") int size) {
-        List<Usuario> usuarios = listUseCase.execute(offset, size);
-        List<UsuarioDTO> usuarioDTOS = usuarios.stream()
-                .map(usuarioDtoMapper::toDto)
-                .collect(Collectors.toList());
-        return usuarioDTOS.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(usuarioDTOS);
+    public ResponseEntity<Pagina<UsuarioDTO>> list(@RequestParam(defaultValue = "0") int offset,
+                                                   @RequestParam(defaultValue = "10") int size) {
+        Pagina<Usuario> paginaUsuarios = listUseCase.execute(offset, size);
+        Pagina<UsuarioDTO> paginaUsuariosDTO = paginaUsuarios.map(usuarioDtoMapper::toDto);
+        return paginaUsuariosDTO.dados().isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(paginaUsuariosDTO);
     }
 
     @GetMapping("/{id}")

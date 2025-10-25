@@ -3,6 +3,8 @@ package codifica.eleve.interfaces.controller;
 import codifica.eleve.core.application.usecase.agenda.*;
 import codifica.eleve.core.application.usecase.agenda.calculadora.CalcularLucroUseCase;
 import codifica.eleve.core.application.usecase.agenda.calculadora.CalcularServicoUseCase;
+import codifica.eleve.core.domain.agenda.Agenda;
+import codifica.eleve.core.domain.shared.Pagina;
 import codifica.eleve.core.domain.shared.Periodo;
 import codifica.eleve.interfaces.dto.*;
 import codifica.eleve.interfaces.dtoAdapters.AgendaDtoMapper;
@@ -81,14 +83,13 @@ public class AgendaController {
     }
 
     @GetMapping
-    public ResponseEntity<List<AgendaDTO>> listAll(
+    public ResponseEntity<Pagina<AgendaDTO>> listAll(
             @RequestParam(defaultValue = "0") int offset,
             @RequestParam(defaultValue = "10") int size
     ) {
-        List<AgendaDTO> agendas = listAgendaUseCase.execute(offset, size).stream()
-                .map(agendaDtoMapper::toDto)
-                .collect(Collectors.toList());
-        return agendas.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(agendas);
+        Pagina<Agenda> paginaAgenda = listAgendaUseCase.execute(offset, size);
+        Pagina<AgendaDTO> paginaAgendaDTO = paginaAgenda.map(agendaDtoMapper::toDto);
+        return paginaAgendaDTO.dados().isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(paginaAgendaDTO);
     }
 
     @PutMapping("/{id}")
@@ -114,13 +115,12 @@ public class AgendaController {
     }
 
     @PostMapping("/filtrar")
-    public ResponseEntity<List<AgendaDTO>> filtrar(@RequestBody FiltroDTO filtroDTO,
+    public ResponseEntity<Pagina<AgendaDTO>> filtrar(@RequestBody FiltroDTO filtroDTO,
                                                    @RequestParam(defaultValue = "0") int offset,
                                                    @RequestParam(defaultValue = "10") int size) {
-        List<AgendaDTO> agendas = filterAgendaUseCase.execute(filtroDtoMapper.toDomain(filtroDTO), offset, size).stream()
-                .map(agendaDtoMapper::toDto)
-                .collect(Collectors.toList());
-        return agendas.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(agendas);
+        Pagina<Agenda> paginaAgenda = filterAgendaUseCase.execute(filtroDtoMapper.toDomain(filtroDTO), offset, size);
+        Pagina<AgendaDTO> paginaAgendaDTO = paginaAgenda.map(agendaDtoMapper::toDto);
+        return paginaAgendaDTO.dados().isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(paginaAgendaDTO);
     }
 
     @GetMapping("/disponibilidade/dias")

@@ -1,5 +1,6 @@
 package codifica.eleve.core.application.usecase.solicitacao;
 
+import codifica.eleve.core.domain.shared.Pagina;
 import codifica.eleve.core.domain.solicitacao.SolicitacaoAgenda;
 import codifica.eleve.core.domain.solicitacao.SolicitacaoAgendaRepository;
 
@@ -13,7 +14,11 @@ public class ListSolicitacaoAgendaUseCase {
         this.repository = repository;
     }
 
-    public List<SolicitacaoAgenda> execute(int offset, int size) {
-        return repository.findAll(offset, size);
+    public Pagina<SolicitacaoAgenda> execute(int offset, int size) {
+        List<SolicitacaoAgenda> solicitacoes = repository.findAll(offset, size); // TODO: implementar filtro>
+        long totalItens = repository.countAll();
+        int totalPaginas = (int) Math.ceil((double) totalItens / size);
+
+        return new Pagina<>(solicitacoes, totalPaginas);
     }
 }

@@ -49,4 +49,9 @@ public class SolicitacaoAgendaRepositoryImpl implements SolicitacaoAgendaReposit
     public boolean existsById(Integer id) {
         return jpaRepository.existsById(id);
     }
+
+    @Override
+    public long countAll() {
+        return jpaRepository.count();
+    }
 }
