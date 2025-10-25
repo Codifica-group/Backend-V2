@@ -66,6 +66,7 @@ public class SolicitacaoAgendaDtoMapper {
         ClienteDTO clienteDTO = new ClienteDTO();
         clienteDTO.setId(petDomain.getCliente().getId().getValue());
         clienteDTO.setNome(petDomain.getCliente().getNome());
+        clienteDTO.setTelefone(petDomain.getCliente().getTelefone().getNumero());
         dto.setCliente(clienteDTO);
 
         dto.setServicos(domain.getServicos().stream()
