@@ -1,6 +1,8 @@
 package codifica.eleve.interfaces.controller;
 
 import codifica.eleve.core.application.usecase.cliente.*;
+import codifica.eleve.core.domain.cliente.Cliente;
+import codifica.eleve.core.domain.shared.Pagina;
 import codifica.eleve.interfaces.dtoAdapters.ClienteDtoMapper;
 import codifica.eleve.interfaces.dto.ClienteDTO;
 import jakarta.validation.Valid;
@@ -39,12 +41,15 @@ public class ClienteController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ClienteDTO>> listAll(@RequestParam(defaultValue = "0") int offset,
+    public ResponseEntity<Pagina<ClienteDTO>> listAll(@RequestParam(defaultValue = "0") int offset,
                                                     @RequestParam(defaultValue = "10") int size) {
-        List<ClienteDTO> clientes = listClienteUseCase.execute(offset, size).stream()
+        Pagina<Cliente> paginaDeClientes = listClienteUseCase.execute(offset, size);
+
+        List<ClienteDTO> clientesDTO = paginaDeClientes.dados().stream()
                 .map(clienteDtoMapper::toDto)
                 .collect(Collectors.toList());
-        return clientes.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(clientes);
+        Pagina<ClienteDTO> response = new Pagina<>(clientesDTO, paginaDeClientes.totalPaginas());
+        return clientesDTO.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")

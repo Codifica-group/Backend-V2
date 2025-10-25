@@ -52,4 +52,9 @@ public class ClienteRepositoryImpl implements ClienteRepository {
     public boolean existsByNomeAndTelefone(String nome, String telefone) {
         return clienteJpaRepository.existsByNomeAndTelefone(nome, telefone);
     }
+
+    @Override
+    public long countAll() {
+        return clienteJpaRepository.count();
+    }
 }

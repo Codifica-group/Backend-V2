@@ -10,4 +10,5 @@ public interface ClienteRepository {
     void deleteById(Integer id);
     boolean existsById(Integer id);
     boolean existsByNomeAndTelefone(String nome, String telefone);
+    long countAll();
 }
