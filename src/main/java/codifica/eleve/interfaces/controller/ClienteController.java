@@ -10,9 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/clientes")
@@ -43,13 +41,10 @@ public class ClienteController {
     @GetMapping
     public ResponseEntity<Pagina<ClienteDTO>> listAll(@RequestParam(defaultValue = "0") int offset,
                                                     @RequestParam(defaultValue = "10") int size) {
-        Pagina<Cliente> paginaDeClientes = listClienteUseCase.execute(offset, size);
+        Pagina<Cliente> paginaClientes = listClienteUseCase.execute(offset, size);
 
-        List<ClienteDTO> clientesDTO = paginaDeClientes.dados().stream()
-                .map(clienteDtoMapper::toDto)
-                .collect(Collectors.toList());
-        Pagina<ClienteDTO> response = new Pagina<>(clientesDTO, paginaDeClientes.totalPaginas());
-        return clientesDTO.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(response);
+        Pagina<ClienteDTO> paginaClientesDTO = paginaClientes.map(clienteDtoMapper::toDto);
+        return paginaClientesDTO.dados().isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(paginaClientesDTO);
     }
 
     @GetMapping("/{id}")
