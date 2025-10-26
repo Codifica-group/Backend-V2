@@ -41,7 +41,7 @@ public class ProcessoSolicitacaoAceitaUseCase implements SolicitacaoAceitaEventL
             solicitacao.setDataHoraSolicitacao(event.getDataHoraAtualizacao());
 
             if (event.isAceito()) {
-                solicitacao.setStatus("ACEITO");
+                solicitacao.setStatus("CONFIRMADO");
 
                 Agenda agenda = new Agenda(
                         solicitacao.getPet(),

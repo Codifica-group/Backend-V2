@@ -24,7 +24,7 @@ public class FindRacasByNomeSemelhanteUseCase {
                     int distance = levenshteinDistance.apply(nome.toLowerCase(), raca.getNome().toLowerCase());
                     return new RacaComDistancia(raca, distance);
                 })
-                .filter(racaComDistancia -> racaComDistancia.distancia <= 3)
+                .filter(racaComDistancia -> racaComDistancia.distancia <= 5)
                 .sorted()
                 .limit(3)
                 .map(racaComDistancia -> racaComDistancia.raca)
