@@ -6,6 +6,7 @@ import codifica.eleve.core.domain.usuario.Usuario;
 import codifica.eleve.core.domain.usuario.UsuarioRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,6 +21,9 @@ public class LoginUsuarioUseCase {
     private final GeolocationPort geolocationPort;
     private final RequestContextPort requestContextPort;
     private static final Logger logger = LoggerFactory.getLogger(LoginUsuarioUseCase.class);
+
+    @Value("${IP_BLOCK_ENABLED}")
+    private boolean isIpBlockEnabled;
 
     public LoginUsuarioUseCase(
             UsuarioRepository usuarioRepository,
@@ -39,7 +43,7 @@ public class LoginUsuarioUseCase {
     public Object execute(Usuario usuario) {
         String ip = requestContextPort.getClientIp();
 
-        if (loginAttemptPort.isBlocked(ip)) {
+        if (isIpBlockEnabled && loginAttemptPort.isBlocked(ip)) {
             throw new UnauthorizedException("Bloqueio temporário por tentativas excessivas de login. Tente novamente mais tarde.");
         }
 

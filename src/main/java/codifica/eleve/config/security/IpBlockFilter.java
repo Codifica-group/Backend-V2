@@ -5,6 +5,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -15,6 +16,9 @@ public class IpBlockFilter extends OncePerRequestFilter {
 
     private final LoginAttemptPort loginAttemptPort;
 
+    @Value("${IP_BLOCK_ENABLED}")
+    private boolean isIpBlockEnabled;
+
     public IpBlockFilter(LoginAttemptPort loginAttemptPort) {
         this.loginAttemptPort = loginAttemptPort;
     }
@@ -24,11 +28,13 @@ public class IpBlockFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
 
-        String ip = getClientIP(request);
-        if (loginAttemptPort.isBlocked(ip)) {
-            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-            response.getWriter().write("Bloqueio temporário por tentativas excessivas de login. Tente novamente mais tarde...");
-            return;
+        if (isIpBlockEnabled) {
+            String ip = getClientIP(request);
+            if (loginAttemptPort.isBlocked(ip)) {
+                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                response.getWriter().write("Bloqueio temporário por tentativas excessivas de login. Tente novamente mais tarde...");
+                return;
+            }
         }
 
         filterChain.doFilter(request, response);
