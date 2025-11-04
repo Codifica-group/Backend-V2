@@ -1,6 +1,7 @@
 package codifica.eleve.core.application.usecase.events;
 
 import codifica.eleve.core.application.ports.in.events.SolicitacaoEventListenerPort;
+import codifica.eleve.core.application.ports.out.NotificationPort;
 import codifica.eleve.core.application.ports.out.events.SolicitacaoEventPublisherPort;
 import codifica.eleve.core.application.usecase.solicitacao.CreateSolicitacaoAgendaUseCase;
 import codifica.eleve.core.domain.events.solicitacao.SolicitacaoParaCadastrarEvent;
@@ -28,16 +29,19 @@ public class SolicitacaoParaCadastrarUseCase implements SolicitacaoEventListener
     private final PetRepository petRepository;
     private final ServicoRepository servicoRepository;
     private final SolicitacaoEventPublisherPort solicitacaoEventPublisher;
+    private final NotificationPort notificationPort;
 
     public SolicitacaoParaCadastrarUseCase(
             CreateSolicitacaoAgendaUseCase createSolicitacaoAgendaUseCase,
             PetRepository petRepository,
             ServicoRepository servicoRepository,
-            SolicitacaoEventPublisherPort solicitacaoEventPublisher) {
+            SolicitacaoEventPublisherPort solicitacaoEventPublisher,
+            NotificationPort notificationPort) {
         this.createSolicitacaoAgendaUseCase = createSolicitacaoAgendaUseCase;
         this.petRepository = petRepository;
         this.servicoRepository = servicoRepository;
         this.solicitacaoEventPublisher = solicitacaoEventPublisher;
+        this.notificationPort = notificationPort;
     }
 
     @Override
@@ -66,6 +70,13 @@ public class SolicitacaoParaCadastrarUseCase implements SolicitacaoEventListener
                     event.getDataHoraSolicitacao(),
                     event.getStatus()
             );
+
+            Map<String, String> payload = Map.of(
+                    "tipo", "NOVA_SOLICITACAO",
+                    "titulo", "Nova Solicitação de Agendamento",
+                    "mensagem", "Você recebeu uma nova solicitação de agendamento via chatbot."
+            );
+            notificationPort.notify("/topic/solicitacoes", payload);
 
             Map<String, Object> response = createSolicitacaoAgendaUseCase.execute(solicitacaoAgenda);
             Integer solicitacaoId = (Integer) response.get("id");

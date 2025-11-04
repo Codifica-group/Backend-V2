@@ -1,5 +1,6 @@
 package codifica.eleve.infrastructure.useCaseConfig.events;
 
+import codifica.eleve.core.application.ports.out.NotificationPort;
 import codifica.eleve.core.application.ports.out.events.SolicitacaoAceitaResponseEventPublisherPort;
 import codifica.eleve.core.application.ports.out.events.SolicitacaoEventPublisherPort;
 import codifica.eleve.core.application.usecase.agenda.CreateAgendaUseCase;
@@ -22,16 +23,18 @@ public class SolicitacaoEventsUseCaseConfig {
             CreateSolicitacaoAgendaUseCase createSolicitacaoAgendaUseCase,
             PetRepository petRepository,
             ServicoRepository servicoRepository,
-            SolicitacaoEventPublisherPort solicitacaoEventPublisher) {
-        return new SolicitacaoParaCadastrarUseCase(createSolicitacaoAgendaUseCase, petRepository, servicoRepository, solicitacaoEventPublisher);
+            SolicitacaoEventPublisherPort solicitacaoEventPublisher,
+            NotificationPort notificationPort) {
+        return new SolicitacaoParaCadastrarUseCase(createSolicitacaoAgendaUseCase, petRepository, servicoRepository, solicitacaoEventPublisher, notificationPort);
     }
 
     @Bean
     public ProcessoSolicitacaoAceitaUseCase processoSolicitacaoAceitaUseCase(
             SolicitacaoAgendaRepository solicitacaoAgendaRepository,
             CreateAgendaUseCase createAgendaUseCase,
-            SolicitacaoAceitaResponseEventPublisherPort solicitacaoAceitaResponseEventPublisherPort) {
-        return new ProcessoSolicitacaoAceitaUseCase(solicitacaoAgendaRepository, createAgendaUseCase, solicitacaoAceitaResponseEventPublisherPort);
+            SolicitacaoAceitaResponseEventPublisherPort solicitacaoAceitaResponseEventPublisherPort,
+            NotificationPort notificationPort) {
+        return new ProcessoSolicitacaoAceitaUseCase(solicitacaoAgendaRepository, createAgendaUseCase, solicitacaoAceitaResponseEventPublisherPort, notificationPort);
     }
 
     @Bean
