@@ -5,6 +5,7 @@ import codifica.eleve.core.application.ports.out.NotificationPort;
 import codifica.eleve.core.application.ports.out.events.SolicitacaoAceitaResponseEventPublisherPort;
 import codifica.eleve.core.application.usecase.agenda.CreateAgendaUseCase;
 import codifica.eleve.core.domain.agenda.Agenda;
+import codifica.eleve.core.domain.cliente.Cliente;
 import codifica.eleve.core.domain.events.solicitacao.SolicitacaoAceitaEvent;
 import codifica.eleve.core.domain.events.solicitacao.SolicitacaoAceitaResponseEvent;
 import codifica.eleve.core.domain.shared.Periodo;
@@ -46,6 +47,8 @@ public class ProcessoSolicitacaoAceitaUseCase implements SolicitacaoAceitaEventL
                     .orElseThrow(() -> new RuntimeException("Solicitação não encontrada"));
             solicitacao.setDataHoraSolicitacao(event.getDataHoraAtualizacao());
 
+            String[] nomeCliente = solicitacao.getPet().getCliente().getNome().split(" ");
+
             String tituloNotificacao;
             String mensagemNotificacao;
 
@@ -53,7 +56,7 @@ public class ProcessoSolicitacaoAceitaUseCase implements SolicitacaoAceitaEventL
                 solicitacao.setStatus("CONFIRMADO");
 
                 tituloNotificacao = "Solicitação Aceita";
-                mensagemNotificacao = "O cliente aceitou a oferta de agendamento.";
+                mensagemNotificacao = nomeCliente[0] + " aceitou a oferta de agendamento";
 
                 Agenda agenda = new Agenda(
                         solicitacao.getPet(),
@@ -67,7 +70,7 @@ public class ProcessoSolicitacaoAceitaUseCase implements SolicitacaoAceitaEventL
                 solicitacao.setStatus("RECUSADO_PELO_CLIENTE");
 
                 tituloNotificacao = "Solicitação Recusada";
-                mensagemNotificacao = "O cliente recusou a oferta de agendamento.";
+                mensagemNotificacao = nomeCliente[0] + " recusou a oferta de agendamento";
 
                 logger.info("INFO: Solicitação {} recusada pelo cliente", event.getSolicitacaoId());
             }

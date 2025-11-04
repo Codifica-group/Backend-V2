@@ -71,10 +71,12 @@ public class SolicitacaoParaCadastrarUseCase implements SolicitacaoEventListener
                     event.getStatus()
             );
 
+            String[] nomeCliente = pet.getCliente().getNome().split(" ");
+
             Map<String, String> payload = Map.of(
                     "tipo", "NOVA_SOLICITACAO",
                     "titulo", "Nova Solicitação de Agendamento",
-                    "mensagem", "Você recebeu uma nova solicitação de agendamento via chatbot."
+                    "mensagem", nomeCliente[0] + " solicitou um novo agendamento"
             );
             notificationPort.notify("/topic/solicitacoes", payload);
 
