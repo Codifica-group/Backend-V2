@@ -9,7 +9,7 @@ import java.util.List;
 public class SolicitacaoAgendaDTO {
 
     private Integer id;
-    private Integer chatId;
+    private Long chatId;
     private Integer petId;
     private ClienteDTO cliente;
     private PetDTO pet;
@@ -31,11 +31,11 @@ public class SolicitacaoAgendaDTO {
         this.id = id;
     }
 
-    public Integer getChatId() {
+    public Long getChatId() {
         return chatId;
     }
 
-    public void setChatId(Integer chatId) {
+    public void setChatId(Long chatId) {
         this.chatId = chatId;
     }
 

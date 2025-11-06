@@ -6,14 +6,14 @@ import java.util.List;
 
 public class SolicitacaoParaCadastrarEvent implements Serializable {
 
-    private Integer chatId;
+    private Long chatId;
     private Integer petId;
     private List<Integer> servicos;
     private LocalDateTime dataHoraInicio;
     private LocalDateTime dataHoraSolicitacao;
     private String status;
 
-    public Integer getChatId() {
+    public Long getChatId() {
         return chatId;
     }
 

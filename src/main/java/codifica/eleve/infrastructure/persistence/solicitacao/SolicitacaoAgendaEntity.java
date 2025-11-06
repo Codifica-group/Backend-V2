@@ -15,7 +15,7 @@ public class SolicitacaoAgendaEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private Integer chatId;
+    private Long chatId;
 
     @ManyToOne
     private PetEntity pet;
@@ -43,11 +43,11 @@ public class SolicitacaoAgendaEntity {
         this.id = id;
     }
 
-    public Integer getChatId() {
+    public Long getChatId() {
         return chatId;
     }
 
-    public void setChatId(Integer chatId) {
+    public void setChatId(Long chatId) {
         this.chatId = chatId;
     }
 

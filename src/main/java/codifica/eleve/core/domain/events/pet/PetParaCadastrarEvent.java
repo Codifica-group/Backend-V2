@@ -6,12 +6,12 @@ import java.io.Serializable;
 
 public class PetParaCadastrarEvent implements Serializable {
 
-    private Integer chatId;
+    private Long chatId;
     private Integer clienteId;
     private String nome;
     private RacaDTO raca;
 
-    public Integer getChatId() {
+    public Long getChatId() {
         return chatId;
     }
 

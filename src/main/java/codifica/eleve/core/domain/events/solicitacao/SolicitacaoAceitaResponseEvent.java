@@ -7,17 +7,17 @@ import java.io.Serializable;
 public class SolicitacaoAceitaResponseEvent implements Serializable {
 
     private StatusEvent status;
-    private Integer chatId;
+    private Long chatId;
     private String erro;
 
-    public static SolicitacaoAceitaResponseEvent sucesso(Integer chatId) {
+    public static SolicitacaoAceitaResponseEvent sucesso(Long chatId) {
         SolicitacaoAceitaResponseEvent event = new SolicitacaoAceitaResponseEvent();
         event.setStatus(StatusEvent.SUCESSO);
         event.setChatId(chatId);
         return event;
     }
 
-    public static SolicitacaoAceitaResponseEvent falha(Integer chatId, String erro) {
+    public static SolicitacaoAceitaResponseEvent falha(Long chatId, String erro) {
         SolicitacaoAceitaResponseEvent event = new SolicitacaoAceitaResponseEvent();
         event.setStatus(StatusEvent.FALHA);
         event.setChatId(chatId);
@@ -33,11 +33,11 @@ public class SolicitacaoAceitaResponseEvent implements Serializable {
         this.status = status;
     }
 
-    public Integer getChatId() {
+    public Long getChatId() {
         return chatId;
     }
 
-    public void setChatId(Integer chatId) {
+    public void setChatId(Long chatId) {
         this.chatId = chatId;
     }
 

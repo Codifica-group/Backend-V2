@@ -4,14 +4,14 @@ import java.io.Serializable;
 
 public class ClienteParaCadastrarEvent implements Serializable {
 
-    private Integer chatId;
+    private Long chatId;
     private String nome;
     private String telefone;
     private String cep;
     private String numeroEndereco;
     private String complemento;
 
-    public Integer getChatId() {
+    public Long getChatId() {
         return chatId;
     }
 

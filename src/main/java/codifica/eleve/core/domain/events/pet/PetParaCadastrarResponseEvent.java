@@ -7,12 +7,12 @@ import java.io.Serializable;
 public class PetParaCadastrarResponseEvent implements Serializable {
 
     private StatusEvent status;
-    private Integer chatId;
+    private Long chatId;
     private Integer clienteId;
     private Integer petId;
     private String erro;
 
-    public static PetParaCadastrarResponseEvent sucesso(Integer chatId, Integer clienteId, Integer petId) {
+    public static PetParaCadastrarResponseEvent sucesso(Long chatId, Integer clienteId, Integer petId) {
         PetParaCadastrarResponseEvent event = new PetParaCadastrarResponseEvent();
         event.setStatus(StatusEvent.SUCESSO);
         event.setChatId(chatId);
@@ -21,7 +21,7 @@ public class PetParaCadastrarResponseEvent implements Serializable {
         return event;
     }
 
-    public static PetParaCadastrarResponseEvent falha(Integer chatId, String erro) {
+    public static PetParaCadastrarResponseEvent falha(Long chatId, String erro) {
         PetParaCadastrarResponseEvent event = new PetParaCadastrarResponseEvent();
         event.setStatus(StatusEvent.FALHA);
         event.setChatId(chatId);
@@ -37,11 +37,11 @@ public class PetParaCadastrarResponseEvent implements Serializable {
         this.status = status;
     }
 
-    public Integer getChatId() {
+    public Long getChatId() {
         return chatId;
     }
 
-    public void setChatId(Integer chatId) {
+    public void setChatId(Long chatId) {
         this.chatId = chatId;
     }
 
