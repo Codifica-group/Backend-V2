@@ -7,6 +7,8 @@ public class Id {
         Value = value;
     }
 
+    public Id() {}
+
     public Integer getValue() {
         return Value;
     }

@@ -5,7 +5,7 @@ import java.util.Objects;
 
 public class Telefone {
 
-    private final String numero;
+    private String numero;
 
     public Telefone(String numero) {
         if (numero == null || !numero.matches("^\\d{11}$")) {
@@ -13,6 +13,8 @@ public class Telefone {
         }
         this.numero = numero;
     }
+
+    public Telefone() {}
 
     public String getNumero() {
         return numero;

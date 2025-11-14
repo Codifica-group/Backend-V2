@@ -5,12 +5,12 @@ import java.util.Objects;
 
 public class Endereco {
 
-    private final String cep;
-    private final String rua;
-    private final String numero;
-    private final String bairro;
-    private final String cidade;
-    private final String complemento;
+    private String cep;
+    private String rua;
+    private String numero;
+    private String bairro;
+    private String cidade;
+    private String complemento;
 
     public Endereco(String cep, String rua, String numero, String bairro, String cidade, String complemento) {
         if (cep == null || !cep.matches("\\d{8}")) {
@@ -33,6 +33,8 @@ public class Endereco {
         this.cidade = cidade;
         this.complemento = complemento;
     }
+
+    public Endereco() {}
 
     public String getCep() {
         return cep;
