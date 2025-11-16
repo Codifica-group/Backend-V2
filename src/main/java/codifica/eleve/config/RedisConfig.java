@@ -22,32 +22,24 @@ public class RedisConfig {
     @Bean
     public RedisCacheManager cacheManager(RedisConnectionFactory connectionFactory) {
 
-        // Validador polimórfico para segurança
         PolymorphicTypeValidator ptv = BasicPolymorphicTypeValidator.builder()
                 .allowIfBaseType(java.util.Collection.class)
                 .allowIfBaseType(java.util.Map.class)
-                .allowIfSubType("codifica.eleve") // Permite TODOS os tipos do seu projeto
+                .allowIfSubType("codifica.eleve")
                 .allowIfSubType("java.time")
                 .build();
 
-        // Configura o ObjectMapper
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
 
-        // *** A MUDANÇA CRÍTICA ESTÁ AQUI ***
-        // Usamos .EVERYTHING em vez de .NON_FINAL porque 'Pagina' é um 'record' (final).
-        // Isso garante que a informação de tipo '@class' seja adicionada a TODAS
-        // as classes, resolvendo o 'missing type id'.
         objectMapper.activateDefaultTyping(
                 ptv,
-                ObjectMapper.DefaultTyping.EVERYTHING, // <-- MUDANÇA AQUI
+                ObjectMapper.DefaultTyping.EVERYTHING,
                 JsonTypeInfo.As.PROPERTY
         );
 
-        // Configura o serializador JSON
         GenericJackson2JsonRedisSerializer jsonRedisSerializer = new GenericJackson2JsonRedisSerializer(objectMapper);
 
-        // Configuração do Cache
         RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig()
                 .entryTtl(Duration.ofMinutes(10))
                 .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()))

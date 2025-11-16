@@ -10,16 +10,13 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
 
 @Configuration
-@Import({ // Importa as classes que contêm os decorators
+@Import({
         PetCachingDecorators.CachingListPetUseCase.class,
         PetCachingDecorators.CachingCreatePetUseCase.class,
         PetCachingDecorators.CachingUpdatePetUseCase.class,
         PetCachingDecorators.CachingDeletePetUseCase.class
 })
 public class PetUseCaseConfig {
-
-    // 1. Defina os BEANS DE CACHE como @Primary
-    // O Spring irá injetar estes beans nos Controllers
 
     @Bean
     @Primary
@@ -44,9 +41,6 @@ public class PetUseCaseConfig {
     public DeletePetUseCase cachingDeletePetUseCase(PetCachingDecorators.CachingDeletePetUseCase useCase) {
         return useCase;
     }
-
-    // 2. Defina os BEANS ORIGINAIS (sem @Primary)
-    // O Spring irá injetá-los automaticamente nos construtores dos decorators acima.
 
     @Bean
     public CreatePetUseCase createPetUseCase(PetRepository petRepository) {

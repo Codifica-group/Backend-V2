@@ -10,16 +10,13 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
 
 @Configuration
-@Import({ // Importa as classes que contêm os decorators
+@Import({
         ClienteCachingDecorators.CachingListClienteUseCase.class,
         ClienteCachingDecorators.CachingCreateClienteUseCase.class,
         ClienteCachingDecorators.CachingUpdateClienteUseCase.class,
         ClienteCachingDecorators.CachingDeleteClienteUseCase.class
 })
 public class ClienteUseCaseConfig {
-
-    // 1. Defina os BEANS DE CACHE como @Primary
-    // O Spring irá injetar estes beans nos Controllers
 
     @Bean
     @Primary
@@ -44,10 +41,6 @@ public class ClienteUseCaseConfig {
     public DeleteClienteUseCase cachingDeleteClienteUseCase(ClienteCachingDecorators.CachingDeleteClienteUseCase useCase) {
         return useCase;
     }
-
-    // 2. Defina os BEANS ORIGINAIS (sem @Primary)
-    // O Spring irá injetá-los automaticamente nos construtores dos decorators acima.
-    // Dê a eles nomes de bean diferentes para evitar conflitos.
 
     @Bean
     public ListClienteUseCase listClienteUseCase(ClienteRepository clienteRepository) {

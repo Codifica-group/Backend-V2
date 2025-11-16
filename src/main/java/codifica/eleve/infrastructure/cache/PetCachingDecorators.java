@@ -11,10 +11,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
-/**
- * Esta classe contém os Decorators de Caching para os UseCases de Pet.
- * As anotações do Spring Cache são aplicadas aqui, fora do 'core'.
- */
 public class PetCachingDecorators {
 
     @Component
