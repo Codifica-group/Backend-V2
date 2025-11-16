@@ -6,6 +6,7 @@ import codifica.eleve.core.domain.shared.exceptions.ConflictException;
 import codifica.eleve.core.domain.solicitacao.SolicitacaoAgenda;
 import codifica.eleve.core.domain.solicitacao.SolicitacaoAgendaRepository;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,6 +23,9 @@ public class CreateSolicitacaoAgendaUseCase {
     public Map<String, Object> execute(SolicitacaoAgenda solicitacaoAgenda) {
         if (!agendaRepository.findConflitosByDataHoraInicio(solicitacaoAgenda.getDataHoraInicio()).isEmpty()) {
             throw new ConflictException("Já existe um agendamento para este período.");
+        }
+        if (solicitacaoAgenda.getDataHoraInicio().isBefore(LocalDateTime.now())) {
+            throw new IllegalArgumentException("Não é possível criar uma solicitação de agendamento com data no passado.");
         }
 
         SolicitacaoAgenda solicitacao = repository.save(solicitacaoAgenda);

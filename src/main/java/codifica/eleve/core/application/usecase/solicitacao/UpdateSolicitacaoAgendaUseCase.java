@@ -13,6 +13,7 @@ import codifica.eleve.interfaces.dtoAdapters.SolicitacaoAgendaDtoMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -35,6 +36,9 @@ public class UpdateSolicitacaoAgendaUseCase {
     public Map<String, Object> execute(Integer id, SolicitacaoAgenda solicitacaoAgenda) {
         SolicitacaoAgenda solicitacaoExistente = repository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Solicitação de agenda não encontrada."));
+        if (solicitacaoAgenda.getDataHoraInicio().isBefore(LocalDateTime.now())) {
+            throw new IllegalArgumentException("Não é possível atualizar uma solicitação de agendamento com data no passado.");
+        }
 
         boolean aceito = "ACEITO_PELO_PETSHOP".equalsIgnoreCase(solicitacaoAgenda.getStatus());
 
