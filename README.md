@@ -42,25 +42,28 @@ A aplicação implementa as seguintes camadas de segurança:
 
 * Java 21
 * Maven 3.9 ou superior
-* Docker e Docker Compose
+* Docker e Docker Compos
+* Imagem Docker do Redis e RabbitMQ
 * Variáveis de ambiente configuradas
 
 ### Variáveis de Ambiente
 
 As seguintes variáveis de ambiente precisam ser configuradas:
 
-| Variável                  | Descrição                                                                                   |
-| ------------------------- |---------------------------------------------------------------------------------------------|
-| `SPRING_PROFILES_ACTIVE`  | Ativa o perfil de configuração do Spring. **Padrão:** `dev` ou `prod`.                      |
-| `DB_URL`                  | Endereço de conexão do banco de dados. **Padrão dev:** `jdbc:mysql://localhost:3306/Eleve`. |
-| `DB_USERNAME`             | Nome de usuário do banco de dados. **Padrão dev:** `root`.                                  |
-| `DB_PASSWORD`             | Senha do banco de dados. **Deve ser definida.**                                             |
-| `RABBITMQ_USERNAME`       | Nome de usuário para o serviço de mensageria RabbitMQ. **Padrão dev:** `myuser`.            |
-| `RABBITMQ_PASSWORD`       | Senha para o serviço de mensageria RabbitMQ. **Padrão dev:** `secret`.                      |
-| `SECRET_KEY`              | Chave secreta para assinar tokens de autenticação (JWT). **Deve ser definida.**             |
-| `TOKEN_EXPIRATION_TIME`   | Tempo de validade do token em milissegundos. **Padrão dev:** `28800000` (8 horas).          |
-| `CORS_ALLOWED_ORIGINS`    | Libera o acesso à API para o frontend. **Padrão dev:** `http://localhost:5173`.             |
-| `ORS_API_KEY`             | Chave da API do OpenRouteService para cálculos de rota. **Deve ser definida.**              |
+| Variável                 | Descrição                                                                                   |
+|--------------------------|---------------------------------------------------------------------------------------------|
+| `SPRING_PROFILES_ACTIVE` | Ativa o perfil de configuração do Spring. **Padrão:** `dev` ou `prod`.                      |
+| `DB_URL`                 | Endereço de conexão do banco de dados. **Padrão dev:** `jdbc:mysql://localhost:3306/Eleve`. |
+| `DB_USERNAME`            | Nome de usuário do banco de dados. **Padrão dev:** `root`.                                  |
+| `DB_PASSWORD`            | Senha do banco de dados. **Deve ser definida.**                                             |
+| `REDIS_HOST`             | Endereço para o serviço de cache Redis. **Padrão dev:** `localhost`.                        |
+| `REDIS_PASSWORD`         | Senha para o serviço de cache Redis. **Deve ser definida.**                                 |
+| `RABBITMQ_USERNAME`      | Nome de usuário para o serviço de mensageria RabbitMQ. **Padrão dev:** `myuser`.            |
+| `RABBITMQ_PASSWORD`      | Senha para o serviço de mensageria RabbitMQ. **Padrão dev:** `secret`.                      |
+| `SECRET_KEY`             | Chave secreta para assinar tokens de autenticação (JWT). **Deve ser definida.**             |
+| `TOKEN_EXPIRATION_TIME`  | Tempo de validade do token em milissegundos. **Padrão dev:** `28800000` (8 horas).          |
+| `CORS_ALLOWED_ORIGINS`   | Libera o acesso à API para o frontend. **Padrão dev:** `http://localhost:5173`.             |
+| `ORS_API_KEY`            | Chave da API do OpenRouteService para cálculos de rota. **Deve ser definida.**              |
 | `INTERNAL_API_KEY`       | Chave da API interna para conexão com microsserviço Chatbot. **Deve ser definida.**         |
 
 ### Passos para Execução
@@ -75,4 +78,30 @@ As seguintes variáveis de ambiente precisam ser configuradas:
 
     ```bash
     ./mvnw spring-boot:run
+    ```
+
+### Comando úteis
+1. Criar .jar:
+    ```bash
+    mvn package -DskipTests
+    ```
+   
+2. Executar .jar:
+    ```bash
+    java -jar target/eleve-0.0.1-SNAPSHOT.jar
+    ```
+   
+3. Limpar cache do Redis:
+    ```bash
+   docker-compose exec redis redis-cli FLUSHALL
+    ```
+
+4. Verificar cache do Redis:
+    ```bash
+   docker-compose exec redis redis-cli KEYS "*"
+    ```
+
+5. Parar o Docker Compose:
+    ```bash
+    docker-compose down
     ```
