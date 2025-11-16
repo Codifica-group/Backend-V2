@@ -2,7 +2,6 @@ package codifica.eleve.infrastructure.useCaseConfig.events;
 
 import codifica.eleve.core.application.ports.out.events.ClienteEventPublisherPort;
 import codifica.eleve.core.application.usecase.cliente.CreateClienteUseCase;
-import codifica.eleve.core.application.usecase.cliente.cep.FindCepUseCase;
 import codifica.eleve.core.application.usecase.events.ClienteParaCadastrarUseCase;
 import codifica.eleve.infrastructure.events.listeners.ClienteEventListener;
 import org.springframework.context.annotation.Bean;
@@ -13,10 +12,9 @@ public class ClienteEventsUseCaseConfig {
 
     @Bean
     public ClienteParaCadastrarUseCase clienteParaCadastrarUseCase(
-            FindCepUseCase findCepUseCase,
             CreateClienteUseCase createClienteUseCase,
             ClienteEventPublisherPort clienteEventPublisherPort) {
-        return new ClienteParaCadastrarUseCase(findCepUseCase, createClienteUseCase, clienteEventPublisherPort);
+        return new ClienteParaCadastrarUseCase(createClienteUseCase, clienteEventPublisherPort);
     }
 
     @Bean

@@ -3,7 +3,6 @@ package codifica.eleve.core.application.usecase.events;
 import codifica.eleve.core.application.ports.in.events.ClienteEventListenerPort;
 import codifica.eleve.core.application.ports.out.events.ClienteEventPublisherPort;
 import codifica.eleve.core.application.usecase.cliente.CreateClienteUseCase;
-import codifica.eleve.core.application.usecase.cliente.cep.FindCepUseCase;
 import codifica.eleve.core.domain.cliente.Cliente;
 import codifica.eleve.core.domain.events.cliente.ClienteParaCadastrarEvent;
 import codifica.eleve.core.domain.events.cliente.ClienteParaCadastrarResponseEvent;
@@ -18,15 +17,12 @@ public class ClienteParaCadastrarUseCase implements ClienteEventListenerPort {
 
     private static final Logger logger = LoggerFactory.getLogger(ClienteParaCadastrarUseCase.class);
 
-    private final FindCepUseCase findCepUseCase;
     private final CreateClienteUseCase createClienteUseCase;
     private final ClienteEventPublisherPort clienteEventPublisher;
 
     public ClienteParaCadastrarUseCase(
-            FindCepUseCase findCepUseCase,
             CreateClienteUseCase createClienteUseCase,
             ClienteEventPublisherPort clienteEventPublisher) {
-        this.findCepUseCase = findCepUseCase;
         this.createClienteUseCase = createClienteUseCase;
         this.clienteEventPublisher = clienteEventPublisher;
     }
@@ -35,13 +31,12 @@ public class ClienteParaCadastrarUseCase implements ClienteEventListenerPort {
     public void processClienteParaCadastrar(ClienteParaCadastrarEvent event) {
         logger.info("EVENTO: Cliente Para Cadastrar com chatId: {}", event.getChatId());
         try {
-            Endereco enderecoBase = findCepUseCase.execute(event.getCep());
             Endereco enderecoCompleto = new Endereco(
-                    enderecoBase.getCep(),
-                    enderecoBase.getRua(),
+                    event.getCep(),
+                    event.getRua(),
                     event.getNumeroEndereco(),
-                    enderecoBase.getBairro(),
-                    enderecoBase.getCidade(),
+                    event.getBairro(),
+                    event.getCidade(),
                     event.getComplemento()
             );
 
