@@ -6,6 +6,12 @@ public class Porte {
     private Id id;
     private String nome;
 
+    public Porte(String nome) {
+        this.nome = nome;
+    }
+
+    public Porte() {}
+
     public Id getId() {
         return id;
     }
