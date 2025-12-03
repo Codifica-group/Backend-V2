@@ -1,4 +1,4 @@
-FROM maven:3-openjdk-21 AS builder
+FROM maven:3.9-eclipse-temurin-21 AS builder
 LABEL authors="Eleve"
 
 WORKDIR /build
@@ -7,7 +7,7 @@ COPY . .
 
 RUN mvn clean package -DskipTests -Dcheckstyle.skip=true
 
-FROM openjdk:21-jdk-slim
+FROM eclipse-temurin:21-jre
 
 WORKDIR /app
 
