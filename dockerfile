@@ -7,7 +7,7 @@ COPY . .
 
 RUN mvn clean package -DskipTests -Dcheckstyle.skip=true
 
-FROM openjdk:21-slim
+FROM openjdk:21-jdk-slim
 
 WORKDIR /app
 
