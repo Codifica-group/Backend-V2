@@ -39,7 +39,7 @@ jobs:
             -e RABBITMQ_PASSWORD="${{ secrets.RABBITMQ_PASSWORD }}" \
             -e RABBITMQ_USERNAME="${{ secrets.RABBITMQ_USERNAME }}" \
             -e SECRET_KEY="${{ secrets.SECRET_KEY }}" \
-            -e SPRING_PROFILES_ACTIVE="${{ secrets.SPRING_PROFILES_ACTIVE }}" \
+            -e SPRING_PROFILES_ACTIVE="prod" \
             -e TOKEN_EXPIRATION_TIME="${{ secrets.TOKEN_EXPIRATION_TIME }}" \
             -e INTERNAL_API_KEY="${{ secrets.INTERNAL_API_KEY }}" \
             anilmar/eleve-backend:latest
