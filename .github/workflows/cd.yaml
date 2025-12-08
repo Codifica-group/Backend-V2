@@ -1,0 +1,45 @@
+name: Deploy EC2
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Login no Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+      - name: Baixar imagem atualizada
+        run: |
+          docker pull anilmar/eleve-backend:latest
+
+      - name: Parar container antigo (se existir)
+        run: |
+          docker stop eleve-backend || true
+          docker rm eleve-backend || true
+
+      - name: Iniciar container atualizado
+        run: |
+          docker run -d \
+            --name eleve-backend \
+            -p 8080:8080 \
+            -e CORS_ALLOWED_ORIGINS="${{ secrets.CORS_ALLOWED_ORIGINS }}" \
+            -e DB_PASSWORD="${{ secrets.DB_PASSWORD }}" \
+            -e DB_URL="${{ secrets.DB_URL }}" \
+            -e DB_USERNAME="${{ secrets.DB_USERNAME }}" \
+            -e ORS_API_KEY="${{ secrets.ORS_API_KEY }}" \
+            -e RABBITMQ_PASSWORD="${{ secrets.RABBITMQ_PASSWORD }}" \
+            -e RABBITMQ_USERNAME="${{ secrets.RABBITMQ_USERNAME }}" \
+            -e SECRET_KEY="${{ secrets.SECRET_KEY }}" \
+            -e SPRING_PROFILES_ACTIVE="${{ secrets.SPRING_PROFILES_ACTIVE }}" \
+            -e TOKEN_EXPIRATION_TIME="${{ secrets.TOKEN_EXPIRATION_TIME }}" \
+            -e INTERNAL_API_KEY="${{ secrets.INTERNAL_API_KEY }}" \
+            anilmar/eleve-backend:latest
