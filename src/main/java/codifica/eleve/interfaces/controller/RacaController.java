@@ -6,9 +6,12 @@ import codifica.eleve.interfaces.dtoAdapters.RacaDtoMapper;
 import codifica.eleve.interfaces.dto.RacaDTO;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,11 +27,13 @@ public class RacaController {
     private final RacaDtoMapper racaDtoMapper;
     private final FindRacaByNomeUseCase findRacaByNomeUseCase;
     private final FindRacasByNomeSemelhanteUseCase findRacasByNomeSemelhanteUseCase;
+    private final IdentificarRacaPetUseCase identificarRacaPetUseCase;
 
     public RacaController(CreateRacaUseCase createRacaUseCase, ListRacaUseCase listRacaUseCase,
                           FindRacaByIdUseCase findRacaByIdUseCase, UpdateRacaUseCase updateRacaUseCase,
                           DeleteRacaUseCase deleteRacaUseCase, RacaDtoMapper racaDtoMapper,
-                          FindRacaByNomeUseCase findRacaByNomeUseCase, FindRacasByNomeSemelhanteUseCase findRacasByNomeSemelhanteUseCase) {
+                          FindRacaByNomeUseCase findRacaByNomeUseCase, FindRacasByNomeSemelhanteUseCase findRacasByNomeSemelhanteUseCase,
+                          IdentificarRacaPetUseCase identificarRacaPetUseCase) {
         this.createRacaUseCase = createRacaUseCase;
         this.listRacaUseCase = listRacaUseCase;
         this.findRacaByIdUseCase = findRacaByIdUseCase;
@@ -37,6 +42,7 @@ public class RacaController {
         this.racaDtoMapper = racaDtoMapper;
         this.findRacaByNomeUseCase = findRacaByNomeUseCase;
         this.findRacasByNomeSemelhanteUseCase = findRacasByNomeSemelhanteUseCase;
+        this.identificarRacaPetUseCase = identificarRacaPetUseCase;
     }
 
     @PostMapping
@@ -81,5 +87,15 @@ public class RacaController {
     public ResponseEntity<Void> delete(@PathVariable Integer id) {
         deleteRacaUseCase.execute(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping(value = "/identificar", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> identificarRaca(@RequestParam("imagem") MultipartFile imagem) throws IOException {
+        String jsonResult = identificarRacaPetUseCase.execute(
+                imagem.getBytes(),
+                imagem.getContentType(),
+                imagem.getSize()
+        );
+        return ResponseEntity.ok(jsonResult);
     }
 }

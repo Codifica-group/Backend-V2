@@ -1,5 +1,6 @@
 package codifica.eleve.infrastructure.useCaseConfig;
 
+import codifica.eleve.core.application.ports.out.IdentificarRacaIAPort;
 import codifica.eleve.core.application.usecase.raca.*;
 import codifica.eleve.core.domain.pet.PetRepository;
 import codifica.eleve.core.domain.raca.RacaRepository;
@@ -42,5 +43,10 @@ public class RacaUseCaseConfig {
     @Bean
     public FindRacasByNomeSemelhanteUseCase findRacasByNomeSemelhanteUseCase(RacaRepository racaRepository) {
         return new FindRacasByNomeSemelhanteUseCase(racaRepository);
+    }
+
+    @Bean
+    public IdentificarRacaPetUseCase identificarRacaPetUseCase(IdentificarRacaIAPort iaPort) {
+        return new IdentificarRacaPetUseCase(iaPort);
     }
 }
