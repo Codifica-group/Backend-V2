@@ -1,5 +1,6 @@
 package codifica.eleve.infrastructure.useCaseConfig;
 
+import codifica.eleve.core.application.ports.out.AvaliarCondicaoPetIAPort;
 import codifica.eleve.core.application.usecase.agenda.*;
 import codifica.eleve.core.application.usecase.agenda.calculadora.*;
 import codifica.eleve.core.domain.agenda.AgendaRepository;
@@ -39,8 +40,8 @@ public class AgendaUseCaseConfig {
     }
 
     @Bean
-    public CalcularServicoUseCase calcularServicoUseCase(PetRepository petRepository, ServicoRepository servicoRepository, ClienteRepository clienteRepository, CalcularDeslocamentoUseCase calcularDeslocamentoUseCase) {
-        return new CalcularServicoUseCase(petRepository, servicoRepository, clienteRepository, calcularDeslocamentoUseCase);
+    public CalcularServicoUseCase calcularServicoUseCase(PetRepository petRepository, ServicoRepository servicoRepository, ClienteRepository clienteRepository, AvaliarCondicaoPetIAPort avaliarCondicaoIAPort, CalcularDeslocamentoUseCase calcularDeslocamentoUseCase) {
+        return new CalcularServicoUseCase(petRepository, servicoRepository, clienteRepository, avaliarCondicaoIAPort, calcularDeslocamentoUseCase);
     }
 
     @Bean

@@ -4,6 +4,7 @@ import codifica.eleve.core.application.usecase.agenda.*;
 import codifica.eleve.core.application.usecase.agenda.calculadora.CalcularLucroUseCase;
 import codifica.eleve.core.application.usecase.agenda.calculadora.CalcularServicoUseCase;
 import codifica.eleve.core.domain.agenda.Agenda;
+import codifica.eleve.core.domain.agenda.calculadora.SugestaoServico;
 import codifica.eleve.core.domain.shared.Pagina;
 import codifica.eleve.core.domain.shared.Periodo;
 import codifica.eleve.interfaces.dto.*;
@@ -21,8 +22,10 @@ import java.util.stream.Collectors;
 import org.springframework.cglib.core.Local;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/agendas")
@@ -110,7 +113,35 @@ public class AgendaController {
                 .map(ServicoDTO::getId)
                 .collect(Collectors.toList());
 
-        var sugestao = calcularServicoUseCase.execute(requestDTO.getPetId(), servicosId);
+        SugestaoServico sugestao = calcularServicoUseCase.execute(requestDTO.getPetId(), servicosId);
+        return ResponseEntity.ok(sugestaoServicoDtoMapper.toDto(sugestao));
+    }
+
+    @PostMapping(value = "/calcular/servico/analise", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<SugestaoServicoDTO> calcularServicoComIA(
+            @RequestPart(value = "dados", required = false) CalcularServicoRequestDTO requestDTO,
+            @RequestPart(value = "imagem", required = false) MultipartFile imagem) {
+
+        List<Integer> servicosId = requestDTO != null && requestDTO.getServicos() != null
+                ? requestDTO.getServicos().stream().map(ServicoDTO::getId).collect(Collectors.toList())
+                : null;
+
+        Integer petId = requestDTO != null ? requestDTO.getPetId() : null;
+
+        byte[] imageBytes = null;
+        String mimeType = null;
+
+        if (imagem != null) {
+            try {
+                imageBytes = imagem.getBytes();
+                mimeType = imagem.getContentType();
+            } catch (java.io.IOException e) {
+                throw new codifica.eleve.core.domain.shared.exceptions.InternalServerErrorException("Falha ao ler o arquivo de imagem.");
+            }
+        }
+
+        SugestaoServico sugestao = calcularServicoUseCase.executeAnalise(petId, servicosId, imageBytes, mimeType);
+
         return ResponseEntity.ok(sugestaoServicoDtoMapper.toDto(sugestao));
     }
 
