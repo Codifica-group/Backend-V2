@@ -7,6 +7,7 @@ import codifica.eleve.core.domain.shared.exceptions.IllegalArgumentException;
 
 public class Cliente {
     private Id id;
+    private Id usuarioId = null;
     private String nome;
     private Telefone telefone;
     private Endereco endereco;
@@ -28,6 +29,14 @@ public class Cliente {
 
     public void setId(Id id) {
         this.id = id;
+    }
+
+    public Id getUsuarioId() {
+        return usuarioId;
+    }
+
+    public void setUsuarioId(Id usuarioId) {
+        this.usuarioId = usuarioId;
     }
 
     public String getNome() {

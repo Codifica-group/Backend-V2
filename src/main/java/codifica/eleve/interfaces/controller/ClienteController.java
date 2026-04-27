@@ -17,14 +17,16 @@ import java.util.Map;
 public class ClienteController {
 
     private final CreateClienteUseCase createClienteUseCase;
+    private final CreateAppClienteUseCase createAppClienteUseCase;
     private final ListClienteUseCase listClienteUseCase;
     private final FindClienteByIdUseCase findClienteByIdUseCase;
     private final UpdateClienteUseCase updateClienteUseCase;
     private final DeleteClienteUseCase deleteClienteUseCase;
     private final ClienteDtoMapper clienteDtoMapper;
 
-    public ClienteController(CreateClienteUseCase createClienteUseCase, ListClienteUseCase listClienteUseCase, FindClienteByIdUseCase findClienteByIdUseCase, UpdateClienteUseCase updateClienteUseCase, DeleteClienteUseCase deleteClienteUseCase, ClienteDtoMapper clienteDtoMapper) {
+    public ClienteController(CreateClienteUseCase createClienteUseCase, CreateAppClienteUseCase createAppClienteUseCase, ListClienteUseCase listClienteUseCase, FindClienteByIdUseCase findClienteByIdUseCase, UpdateClienteUseCase updateClienteUseCase, DeleteClienteUseCase deleteClienteUseCase, ClienteDtoMapper clienteDtoMapper) {
         this.createClienteUseCase = createClienteUseCase;
+        this.createAppClienteUseCase = createAppClienteUseCase;
         this.listClienteUseCase = listClienteUseCase;
         this.findClienteByIdUseCase = findClienteByIdUseCase;
         this.updateClienteUseCase = updateClienteUseCase;
@@ -35,6 +37,12 @@ public class ClienteController {
     @PostMapping
     public ResponseEntity<Map<String, Object>> create(@RequestBody @Valid ClienteDTO clienteDTO) {
         Map<String, Object> response = createClienteUseCase.execute(clienteDtoMapper.toDomain(clienteDTO));
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @PostMapping("/app")
+    public ResponseEntity<Map<String, Object>> createAppCliente(@RequestBody @Valid ClienteDTO clienteDTO) {
+        Map<String, Object> response = createAppClienteUseCase.execute(clienteDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 

@@ -7,6 +7,9 @@ import codifica.eleve.core.domain.shared.exceptions.IllegalArgumentException;
 import codifica.eleve.core.domain.usuario.Usuario;
 import codifica.eleve.core.domain.usuario.UsuarioRepository;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class RegisterUsuarioUseCase {
     private final UsuarioRepository usuarioRepository;
     private final PasswordEncoderPort passwordEncoderPort;
@@ -16,7 +19,7 @@ public class RegisterUsuarioUseCase {
         this.passwordEncoderPort = passwordEncoderPort;
     }
 
-    public String execute(Usuario usuario) {
+    public Map<String, Object> execute(Usuario usuario) {
         if (usuario.getNome() == null || usuario.getNome().trim().isEmpty()) {
             throw new IllegalArgumentException("O nome do usuário não pode ser vazio.");
         }
@@ -32,7 +35,10 @@ public class RegisterUsuarioUseCase {
         String senhaCodificada = passwordEncoderPort.encode(usuario.getSenha().getValor());
         usuario.setSenhaCodificada(senhaCodificada);
 
-        usuarioRepository.save(usuario);
-        return "Usuário cadastrado com sucesso.";
+        Usuario newUser = usuarioRepository.save(usuario);
+        Map<String, Object> response = new HashMap<>();
+        response.put("mensagem", "Usuário cadastrado com sucesso.");
+        response.put("id", newUser.getId().getValue());
+        return response;
     }
 }

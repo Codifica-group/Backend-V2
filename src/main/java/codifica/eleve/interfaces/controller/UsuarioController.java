@@ -6,10 +6,12 @@ import codifica.eleve.core.domain.usuario.Usuario;
 import codifica.eleve.interfaces.dtoAdapters.UsuarioDtoMapper;
 import codifica.eleve.interfaces.dto.UsuarioDTO;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -46,9 +48,9 @@ public class UsuarioController {
     }
 
     @PostMapping
-    public ResponseEntity<String> register(@RequestBody @Valid UsuarioDTO usuarioDTO) {
-        String message = registerUseCase.execute(usuarioDtoMapper.toDomain(usuarioDTO));
-        return ResponseEntity.ok(message);
+    public ResponseEntity<Map<String, Object>> register(@RequestBody @Valid UsuarioDTO usuarioDTO) {
+        Map<String, Object> response = registerUseCase.execute(usuarioDtoMapper.toDomain(usuarioDTO));
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PostMapping("/login")

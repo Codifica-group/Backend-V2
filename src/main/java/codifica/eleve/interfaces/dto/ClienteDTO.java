@@ -1,11 +1,16 @@
 package codifica.eleve.interfaces.dto;
 
+import codifica.eleve.core.domain.shared.Email;
+import codifica.eleve.core.domain.shared.Senha;
 import codifica.eleve.interfaces.validation.SafeString;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ClienteDTO {
     private Integer id;
+    private Integer usuarioId;
+    private String email;
+    private String senha;
 
     @SafeString
     private String nome;
@@ -34,6 +39,30 @@ public class ClienteDTO {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getUsuarioId() {
+        return usuarioId;
+    }
+
+    public void setUsuarioId(Integer usuarioId) {
+        this.usuarioId = usuarioId;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 
     public String getNome() {

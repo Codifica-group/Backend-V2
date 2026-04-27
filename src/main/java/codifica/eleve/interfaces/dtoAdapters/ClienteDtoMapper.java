@@ -19,6 +19,9 @@ public class ClienteDtoMapper {
         if (dto.getId() != null) {
             domain.setId(new Id(dto.getId()));
         }
+        if (dto.getUsuarioId() != null) {
+            domain.setUsuarioId(new Id(dto.getUsuarioId()));
+        }
         return domain;
     }
 
