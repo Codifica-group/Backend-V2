@@ -34,6 +34,10 @@ public class ClienteRepositoryImpl implements ClienteRepository {
     }
 
     @Override
+    public Optional<Cliente> findByNome(String nome) {
+        return clienteJpaRepository.findByNome(nome).map(clienteMapper::toDomain);
+    }
+    @Override
     public List<Cliente> findAll(int offset, int size) {
         return clienteJpaRepository.findAll(PageRequest.of(offset, size)).stream().map(clienteMapper::toDomain).collect(Collectors.toList());
     }

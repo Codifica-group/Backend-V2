@@ -19,6 +19,7 @@ public class SolicitacaoAgendaController {
 
     private final CreateSolicitacaoAgendaUseCase createUseCase;
     private final FindSolicitacaoAgendaByIdUseCase findByIdUseCase;
+    private final FindSolicitacaoAgendaByChatIdUseCase findByChatIdUseCase;
     private final ListSolicitacaoAgendaUseCase listUseCase;
     private final UpdateSolicitacaoAgendaUseCase updateUseCase;
     private final DeleteSolicitacaoAgendaUseCase deleteUseCase;
@@ -26,12 +27,14 @@ public class SolicitacaoAgendaController {
 
     public SolicitacaoAgendaController(CreateSolicitacaoAgendaUseCase createUseCase,
                                        FindSolicitacaoAgendaByIdUseCase findByIdUseCase,
+                                       FindSolicitacaoAgendaByChatIdUseCase findByChatIdUseCase,
                                        ListSolicitacaoAgendaUseCase listUseCase,
                                        UpdateSolicitacaoAgendaUseCase updateUseCase,
                                        DeleteSolicitacaoAgendaUseCase deleteUseCase,
                                        SolicitacaoAgendaDtoMapper mapper) {
         this.createUseCase = createUseCase;
         this.findByIdUseCase = findByIdUseCase;
+        this.findByChatIdUseCase = findByChatIdUseCase;
         this.listUseCase = listUseCase;
         this.updateUseCase = updateUseCase;
         this.deleteUseCase = deleteUseCase;
@@ -48,6 +51,14 @@ public class SolicitacaoAgendaController {
     public ResponseEntity<SolicitacaoAgendaDTO> findById(@PathVariable Integer id) {
         SolicitacaoAgendaDTO solicitacao = mapper.toDto(findByIdUseCase.execute(id));
         return ResponseEntity.ok(solicitacao);
+    }
+
+    @GetMapping("/chat/{chatId}")
+    public ResponseEntity<List<SolicitacaoAgendaDTO>> findByChatId(@PathVariable Integer chatId) {
+        List<SolicitacaoAgendaDTO> solicitacoes = findByChatIdUseCase.execute(chatId).stream()
+                .map(mapper::toDto)
+                .collect(Collectors.toList());
+        return solicitacoes.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(solicitacoes);
     }
 
     @GetMapping

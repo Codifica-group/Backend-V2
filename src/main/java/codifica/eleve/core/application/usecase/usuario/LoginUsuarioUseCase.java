@@ -4,6 +4,7 @@ import codifica.eleve.core.application.ports.out.*;
 import codifica.eleve.core.domain.shared.exceptions.UnauthorizedException;
 import codifica.eleve.core.domain.usuario.Usuario;
 import codifica.eleve.core.domain.usuario.UsuarioRepository;
+import codifica.eleve.interfaces.dtoAdapters.UsuarioDtoMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,6 +21,7 @@ public class LoginUsuarioUseCase {
     private final LoginAttemptPort loginAttemptPort;
     private final GeolocationPort geolocationPort;
     private final RequestContextPort requestContextPort;
+    private final UsuarioDtoMapper usuarioDtoMapper;
     private static final Logger logger = LoggerFactory.getLogger(LoginUsuarioUseCase.class);
 
     @Value("${IP_BLOCK_ENABLED}")
@@ -31,13 +33,15 @@ public class LoginUsuarioUseCase {
             TokenPort tokenPort,
             LoginAttemptPort loginAttemptPort,
             GeolocationPort geolocationPort,
-            RequestContextPort requestContextPort) {
+            RequestContextPort requestContextPort,
+            UsuarioDtoMapper usuarioDtoMapper) {
         this.usuarioRepository = usuarioRepository;
         this.passwordEncoder = passwordEncoder;
         this.tokenPort = tokenPort;
         this.loginAttemptPort = loginAttemptPort;
         this.geolocationPort = geolocationPort;
         this.requestContextPort = requestContextPort;
+        this.usuarioDtoMapper = usuarioDtoMapper;
     }
 
     public Object execute(Usuario usuario) {
@@ -57,6 +61,7 @@ public class LoginUsuarioUseCase {
         var response = new HashMap<String, Object>();
         response.put("mensagem", "Acesso autorizado.");
         response.put("token", tokenPort.generate(foundUserOptional.get().getEmail().getEndereco()));
+        foundUserOptional.ifPresent(user -> response.put("usuario", usuarioDtoMapper.toDto(user)));
         return response;
     }
 

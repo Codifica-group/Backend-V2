@@ -35,6 +35,10 @@ public class SolicitacaoAgendaRepositoryImpl implements SolicitacaoAgendaReposit
         return jpaRepository.findById(id).map(mapper::toDomain);
     }
 
+    public List<SolicitacaoAgenda> findByChatId(Integer chatId) {
+        return jpaRepository.findAllByChatId(chatId).stream().map(mapper::toDomain).collect(Collectors.toList());
+    }
+
     @Override
     public List<SolicitacaoAgenda> findAll(int offset, int size) {
         return jpaRepository.findAll(PageRequest.of(offset, size)).stream().map(mapper::toDomain).collect(Collectors.toList());

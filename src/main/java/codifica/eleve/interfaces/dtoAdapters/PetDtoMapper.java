@@ -66,6 +66,11 @@ public class PetDtoMapper {
         PetDTO dto = new PetDTO();
         dto.setId(domain.getId().getValue());
         dto.setNome(domain.getNome());
+
+        RacaDTO raca = new RacaDTO();
+        raca.setNome(domain.getRaca().getNome());
+        raca.setPorteId(domain.getRaca().getPorte().getId().getValue());
+        dto.setRaca(raca);
         return dto;
     }
 }

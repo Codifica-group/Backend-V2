@@ -22,6 +22,11 @@ public class SolicitacaoAgendaUseCaseConfig {
     }
 
     @Bean
+    public FindSolicitacaoAgendaByChatIdUseCase findSolicitacaoAgendaByChatIdUseCase(SolicitacaoAgendaRepository repository) {
+        return new FindSolicitacaoAgendaByChatIdUseCase(repository);
+    }
+
+    @Bean
     public ListSolicitacaoAgendaUseCase listSolicitacaoAgendaUseCase(SolicitacaoAgendaRepository repository) {
         return new ListSolicitacaoAgendaUseCase(repository);
     }

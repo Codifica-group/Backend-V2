@@ -6,6 +6,7 @@ import java.util.Optional;
 public interface ClienteRepository {
     Cliente save(Cliente cliente);
     Optional<Cliente> findById(Integer id);
+    Optional<Cliente> findByNome(String nome);
     List<Cliente> findAll(int offset, int size);
     void deleteById(Integer id);
     boolean existsById(Integer id);

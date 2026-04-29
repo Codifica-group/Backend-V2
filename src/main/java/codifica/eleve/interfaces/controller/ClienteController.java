@@ -19,14 +19,16 @@ public class ClienteController {
     private final CreateClienteUseCase createClienteUseCase;
     private final ListClienteUseCase listClienteUseCase;
     private final FindClienteByIdUseCase findClienteByIdUseCase;
+    private final FindClienteByNomeUseCase findClienteByNomeUseCase;
     private final UpdateClienteUseCase updateClienteUseCase;
     private final DeleteClienteUseCase deleteClienteUseCase;
     private final ClienteDtoMapper clienteDtoMapper;
 
-    public ClienteController(CreateClienteUseCase createClienteUseCase, ListClienteUseCase listClienteUseCase, FindClienteByIdUseCase findClienteByIdUseCase, UpdateClienteUseCase updateClienteUseCase, DeleteClienteUseCase deleteClienteUseCase, ClienteDtoMapper clienteDtoMapper) {
+    public ClienteController(CreateClienteUseCase createClienteUseCase, ListClienteUseCase listClienteUseCase, FindClienteByIdUseCase findClienteByIdUseCase, FindClienteByNomeUseCase findClienteByNomeUseCase, UpdateClienteUseCase updateClienteUseCase, DeleteClienteUseCase deleteClienteUseCase, ClienteDtoMapper clienteDtoMapper) {
         this.createClienteUseCase = createClienteUseCase;
         this.listClienteUseCase = listClienteUseCase;
         this.findClienteByIdUseCase = findClienteByIdUseCase;
+        this.findClienteByNomeUseCase = findClienteByNomeUseCase;
         this.updateClienteUseCase = updateClienteUseCase;
         this.deleteClienteUseCase = deleteClienteUseCase;
         this.clienteDtoMapper = clienteDtoMapper;
@@ -50,6 +52,12 @@ public class ClienteController {
     @GetMapping("/{id}")
     public ResponseEntity<ClienteDTO> findById(@PathVariable Integer id) {
         ClienteDTO cliente = clienteDtoMapper.toDto(findClienteByIdUseCase.execute(id));
+        return ResponseEntity.ok(cliente);
+    }
+
+    @GetMapping("/nome/{nome}")
+    public ResponseEntity<ClienteDTO> findByNome(@PathVariable String nome) {
+        ClienteDTO cliente = clienteDtoMapper.toDto(findClienteByNomeUseCase.execute(nome));
         return ResponseEntity.ok(cliente);
     }
 

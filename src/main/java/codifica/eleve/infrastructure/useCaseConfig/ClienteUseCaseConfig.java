@@ -58,6 +58,11 @@ public class ClienteUseCaseConfig {
     }
 
     @Bean
+    public FindClienteByNomeUseCase findClienteByNomeUseCase(ClienteRepository clienteRepository) {
+        return new FindClienteByNomeUseCase(clienteRepository);
+    }
+
+    @Bean
     public UpdateClienteUseCase updateClienteUseCase(ClienteRepository clienteRepository) {
         return new UpdateClienteUseCase(clienteRepository);
     }

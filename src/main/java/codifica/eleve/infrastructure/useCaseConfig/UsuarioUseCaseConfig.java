@@ -3,6 +3,7 @@ package codifica.eleve.infrastructure.useCaseConfig;
 import codifica.eleve.core.application.ports.out.*;
 import codifica.eleve.core.application.usecase.usuario.*;
 import codifica.eleve.core.domain.usuario.UsuarioRepository;
+import codifica.eleve.interfaces.dtoAdapters.UsuarioDtoMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -21,8 +22,9 @@ public class UsuarioUseCaseConfig {
             TokenPort tokenPort,
             LoginAttemptPort loginAttemptPort,
             GeolocationPort geolocationPort,
-            RequestContextPort requestContextPort) {
-        return new LoginUsuarioUseCase(usuarioRepository, passwordEncoder, tokenPort, loginAttemptPort, geolocationPort, requestContextPort);
+            RequestContextPort requestContextPort,
+            UsuarioDtoMapper usuarioDtoMapper) {
+        return new LoginUsuarioUseCase(usuarioRepository, passwordEncoder, tokenPort, loginAttemptPort, geolocationPort, requestContextPort, usuarioDtoMapper);
     }
 
     @Bean
