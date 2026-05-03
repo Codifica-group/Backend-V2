@@ -29,6 +29,7 @@ public class RacaDtoMapper {
         dto.setId(domain.getId().getValue());
         dto.setNome(domain.getNome());
         dto.setPorteId(domain.getPorte().getId().getValue());
+        dto.setPorteNome(domain.getPorte().getNome());
         return dto;
     }
 }

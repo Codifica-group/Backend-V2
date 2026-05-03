@@ -2,6 +2,7 @@ package codifica.eleve.interfaces.controller;
 
 import codifica.eleve.core.application.usecase.raca.*;
 import codifica.eleve.core.domain.raca.Raca;
+import codifica.eleve.infrastructure.adapters.RacaExternaAdapter;
 import codifica.eleve.interfaces.dtoAdapters.RacaDtoMapper;
 import codifica.eleve.interfaces.dto.RacaDTO;
 import jakarta.validation.Valid;
@@ -28,12 +29,13 @@ public class RacaController {
     private final FindRacaByNomeUseCase findRacaByNomeUseCase;
     private final FindRacasByNomeSemelhanteUseCase findRacasByNomeSemelhanteUseCase;
     private final IdentificarRacaPetUseCase identificarRacaPetUseCase;
+    private final RacaExternaAdapter racaExternaAdapter;
 
     public RacaController(CreateRacaUseCase createRacaUseCase, ListRacaUseCase listRacaUseCase,
                           FindRacaByIdUseCase findRacaByIdUseCase, UpdateRacaUseCase updateRacaUseCase,
                           DeleteRacaUseCase deleteRacaUseCase, RacaDtoMapper racaDtoMapper,
                           FindRacaByNomeUseCase findRacaByNomeUseCase, FindRacasByNomeSemelhanteUseCase findRacasByNomeSemelhanteUseCase,
-                          IdentificarRacaPetUseCase identificarRacaPetUseCase) {
+                          IdentificarRacaPetUseCase identificarRacaPetUseCase, RacaExternaAdapter racaExternaAdapter) {
         this.createRacaUseCase = createRacaUseCase;
         this.listRacaUseCase = listRacaUseCase;
         this.findRacaByIdUseCase = findRacaByIdUseCase;
@@ -43,11 +45,13 @@ public class RacaController {
         this.findRacaByNomeUseCase = findRacaByNomeUseCase;
         this.findRacasByNomeSemelhanteUseCase = findRacasByNomeSemelhanteUseCase;
         this.identificarRacaPetUseCase = identificarRacaPetUseCase;
+        this.racaExternaAdapter = racaExternaAdapter;
     }
 
     @PostMapping
     public ResponseEntity<Object> create(@RequestBody @Valid RacaDTO racaDTO) {
         Object json = createRacaUseCase.execute(racaDtoMapper.toDomain(racaDTO));
+        racaExternaAdapter.cadastrarRacaNoPython(racaDTO.getNome());
         return ResponseEntity.status(HttpStatus.CREATED).body(json);
     }
 

@@ -12,6 +12,7 @@ public class RacaDTO {
     private String nome;
 
     private Integer porteId;
+    private String porteNome;
 
     public Integer getId() {
         return id;
@@ -35,5 +36,13 @@ public class RacaDTO {
 
     public void setPorteId(Integer porteId) {
         this.porteId = porteId;
+    }
+
+    public String getPorteNome() {
+        return porteNome;
+    }
+
+    public void setPorteNome(String porteNome) {
+        this.porteNome = porteNome;
     }
 }
