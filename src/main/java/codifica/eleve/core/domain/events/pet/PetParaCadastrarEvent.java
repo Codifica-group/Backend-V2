@@ -9,6 +9,8 @@ public class PetParaCadastrarEvent implements Serializable {
     private Long chatId;
     private Integer clienteId;
     private String nome;
+    private String sexo;
+    private String foto;
     private RacaDTO raca;
 
     public Long getChatId() {
@@ -21,6 +23,14 @@ public class PetParaCadastrarEvent implements Serializable {
 
     public String getNome() {
         return nome;
+    }
+
+    public String getSexo() {
+        return sexo;
+    }
+
+    public String getFoto() {
+        return foto;
     }
 
     public RacaDTO getRaca() {
