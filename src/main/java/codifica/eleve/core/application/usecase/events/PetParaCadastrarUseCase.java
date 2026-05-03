@@ -48,6 +48,9 @@ public class PetParaCadastrarUseCase implements PetEventListenerPort {
             raca.setId(new Id(event.getRaca().getId()));
 
             Pet pet = new Pet(event.getNome(), raca, cliente);
+            pet.setPorte(raca.getPorte());
+            pet.setSexo(event.getSexo());
+            pet.setFoto(event.getFoto());
             Map<String, Object> response = createPetUseCase.execute(pet);
             Integer petId = (Integer) response.get("id");
             logger.info("SUCESSO: Pet do chatId {} cadastrado com Id: {}", event.getChatId(), petId);

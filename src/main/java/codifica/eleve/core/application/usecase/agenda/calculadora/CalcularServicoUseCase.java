@@ -68,13 +68,14 @@ public class CalcularServicoUseCase {
     private BigDecimal calcularValorServico(Servico servico, Pet pet) {
         BigDecimal valorBase = servico.getValor().getValor();
         BigDecimal adicionalPorte = BigDecimal.ZERO;
+        Integer porteId = obterPorteId(pet);
 
-        if (pet.getRaca() == null || pet.getRaca().getPorte() == null || pet.getRaca().getPorte().getId() == null) {
+        if (porteId == null) {
             throw new IllegalArgumentException("Dados de porte e raça do pet estão incompletos.");
         }
 
-        if (pet.getRaca().getPorte().getId().getValue() > 1) {
-            switch (pet.getRaca().getPorte().getId().getValue()) {
+        if (porteId > 1) {
+            switch (porteId) {
                 case 2: // Médio
                     adicionalPorte = new BigDecimal("10.0");
                     break;
@@ -143,5 +144,17 @@ public class CalcularServicoUseCase {
         } catch (Exception e) {
             return 1.0;
         }
+    }
+
+    private Integer obterPorteId(Pet pet) {
+        if (pet.getPorte() != null && pet.getPorte().getId() != null) {
+            return pet.getPorte().getId().getValue();
+        }
+
+        if (pet.getRaca() != null && pet.getRaca().getPorte() != null && pet.getRaca().getPorte().getId() != null) {
+            return pet.getRaca().getPorte().getId().getValue();
+        }
+
+        return null;
     }
 }
