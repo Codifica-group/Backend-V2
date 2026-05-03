@@ -16,6 +16,7 @@ import codifica.eleve.core.domain.shared.exceptions.ConflictException;
 import codifica.eleve.core.domain.shared.exceptions.NotFoundException;
 import codifica.eleve.interfaces.dto.ClienteDTO;
 import codifica.eleve.interfaces.dto.PetDTO;
+import codifica.eleve.interfaces.dto.PorteDTO;
 import codifica.eleve.interfaces.dto.RacaDTO;
 import codifica.eleve.interfaces.dtoAdapters.PetDtoMapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -93,14 +94,24 @@ class PetControllerTest {
         RacaDTO racaDTO = new RacaDTO();
         racaDTO.setId(1);
         racaDTO.setNome("Golden Retriever");
+        racaDTO.setPorteId(1);
+        racaDTO.setPorteNome("Grande");
+
+        PorteDTO porteDTO = new PorteDTO();
+        porteDTO.setId(1);
+        porteDTO.setNome("Grande");
 
         petDTOPadrao = new PetDTO();
         petDTOPadrao.setId(1);
         petDTOPadrao.setNome("Thor");
+        petDTOPadrao.setSexo("Macho");
+        petDTOPadrao.setFoto("file:///tmp/thor.jpg");
         petDTOPadrao.setRacaId(1);
         petDTOPadrao.setRaca(racaDTO);
         petDTOPadrao.setClienteId(1);
         petDTOPadrao.setCliente(clienteDTO);
+        petDTOPadrao.setPorteId(1);
+        petDTOPadrao.setPorte(porteDTO);
 
         Porte porte = new Porte();
         porte.setId(new Id(1));
@@ -118,6 +129,9 @@ class PetControllerTest {
 
         petDomainPadrao = new Pet("Thor", raca, cliente);
         petDomainPadrao.setId(new Id(1));
+        petDomainPadrao.setSexo("Macho");
+        petDomainPadrao.setFoto("file:///tmp/thor.jpg");
+        petDomainPadrao.setPorte(porte);
     }
 
     // ---------- POST (Create) ----------
@@ -172,7 +186,10 @@ class PetControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.dados").isArray())
                 .andExpect(jsonPath("$.dados[0].nome").value("Thor"))
+                .andExpect(jsonPath("$.dados[0].sexo").value("Macho"))
+                .andExpect(jsonPath("$.dados[0].foto").value("file:///tmp/thor.jpg"))
                 .andExpect(jsonPath("$.dados[0].raca.nome").value("Golden Retriever"))
+                .andExpect(jsonPath("$.dados[0].porte.nome").value("Grande"))
                 .andExpect(jsonPath("$.totalPaginas").value(1));
     }
 
@@ -198,6 +215,9 @@ class PetControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.nome").value("Thor"))
+                .andExpect(jsonPath("$.sexo").value("Macho"))
+                .andExpect(jsonPath("$.foto").value("file:///tmp/thor.jpg"))
+                .andExpect(jsonPath("$.porte.nome").value("Grande"))
                 .andExpect(jsonPath("$.cliente.nome").value("Mariana Souza"));
     }
 
