@@ -3,10 +3,12 @@ package codifica.eleve.infrastructure.adapters;
 import codifica.eleve.core.domain.cliente.Cliente;
 import codifica.eleve.core.domain.pet.Pet;
 import codifica.eleve.core.domain.raca.Raca;
+import codifica.eleve.core.domain.raca.porte.Porte;
 import codifica.eleve.core.domain.shared.Id;
 import codifica.eleve.infrastructure.persistence.cliente.ClienteEntity;
 import codifica.eleve.infrastructure.persistence.pet.PetEntity;
 import codifica.eleve.infrastructure.persistence.raca.RacaEntity;
+import codifica.eleve.infrastructure.persistence.raca.porte.PorteEntity;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -28,6 +30,8 @@ public class PetMapper {
         }
 
         entity.setNome(domain.getNome());
+        entity.setSexo(domain.getSexo());
+        entity.setFoto(domain.getFoto());
 
         if (domain.getCliente() != null) {
             ClienteEntity clienteEntity = new ClienteEntity();
@@ -40,6 +44,12 @@ public class PetMapper {
             racaEntity.setId(domain.getRaca().getId().getValue());
             entity.setRaca(racaEntity);
         }
+
+        if (domain.getPorte() != null) {
+            PorteEntity porteEntity = new PorteEntity();
+            porteEntity.setId(domain.getPorte().getId().getValue());
+            entity.setPorte(porteEntity);
+        }
         return entity;
     }
 
@@ -49,6 +59,8 @@ public class PetMapper {
         Pet domain = new Pet();
         domain.setId(new Id(entity.getId()));
         domain.setNome(entity.getNome());
+        domain.setSexo(entity.getSexo());
+        domain.setFoto(entity.getFoto());
 
         if (entity.getCliente() != null) {
             Cliente cliente = new Cliente();
@@ -60,6 +72,13 @@ public class PetMapper {
         if (entity.getRaca() != null) {
             Raca raca = racaMapper.toDomain(entity.getRaca());
             domain.setRaca(raca);
+        }
+
+        if (entity.getPorte() != null) {
+            Porte porte = new Porte();
+            porte.setId(new Id(entity.getPorte().getId()));
+            porte.setNome(entity.getPorte().getNome());
+            domain.setPorte(porte);
         }
         return domain;
     }

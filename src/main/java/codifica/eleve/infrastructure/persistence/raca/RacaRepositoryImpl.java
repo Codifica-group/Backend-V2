@@ -1,6 +1,7 @@
 package codifica.eleve.infrastructure.persistence.raca;
 
 import codifica.eleve.core.domain.raca.Raca;
+import codifica.eleve.core.domain.raca.RacaNomeUtils;
 import codifica.eleve.core.domain.raca.RacaRepository;
 import codifica.eleve.infrastructure.adapters.RacaMapper;
 import org.springframework.stereotype.Repository;
@@ -49,11 +50,25 @@ public class RacaRepositoryImpl implements RacaRepository {
 
     @Override
     public boolean existsByNome(String nome) {
-        return racaJpaRepository.existsByNome(nome);
+        String nomeCanonico = RacaNomeUtils.canonicalizar(nome);
+        if (nomeCanonico.isEmpty()) {
+            return false;
+        }
+
+        return racaJpaRepository.findAll().stream()
+                .anyMatch(racaEntity -> RacaNomeUtils.canonicalizar(racaEntity.getNome()).equals(nomeCanonico));
     }
 
     @Override
     public Optional<Raca> findByNome(String nome) {
-        return racaJpaRepository.findByNomeRemovingSpacesAndIgnoringCase(nome).map(racaMapper::toDomain);
+        String nomeCanonico = RacaNomeUtils.canonicalizar(nome);
+        if (nomeCanonico.isEmpty()) {
+            return Optional.empty();
+        }
+
+        return racaJpaRepository.findAll().stream()
+                .filter(racaEntity -> RacaNomeUtils.canonicalizar(racaEntity.getNome()).equals(nomeCanonico))
+                .findFirst()
+                .map(racaMapper::toDomain);
     }
 }

@@ -2,6 +2,7 @@ package codifica.eleve.infrastructure.persistence.pet;
 
 import codifica.eleve.infrastructure.persistence.cliente.ClienteEntity;
 import codifica.eleve.infrastructure.persistence.raca.RacaEntity;
+import codifica.eleve.infrastructure.persistence.raca.porte.PorteEntity;
 import jakarta.persistence.*;
 
 @Entity
@@ -13,6 +14,10 @@ public class PetEntity {
     private Integer id;
 
     private String nome;
+    private String sexo;
+
+    @Column(name = "foto_url", length = 2048)
+    private String foto;
 
     @ManyToOne
     @JoinColumn(name = "raca_id")
@@ -21,6 +26,10 @@ public class PetEntity {
     @ManyToOne
     @JoinColumn(name = "cliente_id")
     private ClienteEntity cliente;
+
+    @ManyToOne
+    @JoinColumn(name = "porte_id")
+    private PorteEntity porte;
 
     public PetEntity(String nome, RacaEntity raca, ClienteEntity cliente) {
         this.nome = nome;
@@ -46,6 +55,22 @@ public class PetEntity {
         this.nome = nome;
     }
 
+    public String getSexo() {
+        return sexo;
+    }
+
+    public void setSexo(String sexo) {
+        this.sexo = sexo;
+    }
+
+    public String getFoto() {
+        return foto;
+    }
+
+    public void setFoto(String foto) {
+        this.foto = foto;
+    }
+
     public RacaEntity getRaca() {
         return raca;
     }
@@ -60,5 +85,13 @@ public class PetEntity {
 
     public void setCliente(ClienteEntity cliente) {
         this.cliente = cliente;
+    }
+
+    public PorteEntity getPorte() {
+        return porte;
+    }
+
+    public void setPorte(PorteEntity porte) {
+        this.porte = porte;
     }
 }
