@@ -26,6 +26,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.math.BigDecimal;
@@ -70,6 +71,7 @@ public class DevDataInitializer {
     private ProdutoJpaRepository produtoJpaRepository;
 
     @Bean
+    @Order(2)
     public CommandLineRunner initDatabase() {
         return args -> {
             // POPULA BANCO DE DADOS
@@ -86,13 +88,6 @@ public class DevDataInitializer {
                     new ServicoEntity("Tosa", new BigDecimal(50.0)),
                     new ServicoEntity("Hidatação", new BigDecimal(15.0)));
             servicoJpaRepository.saveAll(servicos);
-
-            // PORTES
-            List<PorteEntity> portes = List.of(
-                    new PorteEntity("Pequeno"),
-                    new PorteEntity("Médio"),
-                    new PorteEntity("Grande"));
-            porteJpaRepository.saveAll(portes);
 
             // CATEGORIAS DE PRODUTOS
             List<CategoriaProdutoEntity> categorias = List.of(
@@ -111,10 +106,11 @@ public class DevDataInitializer {
             produtoJpaRepository.saveAll(produtos);
 
             // RAÇAS
+            List<PorteEntity> portes = porteJpaRepository.findAll();
             List<RacaEntity> racas = List.of(
                     new RacaEntity("Raça Test", portes.get(0)),
-                    new RacaEntity( "Raça Test 2", portes.get(1)),
-                    new RacaEntity( "Raça Test 3", portes.get(2)));
+                    new RacaEntity("Raça Test 2", portes.get(1)),
+                    new RacaEntity("Raça Test 3", portes.get(2)));
             racaJpaRepository.saveAll(racas);
 
             // CLIENTE
