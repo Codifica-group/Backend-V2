@@ -48,7 +48,7 @@ public class ServicoController {
         List<ServicoDTO> servicos = listServicoUseCase.execute().stream()
                 .map(servicoDtoMapper::toDto)
                 .collect(Collectors.toList());
-        return servicos.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(servicos);
+        return ResponseEntity.ok(servicos);
     }
 
     @GetMapping("/{id}")
