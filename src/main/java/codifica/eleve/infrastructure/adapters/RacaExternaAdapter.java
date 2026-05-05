@@ -2,6 +2,8 @@ package codifica.eleve.infrastructure.adapters;
 
 import codifica.eleve.core.domain.shared.exceptions.InternalServerErrorException;
 import codifica.eleve.core.domain.shared.exceptions.NotFoundException;
+import codifica.eleve.infrastructure.persistence.raca.RacaExternaEntity;
+import codifica.eleve.infrastructure.persistence.raca.RacaExternaRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,15 +20,23 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.time.LocalDateTime;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Component
 public class RacaExternaAdapter {
 
     private static final Logger logger = LoggerFactory.getLogger(RacaExternaAdapter.class);
+    private final RacaExternaRepository racaExternaRepository;
 
     @Value("${URL_DADOS_PY}")
     private String urlDadosPy;
+
+    public RacaExternaAdapter(RacaExternaRepository racaExternaRepository) {
+        this.racaExternaRepository = racaExternaRepository;
+    }
 
     public Map<String, Object> obterInfoRaca(String nomeRaca) {
         String nomeLimpo = nomeRaca == null ? "" : nomeRaca.trim();
@@ -34,6 +44,21 @@ public class RacaExternaAdapter {
             throw new codifica.eleve.core.domain.shared.exceptions.IllegalArgumentException(
                     "Nome da raca deve ter pelo menos 2 caracteres."
             );
+        }
+
+        Optional<RacaExternaEntity> cacheLocal = racaExternaRepository
+                .findFirstByNomeIgnoreCaseOrNomeOriginalIgnoreCase(nomeLimpo, nomeLimpo)
+                .filter(raca -> raca.getAtivo() == null || Boolean.TRUE.equals(raca.getAtivo()));
+
+        if (cacheLocal.isPresent()) {
+            RacaExternaEntity raca = cacheLocal.get();
+            logger.info(
+                    "RACA_EXTERNA consulta concluida via banco local. nomeOriginal='{}', nomeExterno='{}', raceId='{}'",
+                    nomeLimpo,
+                    raca.getNomeOriginal() != null ? raca.getNomeOriginal() : raca.getNome(),
+                    raca.getRacaIdExterno()
+            );
+            return mapearEntidadeParaResposta(nomeLimpo, raca);
         }
 
         URI uri = UriComponentsBuilder
@@ -60,6 +85,8 @@ public class RacaExternaAdapter {
                 logger.warn("RACA_EXTERNA resposta vazia. nomeOriginal='{}', uri='{}'", nomeLimpo, uri);
                 throw new NotFoundException("Raca nao encontrada na base externa local.");
             }
+
+            salvarOuAtualizarRacaExterna(nomeLimpo, corpo);
 
             logger.info(
                     "RACA_EXTERNA consulta concluida. nomeOriginal='{}', nomeExterno='{}', fonte='{}', raceId='{}'",
@@ -158,5 +185,84 @@ public class RacaExternaAdapter {
         } catch (Exception e) {
             throw new InternalServerErrorException("Erro ao sincronizar racas externas: " + e.getMessage());
         }
+    }
+
+    private Map<String, Object> mapearEntidadeParaResposta(String nomeConsultado, RacaExternaEntity raca) {
+        Map<String, Object> resposta = new LinkedHashMap<>();
+        resposta.put("nome", nomeConsultado);
+        resposta.put("nomeExterno", valorOuPadrao(raca.getNomeOriginal(), raca.getNome()));
+        resposta.put("grupo", valorOuPadrao(raca.getGrupo(), "Nao informado"));
+        resposta.put("temperamento", valorOuPadrao(raca.getTemperamento(), "Nao informado"));
+        resposta.put("expectativaVida", valorOuPadrao(raca.getVidaMedia(), "Nao informado"));
+        resposta.put("peso", valorOuPadrao(raca.getPeso(), "Nao informado"));
+        resposta.put("altura", valorOuPadrao(raca.getAltura(), "Nao informado"));
+        resposta.put("origemRaca", valorOuPadrao(raca.getOrigem(), "Nao informado"));
+        resposta.put("proposito", valorOuPadrao(raca.getProposito(), "Nao informado"));
+        resposta.put("imagemUrl", valorOuPadrao(raca.getImagemUrl(), "Nao informado"));
+        resposta.put("descricao", valorOuPadrao(raca.getDescricao(), "Nao informado"));
+        resposta.put("fonte", "racas_externas");
+        resposta.put("raceId", raca.getRacaIdExterno());
+        return resposta;
+    }
+
+    private void salvarOuAtualizarRacaExterna(String nomeConsultado, Map<String, Object> corpo) {
+        Integer racaIdExterno = converterInteiro(corpo.get("raceId"));
+
+        RacaExternaEntity entidade = null;
+        if (racaIdExterno != null) {
+            entidade = racaExternaRepository.findByRacaIdExterno(racaIdExterno).orElse(null);
+        }
+        if (entidade == null) {
+            entidade = racaExternaRepository
+                    .findFirstByNomeIgnoreCaseOrNomeOriginalIgnoreCase(nomeConsultado, nomeConsultado)
+                    .orElseGet(RacaExternaEntity::new);
+        }
+
+        entidade.setNome(valorOuPadrao(valorOuNulo(corpo.get("nome")), nomeConsultado));
+        entidade.setNomeOriginal(valorOuPadrao(valorOuNulo(corpo.get("nomeExterno")), entidade.getNome()));
+        entidade.setRacaIdExterno(racaIdExterno);
+        entidade.setTemperamento(valorOuNulo(corpo.get("temperamento")));
+        entidade.setVidaMedia(valorOuNulo(corpo.get("expectativaVida")));
+        entidade.setAltura(valorOuNulo(corpo.get("altura")));
+        entidade.setPeso(valorOuNulo(corpo.get("peso")));
+        entidade.setOrigem(valorOuNulo(corpo.get("origemRaca")));
+        entidade.setProposito(valorOuNulo(corpo.get("proposito")));
+        entidade.setGrupo(valorOuNulo(corpo.get("grupo")));
+        entidade.setImagemUrl(valorOuNulo(corpo.get("imagemUrl")));
+        entidade.setDescricao(valorOuNulo(corpo.get("descricao")));
+        entidade.setDataSincronizacao(LocalDateTime.now());
+        entidade.setAtivo(true);
+
+        racaExternaRepository.save(entidade);
+    }
+
+    private Integer converterInteiro(Object valor) {
+        if (valor == null) {
+            return null;
+        }
+        if (valor instanceof Number numero) {
+            return numero.intValue();
+        }
+        try {
+            return Integer.parseInt(String.valueOf(valor).trim());
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
+
+    private String valorOuNulo(Object valor) {
+        if (valor == null) {
+            return null;
+        }
+        String texto = String.valueOf(valor).trim();
+        if (texto.isEmpty() || "Nao informado".equalsIgnoreCase(texto) || "n/a".equalsIgnoreCase(texto)) {
+            return null;
+        }
+        return texto;
+    }
+
+    private String valorOuPadrao(String valor, String padrao) {
+        String texto = valor == null ? "" : valor.trim();
+        return texto.isEmpty() ? padrao : texto;
     }
 }
