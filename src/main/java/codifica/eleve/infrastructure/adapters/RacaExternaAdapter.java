@@ -13,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -36,9 +37,14 @@ public class RacaExternaAdapter {
         }
 
         URI uri = UriComponentsBuilder
-                .fromUriString(urlDadosPy + "/racas/info/{nome}")
-                .buildAndExpand(nomeLimpo)
+                .fromUriString(urlDadosPy)
+                .path("/racas/info")
+                .queryParam("nome", nomeLimpo)
+                .build()
+                .encode()
                 .toUri();
+
+        logger.info("RACA_EXTERNA consulta iniciada. nomeOriginal='{}', uri='{}'", nomeLimpo, uri);
 
         try {
             RestTemplate restTemplate = new RestTemplate();
@@ -51,15 +57,41 @@ public class RacaExternaAdapter {
             Map<String, Object> corpo = response.getBody();
 
             if (corpo == null || corpo.isEmpty()) {
+                logger.warn("RACA_EXTERNA resposta vazia. nomeOriginal='{}', uri='{}'", nomeLimpo, uri);
                 throw new NotFoundException("Raca nao encontrada na base externa local.");
             }
 
+            logger.info(
+                    "RACA_EXTERNA consulta concluida. nomeOriginal='{}', nomeExterno='{}', fonte='{}', raceId='{}'",
+                    nomeLimpo,
+                    corpo.getOrDefault("nomeExterno", corpo.get("nome")),
+                    corpo.getOrDefault("fonte", "desconhecida"),
+                    corpo.getOrDefault("raceId", "n/a")
+            );
             return corpo;
         } catch (HttpClientErrorException.NotFound e) {
+            logger.warn("RACA_EXTERNA nao encontrada. nomeOriginal='{}', uri='{}'", nomeLimpo, uri);
             throw new NotFoundException("Raca nao encontrada na base externa local.");
+        } catch (HttpStatusCodeException e) {
+            logger.error(
+                    "RACA_EXTERNA falha HTTP. nomeOriginal='{}', uri='{}', status='{}', corpo='{}'",
+                    nomeLimpo,
+                    uri,
+                    e.getStatusCode(),
+                    e.getResponseBodyAsString(),
+                    e
+            );
+            throw new InternalServerErrorException("Erro ao consultar dados externos de raca: " + e.getMessage());
         } catch (codifica.eleve.core.domain.shared.exceptions.IllegalArgumentException | NotFoundException e) {
             throw e;
         } catch (Exception e) {
+            logger.error(
+                    "RACA_EXTERNA falha inesperada. nomeOriginal='{}', uri='{}', detalhe='{}'",
+                    nomeLimpo,
+                    uri,
+                    e.getMessage(),
+                    e
+            );
             throw new InternalServerErrorException("Erro ao consultar dados externos de raca: " + e.getMessage());
         }
     }
