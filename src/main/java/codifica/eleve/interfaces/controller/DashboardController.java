@@ -4,12 +4,16 @@ import codifica.eleve.core.application.usecase.pet.FindPetsByClienteIdUseCase;
 import codifica.eleve.interfaces.dtoAdapters.PetDtoMapper;
 import codifica.eleve.interfaces.dto.PetDTO;
 import codifica.eleve.infrastructure.adapters.RacaExternaAdapter;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -27,13 +31,19 @@ public class DashboardController {
     private final FindPetsByClienteIdUseCase findPetsByClienteIdUseCase;
     private final PetDtoMapper petDtoMapper;
     private final RacaExternaAdapter racaExternaAdapter;
+    private final ResourceLoader resourceLoader;
+    private final ObjectMapper objectMapper;
 
     public DashboardController(FindPetsByClienteIdUseCase findPetsByClienteIdUseCase,
                                PetDtoMapper petDtoMapper,
-                               RacaExternaAdapter racaExternaAdapter) {
+                               RacaExternaAdapter racaExternaAdapter,
+                               ResourceLoader resourceLoader,
+                               ObjectMapper objectMapper) {
         this.findPetsByClienteIdUseCase = findPetsByClienteIdUseCase;
         this.petDtoMapper = petDtoMapper;
         this.racaExternaAdapter = racaExternaAdapter;
+        this.resourceLoader = resourceLoader;
+        this.objectMapper = objectMapper;
     }
 
     @GetMapping("/cliente/{clienteId}")
@@ -116,41 +126,53 @@ public class DashboardController {
 
     private Map<String, Object> gerarTopicosDeInsight(String nomeRaca, String porte) {
         Map<String, Object> topicos = new LinkedHashMap<>();
+        Map<String, Map<String, Object>> insightsPorRaca = obterInsightsPorRaca();
+        String racaNormalizada = normalizarNomeRaca(nomeRaca);
+        Map<String, Object> insightsRaca = insightsPorRaca.getOrDefault(racaNormalizada, new HashMap<>());
+
+        // Saúde
+        Map<String, Object> saudeData = (Map<String, Object>) insightsRaca.getOrDefault("saude", new HashMap<>());
         topicos.put("saude", Map.of(
-                "nivelRisco", nivelRiscoPorRaca(nomeRaca, "saude"),
-                "bullets", List.of(
+                "nivelRisco", saudeData.getOrDefault("nivelRisco", "baixo"),
+                "bullets", saudeData.getOrDefault("bullets", List.of(
                         "Mantenha consultas veterinárias regulares e rotina de vacinas em dia.",
                         "Observe sinais de coceira, vermelhidão ou alterações no apetite.",
-                        "Hidratação e alimentação equilibrada são essenciais para saúde geral."),
+                        "Hidratação e alimentação equilibrada são essenciais para saúde geral.")),
                 "acoesSugeridas", List.of(
                         Map.of("tipo", "checklist", "label", "Checklist de saúde", "destino", "PerfilTab"),
                         Map.of("tipo", "agendar", "label", "Agendar avaliação", "destino", "AgendaTab"))
         ));
 
+        // Banho
+        Map<String, Object> banhoData = (Map<String, Object>) insightsRaca.getOrDefault("banho", new HashMap<>());
         topicos.put("banho", Map.of(
-                "nivelRisco", nivelRiscoPorRaca(nomeRaca, "banho"),
-                "bullets", List.of(
-                        fecharPonto("Shampoo e secagem completos são importantes para evitar fungos e odor"),
-                        fecharPonto("Escove antes do banho para reduzir nós e facilitar a aplicação do produto"),
-                        fecharPonto("Cuidado especial nas dobrinhas e orelhas de raças braquicefálicas")),
+                "nivelRisco", banhoData.getOrDefault("nivelRisco", "baixo"),
+                "bullets", banhoData.getOrDefault("bullets", List.of(
+                        "Shampoo e secagem completos são importantes para evitar fungos e odor.",
+                        "Escove antes do banho para reduzir nós e facilitar a aplicação do produto.",
+                        "Cuidado especial nas dobrinhas e orelhas de raças braquicefálicas.")),
                 "acoesSugeridas", List.of(Map.of("tipo", "agendar", "label", "Agendar banho", "destino", "AgendaTab"))
         ));
 
+        // Comportamento
+        Map<String, Object> comportamentoData = (Map<String, Object>) insightsRaca.getOrDefault("comportamento", new HashMap<>());
         topicos.put("comportamento", Map.of(
-                "nivelRisco", nivelRiscoPorRaca(nomeRaca, "comportamento"),
-                "bullets", List.of(
+                "nivelRisco", comportamentoData.getOrDefault("nivelRisco", "baixo"),
+                "bullets", comportamentoData.getOrDefault("bullets", List.of(
                         "Rotina previsível e reforço positivo ajudam no aprendizado.",
                         "Exercícios curtos e consistentes reduzem estresse e ansiedade.",
-                        "Brinquedos interativos ajudam a distrair pets mais ativos."),
+                        "Brinquedos interativos ajudam a distrair pets mais ativos.")),
                 "acoesSugeridas", List.of(Map.of("tipo", "conteudo", "label", "Ver dicas de treino", "destino", "HistoricoTab"))
         ));
 
+        // Alimentação
+        Map<String, Object> alimentacaoData = (Map<String, Object>) insightsRaca.getOrDefault("alimentacao", new HashMap<>());
         topicos.put("alimentacao", Map.of(
-                "nivelRisco", nivelRiscoPorRaca(nomeRaca, "alimentacao"),
-                "bullets", List.of(
+                "nivelRisco", alimentacaoData.getOrDefault("nivelRisco", "baixo"),
+                "bullets", alimentacaoData.getOrDefault("bullets", List.of(
                         "Ajuste porções de acordo com idade, peso e nível de atividade.",
                         "Mantenha água fresca sempre disponível.",
-                        "Evite petiscos em excesso para controlar o peso."),
+                        "Evite petiscos em excesso para controlar o peso.")),
                 "acoesSugeridas", List.of(Map.of("tipo", "conteudo", "label", "Guia de porções", "destino", "HistoricoTab"))
         ));
 
@@ -161,16 +183,24 @@ public class DashboardController {
         return texto + ".";
     }
 
-    private String nivelRiscoPorRaca(String nomeRaca, String topicoKey) {
-        String raca = nomeRaca == null ? "" : nomeRaca.toLowerCase();
-        if (topicoKey.equals("banho") && (raca.contains("pug") || raca.contains("bulldog") || raca.contains("shih"))) {
-            return "medio";
+    private String normalizarNomeRaca(String nomeRaca) {
+        if (nomeRaca == null || nomeRaca.trim().isEmpty()) {
+            return "";
         }
-        if (topicoKey.equals("alimentacao") && (raca.contains("golden") || raca.contains("labrador") || raca.contains("pastor"))) {
-            return "medio";
-        }
-        return "baixo";
+        return nomeRaca.toLowerCase()
+                .replace(" ", "_")
+                .replace("-", "_");
     }
+
+    private Map<String, Map<String, Object>> obterInsightsPorRaca() {
+        try {
+            InputStream inputStream = resourceLoader.getResource("classpath:insights-raca.json").getInputStream();
+            return objectMapper.readValue(inputStream, Map.class);
+        } catch (IOException e) {
+            return new LinkedHashMap<>();
+        }
+    }
+
 
     private List<Map<String, Object>> gerarInsightsAudio(List<PetDTO> pets) {
         List<Map<String, Object>> audios = new ArrayList<>();
@@ -182,7 +212,7 @@ public class DashboardController {
                 .findFirst()
                 .orElse("cachorro");
 
-        audios.add(criarAudioInsight(base, 0, "banho",
+        audios.add(criarAudioInsight(base, 1, "banho",
                 String.format("Por que o %s precisa de cuidado especial após o banho?", raca),
                 Map.of("raca", raca, "tema", List.of("pele", "banho", "dobrinhas")),
                 "O banho deve ser seguido de secagem completa, atenção às dobrinhas e produtos suaves para evitar irritação.",

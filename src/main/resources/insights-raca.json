@@ -1,0 +1,104 @@
+{
+  "pug": {
+    "saude": {
+      "nivelRisco": "alto",
+      "bullets": [
+        "Observe sinais de dificuldade respiratória principalmente em dias quentes.",
+        "Realize limpeza frequente das dobrinhas faciais.",
+        "Monitore irritações e secreções nos olhos."
+      ]
+    },
+    "banho": {
+      "nivelRisco": "medio",
+      "bullets": [
+        "Seque completamente as dobrinhas após o banho.",
+        "Utilize produtos suaves para evitar irritações.",
+        "Verifique a presença de umidade próxima ao focinho."
+      ]
+    },
+    "comportamento": {
+      "nivelRisco": "baixo",
+      "bullets": [
+        "Evite exercícios intensos em horários quentes.",
+        "Mantenha uma rotina previsível.",
+        "Utilize brinquedos de enriquecimento ambiental."
+      ]
+    },
+    "alimentacao": {
+      "nivelRisco": "medio",
+      "bullets": [
+        "Controle petiscos para evitar ganho de peso.",
+        "Ofereça alimentação balanceada.",
+        "Monitore regularmente o peso corporal."
+      ]
+    }
+  },
+  "shih_tzu": {
+    "saude": {
+      "nivelRisco": "medio",
+      "bullets": [
+        "Observe excesso de lacrimejamento nos olhos.",
+        "Realize acompanhamento oftalmológico quando necessário.",
+        "Mantenha vacinação e consultas preventivas em dia."
+      ]
+    },
+    "banho": {
+      "nivelRisco": "medio",
+      "bullets": [
+        "Escove os pelos antes do banho.",
+        "Garanta secagem completa dos pelos longos.",
+        "Evite formação de nós próximos às orelhas."
+      ]
+    },
+    "comportamento": {
+      "nivelRisco": "baixo",
+      "bullets": [
+        "Estimule socialização desde cedo.",
+        "Utilize reforço positivo durante treinamentos.",
+        "Ofereça atividades leves diariamente."
+      ]
+    },
+    "alimentacao": {
+      "nivelRisco": "baixo",
+      "bullets": [
+        "Mantenha horários regulares para alimentação.",
+        "Evite excesso de petiscos.",
+        "Disponibilize água fresca constantemente."
+      ]
+    }
+  },
+  "golden_retriever": {
+    "saude": {
+      "nivelRisco": "medio",
+      "bullets": [
+        "Monitore possíveis problemas articulares.",
+        "Observe sinais de desconforto durante caminhadas.",
+        "Realize check-ups veterinários periódicos."
+      ]
+    },
+    "banho": {
+      "nivelRisco": "baixo",
+      "bullets": [
+        "Escove o subpelo regularmente.",
+        "Seque completamente após o banho.",
+        "Remova pelos mortos para evitar embaraços."
+      ]
+    },
+    "comportamento": {
+      "nivelRisco": "baixo",
+      "bullets": [
+        "Ofereça atividades físicas frequentes.",
+        "Estimule brincadeiras interativas.",
+        "Mantenha contato social com pessoas e outros animais."
+      ]
+    },
+    "alimentacao": {
+      "nivelRisco": "medio",
+      "bullets": [
+        "Controle a quantidade de alimento oferecida.",
+        "Evite sobrepeso.",
+        "Ajuste a dieta conforme idade e nível de atividade."
+      ]
+    }
+  }
+}
